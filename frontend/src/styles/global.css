@@ -1,0 +1,14 @@
+:root {
+  --grey-background: #e7eaf2;
+  --light-grey: #E5F1EF;
+  --grey-text: #BDBDBD;
+  --white-blur: #ffffff66;
+  --white: #ffffff;
+  --green: #24cca7;
+  --green-blur: #24cca780;
+  --blue: #4A56E2;
+  --font-primary: "Poppins", sans-serif;
+  --font-secondary: "Circe", sans-serif;
+  --font-weight-regular: 400;
+  --font-weight-bold: 700;
+}

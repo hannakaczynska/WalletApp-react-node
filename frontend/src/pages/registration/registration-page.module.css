@@ -1,0 +1,151 @@
+@import "../../styles/global.css";
+
+.registrationPage {
+  background-color: var(--white);
+  min-height: 100vh;
+}
+
+.registrationDesktopPage {
+  display: none;
+}
+
+.container {
+  display: none;
+}
+
+.ellipseTwo {
+  display: none;
+}
+
+.frame {
+  display: none;
+}
+
+.ellipseOne {
+  display: none;
+}
+
+.title {
+  display: none;
+}
+
+.formContainer {
+  display: none;
+}
+
+.rectangleThree {
+  display: none;
+}
+
+@media screen and (min-width: 768px) {
+  .registrationPage {
+    background-color: var(--grey-background);
+  }
+
+  .registrationForm {
+    width: 533px;
+    height: 616px;
+    background-color: var(--white);
+  }
+
+  .title {
+    display: block;
+    position: absolute;
+    width: 187px;
+    height: 45px;
+    right: 153px;
+    top: 163px;
+    font-family: var(--font-primary);
+    font-weight: var(--font-weight-regular);
+    font-size: 30px;
+    line-height: 100%;
+    z-index: 1;
+  }
+
+  .ellipseTwo {
+    display: block;
+    position: absolute;
+    right: 0;
+    top: 0;
+  }
+
+  .frame {
+    position: absolute;
+    display: block;
+    width: 274px;
+    height: 250px;
+    top: 60px;
+    right: 380px;
+  }
+
+  .ellipseOne {
+    display: block;
+    position: absolute;
+    left: 0;
+    bottom: 0;
+  }
+}
+
+@media screen and (min-width: 1280px) {
+  .registrationPage {
+    display: none;
+  }
+
+  .registrationDesktopPage {
+    background-color: var(--grey-background);
+    min-height: 100vh;
+    display: flex;
+    flex-direction: row;
+  }
+
+  .registrationForm {
+    display: none;
+  }
+
+  .frame {
+    width: 452.1px;
+    height: 412.6px;
+    top: auto;
+    right: auto;
+    left: 66px;
+    bottom: 154.4px;
+    z-index: 2;
+  }
+
+  .ellipseOne {
+    left: 0;
+    bottom: 0;
+  }
+
+  .title {
+    top: auto;
+    right: auto;
+    left: 200px;
+    bottom: 77.5px;
+    margin: 0;
+  }
+
+  .ellipseTwo {
+    display: none;
+  }
+
+  .formContainer {
+    display: block;
+    position: absolute;
+    height: 100vh;
+    width: 57.18vw;
+    right: 0;
+    top: 0;
+    background-color: var(--white-blur);
+  }
+
+  .rectangleThree {
+    display: block;
+    position: absolute;
+    width: 731px;
+    height: 720px;
+    right: 0;
+    top: 0;
+    z-index: 1;
+  }
+}
