@@ -1,18 +1,18 @@
-import css from "./registration-page.module.css";
-import RegistrationForm from "../../components/registration-form/registration-form";
+import css from "./login-page.module.css";
+import LoginForm from "../../components/login-form/login-form";
 
-const RegistrationPage = () => {
+const LoginPage = () => {
   return (
     <div>
       <div className={css.registrationPage}>
-        <RegistrationForm />
+        <LoginForm />
         <h1 className={css.title}>Finance App</h1>
         <img
           src="/ellipse2.svg"
           alt="Ellipse background"
           className={css.ellipseTwo}
         />
-        <img src="/frame1.svg" alt="Frame background" className={css.frame} />
+        <img src="/frame.svg" alt="Frame background" className={css.frame} />
         <img
           src="/ellipse1.svg"
           alt="Ellipse background"
@@ -21,7 +21,7 @@ const RegistrationPage = () => {
       </div>
       <div className={css.registrationDesktopPage}>
         <h1 className={css.title}>Finance App</h1>
-        <img src="/frame1.svg" alt="Frame background" className={css.frame} />
+        <img src="/frame.svg" alt="Frame background" className={css.frame} />
         <img
           src="/ellipse1.svg"
           alt="Ellipse background"
@@ -33,11 +33,11 @@ const RegistrationPage = () => {
             alt="Rectangle background"
             className={css.rectangleThree}
           />
-          <RegistrationForm />
+          <LoginForm />
         </div>
       </div>
     </div>
   );
 };
 
-export default RegistrationPage;
+export default LoginPage;
