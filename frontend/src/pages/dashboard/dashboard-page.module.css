@@ -1,9 +1,103 @@
 .dashboardPage {
-    width: 100%;
-    height: 100vh;
+  width: 100vw;
+  height: 100vh;
+margin-top: 60px;
+  background: #FFFFFF66;
+}
+
+.dashboardContainer {
+  width: 280px;
+  margin-inline: auto;
 }
 
 .navigation {
-    margin-top: 15px;
-    margin-bottom: 31px;
+  padding-top: 12px;
+}
+
+.separator {
+  display: none;
+}
+
+@media screen and (min-width: 768px) {
+ .dashboardPage {
+    margin-top: 80px;
+ }
+    .dashboardContainer {
+    width: 704px;
+  }
+
+  .dashboardLayout {
+    display: flex;
+    flex-direction: row;
+    gap: 32px;
+    margin-inline: auto;
+    max-width: 704px;
+    padding-top: 32px;
+  }
+
+  .layoutContainer {
+    display: flex;
+    flex-direction: column;
+    gap: 28px;
+    margin-top: auto;
+  }
+
+  .navigation {
+    padding-top: 0;
+  }
+
+  .ellipseTwo {
+    position: fixed;
+    right: 0;
+    top: 80px;
+    filter: blur(50px);
+    z-index: -10;
+  }
+
+  .ellipseOne {
+    position: fixed;
+    left: 0;
+    bottom: 0;
+    filter: blur(50px);
+    z-index: -10;
+  }
+}
+
+@media screen and (min-width: 1280px) {
+  .dashboardContainer {
+    width: 1248px;
+  }
+
+  .dashboard {
+    display: flex;
+    position: relative;
+    flex-direction: row;
+    align-items: flex-start;
+    
+    gap: 69px;
+    width: 1248px;
+  }
+
+  .dashboardLayout {
+    flex-direction: column;
+    padding-top: 32px;
+    position: fixed;
+  }
+
+  .current {
+    margin-top: 4px;
+  }
+
+  .separator {
+    display: block;
+    height: 100vh;
+    position: absolute;
+        left: 462px;
+    border: 1px solid #e7e5f2;
+    box-shadow: 1px 0px 0px 0px #ffffff99;
+    box-shadow: -1px 0px 0px 0px #0000000d;
+  }
+  .content {
+    width: 715px;
+  }
 }
