@@ -1,0 +1,131 @@
+.tableContainer {
+  position: relative;
+  width: 280px;
+  border-radius: 30px;
+  background: linear-gradient(to bottom, var(--light-blue) 50px, var(--blue) 0);
+  color: var(--white);
+  font-family: var(--font-secondary);
+  line-height: 100%;
+}
+
+.table {
+  width: 100%;
+  font-size: 16px;
+  padding-inline: 20px;
+  padding-top: 11px;
+  padding-bottom: 52px;
+}
+
+.headerRow {
+  width: 240px;
+  height: 27px;
+  font-size: 18px;
+  font-weight: var(--font-weight-bold);
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.sale {
+  margin-left: 5px;
+}
+
+.dataBody {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding-top: 25px;
+}
+
+.dataRow {
+  width: 240px;
+  height: 24px;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.dataCell {
+  width: 40px;
+}
+
+.firstCell {
+  text-align: left;
+}
+
+.lastCell {
+  text-align: right;
+}
+
+.waveSvg {
+  position: absolute;
+  bottom: 0;
+}
+
+@media screen and (min-width: 768px) {
+  .tableContainer {
+    width: 336px;
+    background: linear-gradient(
+      to bottom,
+      var(--light-blue) 60px,
+      var(--blue) 0
+    );
+  }
+
+  .table {
+    padding-bottom: 56px;
+  }
+
+  .headerRow {
+    width: 291px;
+  }
+
+  .dataBody {
+    padding-top: 28px;
+    gap: 12px;
+  }
+
+  .dataRow {
+    width: 296px;
+  }
+
+  .sale {
+    margin-left: 30px;
+  }
+}
+
+@media screen and (min-width: 1280px) {
+  .tableContainer {
+    width: 393px;
+  }
+
+  .table {
+    width: 100%;
+    box-sizing: border-box;
+    padding-inline: 44px 61px;
+    padding-top: 17px;
+    padding-bottom: 179px;
+  }
+
+  .headerRow {
+    width: 291px;
+  }
+
+  .dataBody {
+    width: 274px;
+    padding-top: 36px;
+    gap: 24px;
+    padding-left: 14px;
+  }
+
+  .dataRow {
+    width: 274px;
+  }
+
+  .sale {
+    margin-left: 27px;
+    margin-right: 3px;
+  }
+}

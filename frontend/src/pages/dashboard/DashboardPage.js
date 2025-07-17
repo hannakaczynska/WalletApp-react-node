@@ -1,5 +1,6 @@
 import css from "./dashboard-page.module.css";
 import Navigation from "../../components/navigation/navigation";
+import Current from "../../components/current/current";
 
   // Function to render content based on current route
   // const renderContent = () => {
@@ -18,6 +19,7 @@ const DashBoardPage = () => {
   return (
     <div className={css.dashboardPage}>
       <div className={css.navigation}><Navigation /></div>
+      <div className={css.current}><Current /></div>
             {/* <div className={css.content}>
         {renderContent()}
       </div> */}
