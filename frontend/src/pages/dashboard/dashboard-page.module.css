@@ -11,7 +11,8 @@ margin-top: 60px;
 }
 
 .navigation {
-  padding-top: 12px;
+  padding-block: 12px;
+
 }
 
 .separator {
@@ -43,7 +44,7 @@ margin-top: 60px;
   }
 
   .navigation {
-    padding-top: 0;
+    padding-block: 0;
   }
 
   .ellipseTwo {

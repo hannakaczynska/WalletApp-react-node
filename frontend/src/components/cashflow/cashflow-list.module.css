@@ -1,0 +1,95 @@
+.listContainer {
+  margin-top: 32px;
+}
+
+.list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.item {
+  display: flex;
+  width: 280px;
+  flex-direction: column;
+  background-color: var(--white);
+  border-radius: 10px;
+box-sizing: border-box;
+}
+
+.income {
+  background: linear-gradient(
+    to right,
+    var(--green) 5px,
+    var(--white) 5px
+  );
+}
+
+.expense {
+  background: linear-gradient(
+    to right,
+    var(--red) 5px,
+    var(--white) 5px
+  );
+}
+
+.section {
+  display: flex;
+  flex-direction: row;
+  padding-inline: 20px;
+  padding-block: 12px 8px;
+    justify-content: space-between;
+  font-family: var(--font-secondary);
+  line-height: 100%;
+  border-bottom: 1px solid #dcdcdf;
+}
+
+.name {
+  font-size: 18px;
+  font-weight: var(--font-weight-bold);
+}
+
+.value {
+  font-size: 16px;
+}
+
+.comment {
+    text-align: right;
+}
+
+.buttons {
+        display: flex;
+        flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+  padding-inline: 20px;
+  padding-block: 9px 12px;  
+}
+
+.deleteBtn {
+  background-color: var(--green);
+  color: var(--white);
+  border-radius: 18px;
+  font-family: var(--font-secondary);
+  font-size: 14px;
+  border: none;
+  cursor: pointer;
+}
+
+.editBtn {
+    display: flex;
+    height: 14px;
+    align-items: center;
+  font-family: var(--font-secondary);
+  font-size: 14px;
+  border: none;
+  cursor: pointer;
+  background-color: inherit;
+}
+
+.editIcon {
+    height: 14px;
+    width: 14px;
+    margin-right: 2px;
+    margin-bottom: 1px;
+}

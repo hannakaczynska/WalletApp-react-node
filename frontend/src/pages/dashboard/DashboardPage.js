@@ -1,25 +1,36 @@
 import css from "./dashboard-page.module.css";
-// import { useLocation } from "react-router-dom";
+import { useLocation } from "react-router-dom";
 import MediaQuery from "react-responsive";
 import Navigation from "../../components/navigation/navigation";
 import Current from "../../components/current/current";
 import Balance from "../../components/balance/balance";
+import CashflowList from "../../components/cashflow/cashflow-list";
 
-// Function to render content based on current route
-// const renderContent = () => {
-//   switch (location.pathname) {
-//     case '/home':
-//       return <HomeContent />;
-//     case '/diagram':
-//       return <DiagramContent />;
-//     case '/current':
-//       return <CurrentContent />;
-//     default:
-//       return <HomeContent />; // Default to home content
-//   }
-// };
 const DashBoardPage = () => {
-  // const location = useLocation();
+  const location = useLocation();
+
+  const renderContent = () => {
+    switch (location.pathname) {
+      case "/home":
+        return (
+          <div>
+            <Balance />
+            <CashflowList />
+          </div>
+        );
+      case "/diagram":
+        return <div>empty</div>;
+      case "/current":
+        return <div>empty2</div>;
+      default:
+        return (
+          <div>
+            <Balance />
+            <CashflowList />
+          </div>
+        ); // Default to home content
+    }
+  };
 
   return (
     <div className={css.dashboardPage}>
@@ -48,9 +59,7 @@ const DashBoardPage = () => {
             <img src="/ellipse2.svg" alt="Ellipse" className={css.ellipseTwo} />
             <img src="/ellipse1.svg" alt="Ellipse" className={css.ellipseOne} />
           </MediaQuery>
-          <div className={css.content}>
-        {/* {renderContent()} */}
-      </div>
+          <div className={css.content}>{renderContent()}</div>
         </div>
       </div>
     </div>
