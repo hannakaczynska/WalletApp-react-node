@@ -33,7 +33,8 @@ const Diagram = () => {
 
   return (
     <div className={css.statistics}>
-      <h2 className={css.title}>Statistics</h2>
+        <div>
+        <h2 className={css.title}>Statistics</h2>
       <div className={css.diagram}>
         <div className={css.balance}>
           ₴ <span className={css.amount}>{amount}</span>
@@ -62,6 +63,7 @@ const Diagram = () => {
             </Pie>
           </PieChart>
         </ResponsiveContainer>
+      </div>
       </div>
       <div>
         <div className={css.buttons}>
