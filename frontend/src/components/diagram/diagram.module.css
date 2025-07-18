@@ -198,5 +198,43 @@
 }
 
 @media screen and (min-width: 1280px) {
+.title {
+  margin-top: 32px;
+}
 
+  .diagram {
+    width: 288px;
+    height: 288px;
+  }
+
+    .buttons {
+    gap: 32px;
+    margin-block: 97px 20px;
+  }
+
+    .button {
+    width: 182px;
+    padding-block: 12px 14px;
+    padding-inline: 20px 21px;
+  }
+
+    .list {
+    width: 395px;
+  }
+
+    .listItem {
+    padding-inline: 28px 29px;
+  }
+
+  .listHeader {
+    padding-inline: 28px 29px;
+  }
+
+    .value {
+    width: 80px;
+  }
+
+  .cashflowContainer {
+    padding-inline: 28px 29px;
+  }
 }
