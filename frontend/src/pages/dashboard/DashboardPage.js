@@ -5,6 +5,7 @@ import Navigation from "../../components/navigation/navigation";
 import Current from "../../components/current/current";
 import Balance from "../../components/balance/balance";
 import CashflowList from "../../components/cashflow/cashflow-list";
+import Diagram from "../../components/diagram/diagram";
 
 const DashBoardPage = () => {
   const location = useLocation();
@@ -22,9 +23,9 @@ const DashBoardPage = () => {
           </div>
         );
       case "/diagram":
-        return <div>empty</div>;
+        return <div><Diagram /></div>;
       case "/current":
-        return <div>empty2</div>;
+        return <div className={css.currentContainer}><Current /></div>;
       default:
         return (
           <div>
@@ -32,8 +33,9 @@ const DashBoardPage = () => {
               <Balance />
             </div>
             <CashflowList />
+            <img src="/add.svg" alt="Add" className={css.addIcon} />
           </div>
-        ); // Default to home content
+        );
     }
   };
 
