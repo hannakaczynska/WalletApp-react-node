@@ -2,6 +2,7 @@
   width: 100vw;
   min-height: 100vh;
 margin-top: 60px;
+padding-bottom: 100px;
   background: #FFFFFF66;
 }
 
@@ -17,6 +18,16 @@ margin-top: 60px;
 
 .separator {
   display: none;
+}
+
+.addIcon {
+  height: 62px;
+  width: 62px;
+  bottom: 0;
+  position: fixed;
+  z-index: 9;
+  right: calc(50% - 140px - 12px);
+  cursor: pointer;
 }
 
 @media screen and (min-width: 768px) {
@@ -66,6 +77,11 @@ margin-top: 60px;
   .mobileBalance {
     display: none;
   }
+
+  .addIcon { 
+right: calc(50% - 352px - 4px);
+  bottom: 20px;
+  }
 }
 
 @media screen and (min-width: 1280px) {
@@ -110,5 +126,8 @@ margin-top: 60px;
 
   .content {
     width: 715px;
+  }
+    .addIcon { 
+right: calc(50% - 600px);
   }
 }

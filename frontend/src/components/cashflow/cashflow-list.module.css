@@ -108,9 +108,9 @@
   .tablet {
     display: block;
   }
-.listContainer {
-  margin-top: 20px;
-}
+  .listContainer {
+    margin-top: 20px;
+  }
 
   .header {
     display: block;
@@ -224,9 +224,8 @@
   }
 }
 
-
 @media screen and (min-width: 1280px) {
- .listContainer {
-  margin-top: 46px;
-}
+  .listContainer {
+    margin-top: 46px;
+  }
 }

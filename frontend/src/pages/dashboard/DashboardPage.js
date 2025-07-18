@@ -18,6 +18,7 @@ const DashBoardPage = () => {
               <Balance />
             </div>
             <CashflowList />
+            <img src="/add.svg" alt="Add" className={css.addIcon} />
           </div>
         );
       case "/diagram":
