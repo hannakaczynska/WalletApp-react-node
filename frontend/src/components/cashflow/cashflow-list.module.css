@@ -8,29 +8,25 @@
   gap: 8px;
 }
 
+.tablet {
+  display: none;
+}
+
 .item {
   display: flex;
   width: 280px;
   flex-direction: column;
   background-color: var(--white);
   border-radius: 10px;
-box-sizing: border-box;
+  box-sizing: border-box;
 }
 
 .income {
-  background: linear-gradient(
-    to right,
-    var(--green) 5px,
-    var(--white) 5px
-  );
+  background: linear-gradient(to right, var(--green) 5px, var(--white) 5px);
 }
 
 .expense {
-  background: linear-gradient(
-    to right,
-    var(--red) 5px,
-    var(--white) 5px
-  );
+  background: linear-gradient(to right, var(--red) 5px, var(--white) 5px);
 }
 
 .section {
@@ -38,7 +34,7 @@ box-sizing: border-box;
   flex-direction: row;
   padding-inline: 20px;
   padding-block: 12px 8px;
-    justify-content: space-between;
+  justify-content: space-between;
   font-family: var(--font-secondary);
   line-height: 100%;
   border-bottom: 1px solid #dcdcdf;
@@ -54,16 +50,26 @@ box-sizing: border-box;
 }
 
 .comment {
-    text-align: right;
+  text-align: right;
+}
+
+.income .sum {
+  color: var(--green);
+  font-weight: var(--font-weight-bold);
+}
+
+.expense .sum {
+  color: var(--red);
+  font-weight: var(--font-weight-bold);
 }
 
 .buttons {
-        display: flex;
-        flex-direction: row;
-    align-items: center;
-    justify-content: space-between;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
   padding-inline: 20px;
-  padding-block: 9px 12px;  
+  padding-block: 9px 12px;
 }
 
 .deleteBtn {
@@ -77,9 +83,9 @@ box-sizing: border-box;
 }
 
 .editBtn {
-    display: flex;
-    height: 14px;
-    align-items: center;
+  display: flex;
+  height: 14px;
+  align-items: center;
   font-family: var(--font-secondary);
   font-size: 14px;
   border: none;
@@ -88,8 +94,139 @@ box-sizing: border-box;
 }
 
 .editIcon {
-    height: 14px;
-    width: 14px;
-    margin-right: 2px;
-    margin-bottom: 1px;
+  height: 14px;
+  width: 14px;
+  margin-right: 2px;
+  margin-bottom: 1px;
+}
+
+@media screen and (min-width: 768px) {
+  .mobile {
+    display: none;
+  }
+
+  .tablet {
+    display: block;
+  }
+.listContainer {
+  margin-top: 20px;
+}
+
+  .header {
+    display: block;
+    display: flex;
+    flex-direction: row;
+    padding-block: 16px 15px;
+    padding-inline: 20px 141px;
+    background-color: var(--white);
+    border-radius: 30px;
+    font-family: var(--font-secondary);
+    font-weight: var(--font-weight-bold);
+    font-size: 18px;
+    line-height: 100%;
+  }
+
+  .type {
+    margin-left: 65px;
+    margin-right: 46px;
+  }
+
+  .comment {
+    margin-left: 68px;
+    margin-right: 108px;
+  }
+
+  .tabletItem {
+    width: 704px;
+    min-height: 52px;
+    box-sizing: border-box;
+    padding-inline: 20px 12px;
+    padding-block: 14px 14px;
+    display: flex;
+    flex-direction: row;
+    gap: 40px;
+    justify-content: space-between;
+    align-items: center;
+    font-family: var(--font-secondary);
+    font-weight: var(--font-weight-regular);
+    font-size: 16px;
+    border-top: 1px solid #dcdcdf;
+    box-shadow: 0px 1px 0px 0px #ffffff99;
+  }
+
+  .tabletItem:nth-child(2) {
+    border-top: none;
+  }
+  .tabletItem:last-child {
+    box-shadow: none;
+  }
+
+  .dataContainer {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    width: 543px;
+  }
+
+  .value {
+    min-width: 24px;
+    display: block;
+    padding-top: 4px;
+    box-sizing: border-box;
+  }
+
+  .date {
+    min-width: 56px;
+    max-width: 56px;
+    margin-right: 58px;
+  }
+
+  .typeValue {
+    min-width: 11px;
+    max-width: 11px;
+    margin-right: 63px;
+  }
+
+  .categoryValue {
+    min-width: 120px;
+    max-width: 120px;
+    margin-right: 19px;
+  }
+
+  .commentValue {
+    min-width: 140px;
+    max-width: 140px;
+  }
+
+  .sum {
+    min-width: 72px;
+    max-width: 72px;
+    text-align: right;
+  }
+
+  .tabletIncome .sum {
+    color: var(--green);
+    font-weight: var(--font-weight-bold);
+  }
+
+  .tabletExpense .sum {
+    color: var(--red);
+    font-weight: var(--font-weight-bold);
+  }
+
+  .buttons {
+    padding: 0;
+  }
+
+  .deleteBtn {
+    padding-block: 4px;
+    padding-inline: 12px;
+  }
+}
+
+
+@media screen and (min-width: 1280px) {
+ .listContainer {
+  margin-top: 46px;
+}
 }

@@ -14,7 +14,9 @@ const DashBoardPage = () => {
       case "/home":
         return (
           <div>
-            <Balance />
+            <div className={css.mobileBalance}>
+              <Balance />
+            </div>
             <CashflowList />
           </div>
         );
@@ -25,7 +27,9 @@ const DashBoardPage = () => {
       default:
         return (
           <div>
-            <Balance />
+            <div className={css.mobileBalance}>
+              <Balance />
+            </div>
             <CashflowList />
           </div>
         ); // Default to home content
@@ -59,7 +63,9 @@ const DashBoardPage = () => {
             <img src="/ellipse2.svg" alt="Ellipse" className={css.ellipseTwo} />
             <img src="/ellipse1.svg" alt="Ellipse" className={css.ellipseOne} />
           </MediaQuery>
+          <div className={css.contentContainer}>
           <div className={css.content}>{renderContent()}</div>
+          </div>
         </div>
       </div>
     </div>
