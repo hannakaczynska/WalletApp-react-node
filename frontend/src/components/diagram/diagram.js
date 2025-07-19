@@ -1,5 +1,7 @@
 import css from "./diagram.module.css";
 import { PieChart, Pie, Cell, ResponsiveContainer } from "recharts";
+import { useState } from "react";
+import List from "../list/list";
 
 const data = [
   { name: "Other expenses", value: 610.0 },
@@ -25,11 +27,37 @@ const COLORS = [
   "#FED057",
 ];
 
+const monthOptions = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+const yearOptions = ["2020", "2021", "2022", "2023", "2024", "2025", "2026"];
+
 const Diagram = () => {
   const amount = "24 000.00";
   const income = "27 350.00"
-  const month = "March";
-  const year = "2022";
+
+  const [showMonthList, setShowMonthList] = useState(false);
+  const [showYearList, setShowYearList] = useState(false);
+  const [selectedMonth, setSelectedMonth] = useState("July");
+  const [selectedYear, setSelectedYear] = useState("2025");
+
+  const handleMonthSelect = (month) => {
+    setSelectedMonth(month);
+    setShowMonthList(false);
+  };
+
+    const handleYearSelect = (year) => {
+    setSelectedYear(year);
+    setShowYearList(false);
+  };
+
+    const handleMonthClick = () => {
+    setShowMonthList(!showMonthList);
+    setShowYearList(false); 
+  };
+
+    const handleYearClick = () => {
+    setShowYearList(!showYearList);
+    setShowMonthList(false)
+  };
 
   return (
     <div className={css.statistics}>
@@ -67,8 +95,8 @@ const Diagram = () => {
       </div>
       <div>
         <div className={css.buttons}>
-          <button className={css.button}>
-            {month}
+            <button className={css.button} onClick={handleMonthClick}>
+            {selectedMonth}
             <svg
               className={css.arrow}
               viewBox="0 0 20 11"
@@ -77,9 +105,14 @@ const Diagram = () => {
             >
               <path d="M1 1L10 10L19 1" stroke="black" />
             </svg>
+            {showMonthList && (
+              <div className={css.listContainer}>
+                <List data={monthOptions} onItemClick={handleMonthSelect} />
+              </div>
+            )}
           </button>
-          <button className={css.button}>
-            {year}{" "}
+          <button className={css.button} onClick={handleYearClick}>
+            {selectedYear}
             <svg
               className={css.arrow}
               viewBox="0 0 20 11"
@@ -88,6 +121,11 @@ const Diagram = () => {
             >
               <path d="M1 1L10 10L19 1" stroke="black" />
             </svg>
+            {showYearList && (
+              <div className={css.listContainer}>
+              <List data={yearOptions} onItemClick={handleYearSelect} />
+            </div>
+            )}
           </button>
         </div>
         <ul className={css.list}>
