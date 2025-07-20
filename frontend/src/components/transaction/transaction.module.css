@@ -3,11 +3,15 @@
   top: 0;
   left: 0;
   width: 100%;
-  height: 100%;
+  height: 100vh;
   padding-top: 60px;
   background-color: var(--white);
   overflow-y: auto;
   z-index: 9;
+}
+
+.closeIcon {
+    display: none;
 }
 
 .formWrapper {
@@ -73,11 +77,11 @@
   width: 100%;
 }
 
-.infoContainer{
-    height: 24px;
-    padding-inline: 64px;
-    gap: 11px;
-    margin-bottom: 20px;
+.infoContainer {
+  height: 24px;
+  padding-inline: 64px;
+  gap: 11px;
+  margin-bottom: 20px;
 }
 
 .switchButton {
@@ -120,8 +124,8 @@
 }
 
 .slashIcon {
-    width: 24px;
-    height: 24px;
+  width: 24px;
+  height: 24px;
 }
 
 .form {
@@ -142,9 +146,16 @@
   border-bottom: 1px solid var(--grey-text);
 }
 
+.inputGroupRow {
+  display: flex;
+  flex-direction: column;
+  gap: 40px;
+  width: 100%;
+}
+
 .listContainer {
-    position: absolute;
-    height: 352px;
+  position: absolute;
+  height: 352px;
   width: 100%;
   left: 0;
   top: 36px;
@@ -153,7 +164,7 @@
 
 @media screen and (max-height: 660px) {
   .listContainer {
-height: 150px;
+    height: 150px;
   }
 }
 
@@ -250,4 +261,98 @@ height: 150px;
   background-color: var(--white);
   color: var(--blue);
   border: 1px solid var(--blue);
+}
+
+@media screen and (min-width: 768px) {
+  .modalOverlay {
+    height: 100xh;
+    background: #00000040;
+    padding-top: 0;
+    z-index: 100;
+  }
+
+
+  .formWrapper {
+    position: relative;
+    width: 540px;
+    height: 508px;
+    padding-inline: 66px 73px;
+    padding-block: 40px;
+    box-sizing: border-box;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    border-radius: 20px;
+  }
+
+  .closeIcon {
+    display: block;
+    position: absolute;
+    width: 16px;
+    height: 16px;
+    top: 20px;
+    right: 20px;
+    cursor: pointer;
+  }
+
+.expenseFormWrapper { 
+    height: 603px;
+  }
+
+  .formTitle {
+    font-size: 30px;
+  }
+
+  .switchContainer {
+    padding-inline: 81px 78px;
+  }
+
+  .infoContainer {
+padding-inline: 121px;
+  }
+
+  .form {
+    width: 394px;
+  }
+
+  .inputGroupRow {
+    display: flex;
+    flex-direction: row;
+    gap: 32px;
+    width: 100%;
+  }
+
+  .calendarIcon {
+    right: 14px;
+    bottom: 10px;
+  }
+
+  .input {
+    width: 100%;
+    height: 32px;
+    padding-left: 8px;
+    padding-bottom: 8px;
+    padding-top: 6px;
+    box-sizing: border-box;
+  }
+
+  .amountInput {
+    text-align: center;
+  }
+
+  .commentInput {
+padding-top: 6px;
+box-sizing: border-box;
+  }
+.dateInput {
+    padding-left: 20px;
+}
+
+  .buttonGroup {
+    width: 300px;
+  }
+
+  .listContainer {
+  height: 352px;
+}
 }

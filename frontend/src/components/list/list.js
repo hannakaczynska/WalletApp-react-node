@@ -8,7 +8,7 @@ const List = ({ data, onItemClick, isCategoryList }) => {
     };
 
     return (
-        <ul className={css.list}>
+        <ul className={css.list + (isCategoryList ? ` ${css.categoryList}` : '')}>
             {data.map((item, index) => (
                 <li 
                     key={index} 

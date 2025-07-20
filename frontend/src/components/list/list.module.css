@@ -23,8 +23,13 @@
   justify-content: flex-start;
 }
 
+.categoryList {
+  padding-top: 0;
+}
+
 .categoryItem {
     height: 44px;
+    box-sizing: border-box;
     font-size: 18px;
 }
 

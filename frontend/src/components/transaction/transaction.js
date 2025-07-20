@@ -56,6 +56,7 @@ const TransactionForm = ({ onItemClick, isEditing }) => {
           isIncome ? "" : css.expenseFormWrapper
         }`}
       >
+        <img src="/close.svg" alt="Close" className={css.closeIcon} onClick={handleModalClose} />
         {isEditing ? (
           <h2 className={css.formTitle}>Edit transaction</h2>
         ) : (
@@ -106,6 +107,7 @@ const TransactionForm = ({ onItemClick, isEditing }) => {
               )}
             </div>
           )}
+            <div className={css.inputGroupRow}>
           <div className={css.inputGroup}>
             <input
               type="number"
@@ -121,7 +123,7 @@ const TransactionForm = ({ onItemClick, isEditing }) => {
               type="text"
               id="date"
               name="date"
-              className={css.input}
+              className={`${css.input} ${css.dateInput}`}
               value={date}
               disabled
               required
@@ -131,6 +133,7 @@ const TransactionForm = ({ onItemClick, isEditing }) => {
               alt="Calendar icon"
               className={css.calendarIcon}
             />
+          </div>
           </div>
           <div className={css.inputGroup}>
             <textarea
