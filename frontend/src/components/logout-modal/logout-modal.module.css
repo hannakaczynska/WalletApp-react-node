@@ -1,0 +1,89 @@
+.modalOverlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.4);
+  z-index: 1000;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.modalWrapper {
+  position: relative;
+  background-color: var(--white);
+  width: 280px;
+  box-sizing: border-box;
+  padding: 20px 20px;
+  border-radius: 20px;
+  text-align: center;
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.25);
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.closeIcon {
+  display: block;
+  position: absolute;
+  width: 12px;
+  height: 12px;
+  top: 15px;
+  right: 15px;
+  cursor: pointer;
+}
+
+.modalTitle {
+  font-family: var(--font-primary);
+  font-size: 18px;
+}
+
+.buttonGroup {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+}
+
+.confirmButton,
+.cancelButton {
+  width: 100px;
+  height: 40px;
+  border-radius: 10px;
+  font-family: var(--font-secondary);
+  font-size: 16px;
+  font-weight: var(--font-weight-regular);
+  text-transform: uppercase;
+  cursor: pointer;
+}
+
+.confirmButton {
+  background-color: var(--green);
+  color: var(--white);
+  border: none;
+}
+
+.cancelButton {
+  background-color: var(--white);
+  color: var(--blue);
+  border: 1px solid var(--blue);
+}
+
+@media screen and (min-width: 768px) {
+  .modalWrapper {
+    width: 400px;
+    padding: 40px 40px;
+  }
+
+  .closeIcon {
+    width: 16px;
+    height: 16px;
+    top: 20px;
+    right: 20px;
+  }
+
+  .modalTitle {
+    font-size: 24px;
+  }
+}
