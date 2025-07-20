@@ -1,6 +1,6 @@
 import css from './list.module.css';
 
-const List = ({ data, onItemClick }) => {
+const List = ({ data, onItemClick, isCategoryList }) => {
     const handleItemClick = (item) => {
         if (onItemClick) {
             onItemClick(item);
@@ -12,7 +12,7 @@ const List = ({ data, onItemClick }) => {
             {data.map((item, index) => (
                 <li 
                     key={index} 
-                    className={css.listItem}
+                    className={css.listItem + (isCategoryList ? ` ${css.categoryItem}` : '')}
                     onClick={() => handleItemClick(item)}
                 >
                     {item}

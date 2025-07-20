@@ -1,14 +1,18 @@
 import css from "./dashboard-page.module.css";
 import { useLocation } from "react-router-dom";
+import { useState } from "react";
 import MediaQuery from "react-responsive";
 import Navigation from "../../components/navigation/navigation";
 import Current from "../../components/current/current";
 import Balance from "../../components/balance/balance";
 import CashflowList from "../../components/cashflow/cashflow-list";
 import Diagram from "../../components/diagram/diagram";
+import TransactionForm from "../../components/transaction/transaction";
 
 const DashBoardPage = () => {
   const location = useLocation();
+
+  const [showAddTransaction, setShowAddTransaction] = useState(false);
 
   const renderContent = () => {
     switch (location.pathname) {
@@ -19,13 +23,28 @@ const DashBoardPage = () => {
               <Balance />
             </div>
             <CashflowList />
-            <img src="/add.svg" alt="Add" className={css.addIcon} />
+            <img src="/add.svg" alt="Add" className={css.addIcon} onClick={() => setShowAddTransaction(true)}/>
+            {showAddTransaction && (
+              <div className={css.transactionForm}>
+                <TransactionForm
+                  onItemClick={() => setShowAddTransaction(false)}
+                />
+              </div>
+            )}
           </div>
         );
       case "/diagram":
-        return <div><Diagram /></div>;
+        return (
+          <div>
+            <Diagram />
+          </div>
+        );
       case "/current":
-        return <div className={css.currentContainer}><Current /></div>;
+        return (
+          <div className={css.currentContainer}>
+            <Current />
+          </div>
+        );
       default:
         return (
           <div>
@@ -33,7 +52,19 @@ const DashBoardPage = () => {
               <Balance />
             </div>
             <CashflowList />
-            <img src="/add.svg" alt="Add" className={css.addIcon} />
+            <img
+              src="/add.svg"
+              alt="Add"
+              className={css.addIcon}
+              onClick={() => setShowAddTransaction(true)}
+            />
+            {showAddTransaction && (
+              <div className={css.transactionForm}>
+                <TransactionForm
+                  onItemClick={() => setShowAddTransaction(false)}
+                />
+              </div>
+            )}
           </div>
         );
     }
@@ -67,7 +98,7 @@ const DashBoardPage = () => {
             <img src="/ellipse1.svg" alt="Ellipse" className={css.ellipseOne} />
           </MediaQuery>
           <div className={css.contentContainer}>
-          <div className={css.content}>{renderContent()}</div>
+            <div className={css.content}>{renderContent()}</div>
           </div>
         </div>
       </div>

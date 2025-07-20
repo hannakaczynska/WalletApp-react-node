@@ -23,7 +23,17 @@
   justify-content: flex-start;
 }
 
+.categoryItem {
+    height: 44px;
+    font-size: 18px;
+}
+
 .listItem:hover {
   background-color: var(--white);
   cursor: pointer;
+}
+
+.categoryItem:hover {
+  color: var(--red);
+  font-weight: var(--font-weight-bold);
 }

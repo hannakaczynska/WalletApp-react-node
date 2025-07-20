@@ -1,0 +1,253 @@
+.modalOverlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  padding-top: 60px;
+  background-color: var(--white);
+  overflow-y: auto;
+  z-index: 9;
+}
+
+.formWrapper {
+  width: 280px;
+  height: 600px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 40px;
+  position: absolute;
+  background-color: var(--white);
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  overflow-y: auto;
+  z-index: 10;
+}
+
+.expenseFormWrapper {
+  height: 672px;
+}
+
+@media screen and (max-height: 660px) {
+  .formWrapper {
+    left: 50%;
+    top: 0;
+    margin-top: 60px;
+    transform: translateX(-50%);
+    padding-bottom: 60px;
+  }
+}
+
+@media screen and (max-height: 740px) {
+  .expenseFormWrapper {
+    left: 50%;
+    top: 0;
+    margin-top: 60px;
+    transform: translateX(-50%);
+    padding-bottom: 60px;
+  }
+}
+
+.formTitle {
+  font-family: var(--font-primary);
+  font-weight: var(--font-weight-regular);
+  font-size: 24px;
+  line-height: 100%;
+  text-align: center;
+  font-family: Poppins;
+  margin-block: 0;
+}
+
+.switchContainer {
+  height: 44px;
+  display: flex;
+  flex-direction: row;
+  gap: 20px;
+  padding-inline: 23px 19px;
+  box-sizing: border-box;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+}
+
+.infoContainer{
+    height: 24px;
+    padding-inline: 64px;
+    gap: 11px;
+    margin-bottom: 20px;
+}
+
+.switchButton {
+  position: relative;
+  width: 80px;
+  height: 40px;
+  border-radius: 30px;
+  border: 1px solid var(--grey-text);
+  cursor: pointer;
+}
+
+.text,
+.income,
+.expense {
+  font-family: var(--font-secondary);
+  font-weight: var(--font-weight-bold);
+  font-size: 16px;
+  line-height: 100%;
+  color: var(--grey-text);
+}
+
+.income {
+  color: var(--green);
+}
+
+.expense {
+  color: var(--red);
+}
+
+.plusIcon {
+  position: absolute;
+  left: -20px;
+  top: -10px;
+}
+
+.minusIcon {
+  position: absolute;
+  right: -20px;
+  top: -10px;
+}
+
+.slashIcon {
+    width: 24px;
+    height: 24px;
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  gap: 40px;
+  width: 280px;
+}
+
+.inputGroup {
+  position: relative;
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  gap: 20px;
+  border-bottom: 1px solid var(--grey-text);
+}
+
+.listContainer {
+    position: absolute;
+    height: 352px;
+  width: 100%;
+  left: 0;
+  top: 36px;
+  z-index: 5;
+}
+
+@media screen and (max-height: 660px) {
+  .listContainer {
+height: 150px;
+  }
+}
+
+.calendarIcon {
+  position: absolute;
+  right: 19px;
+  bottom: 8px;
+  width: 18px;
+  height: 20px;
+}
+
+.arrowIcon {
+  position: absolute;
+  width: 18px;
+  height: 9px;
+  right: 20px;
+  bottom: 15px;
+}
+
+.input {
+  width: 100%;
+  height: 32px;
+  border: none;
+  padding-left: 20px;
+  font-family: var(--font-secondary);
+  font-weight: var(--font-weight-regular);
+  font-size: 18px;
+  line-height: 100%;
+  outline: none;
+}
+
+.amountInput {
+  font-weight: var(--font-weight-bold);
+}
+
+.commentInput {
+  height: 84px;
+  vertical-align: top;
+  overflow: hidden;
+}
+
+.nameInput {
+  padding-left: 37px;
+}
+
+.input::placeholder {
+  color: var(--grey-text);
+  font-family: var(--font-secondary);
+  font-weight: var(--font-weight-regular);
+  font-size: 18px;
+  line-height: 100%;
+}
+
+.input:disabled {
+  background-color: inherit;
+  cursor: not-allowed;
+}
+
+.amountInput::placeholder {
+  font-weight: var(--font-weight-bold);
+}
+
+.buttonGroup {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  width: 100%;
+}
+
+.addButton,
+.cancelButton,
+.saveButton {
+  width: 100%;
+  height: 50px;
+  border-radius: 20px;
+  font-family: var(--font-secondary);
+  font-weight: var(--font-weight-regular);
+  font-size: 18px;
+  line-height: 100%;
+  letter-spacing: 0.1em;
+  text-align: center;
+  text-transform: uppercase;
+  cursor: pointer;
+}
+
+.addButton,
+.saveButton {
+  background-color: var(--green);
+  color: var(--white);
+  border: none;
+}
+
+.cancelButton {
+  background-color: var(--white);
+  color: var(--blue);
+  border: 1px solid var(--blue);
+}

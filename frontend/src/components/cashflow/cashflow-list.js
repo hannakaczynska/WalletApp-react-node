@@ -1,4 +1,6 @@
 import css from "./cashflow-list.module.css";
+import TransactionForm from "../transaction/transaction";
+import { useState } from "react";
 
 const cashflowData = [
   {
@@ -84,6 +86,8 @@ const cashflowData = [
 ];
 
 const CashflowList = () => {
+  const [showEditTransaction, setShowEditTransaction] = useState(false);
+
   return (
     <div className={css.listContainer}>
       <ul className={`${css.list} ${css.mobile}`}>
@@ -117,7 +121,10 @@ const CashflowList = () => {
             </div>
             <div className={css.buttons}>
               <button className={css.deleteBtn}>Delete</button>
-              <button className={css.editBtn}>
+              <button
+                className={css.editBtn}
+                onClick={() => setShowEditTransaction(true)}
+              >
                 <img src="/edit.svg" alt="Edit" className={css.editIcon} />
                 Edit
               </button>
@@ -142,8 +149,12 @@ const CashflowList = () => {
           >
             <div className={css.dataContainer}>
               <span className={`${css.value} ${css.date}`}>{item.date}</span>
-              <span className={`${css.value} ${css.typeValue}`}>{item.type === "income" ? "+" : "-"}</span>
-              <span className={`${css.value} ${css.categoryValue}`}>{item.category}</span>
+              <span className={`${css.value} ${css.typeValue}`}>
+                {item.type === "income" ? "+" : "-"}
+              </span>
+              <span className={`${css.value} ${css.categoryValue}`}>
+                {item.category}
+              </span>
               <span className={`${css.value} ${css.commentValue}`}>
                 {item.comment}
               </span>
@@ -154,7 +165,7 @@ const CashflowList = () => {
               </span>
             </div>
             <div className={css.buttons}>
-              <button className={css.editBtn}>
+              <button className={css.editBtn} onClick={() => setShowEditTransaction(true)}>
                 <img src="/edit.svg" alt="Edit" className={css.editIcon} />
               </button>
               <button className={css.deleteBtn}>Delete</button>
@@ -162,6 +173,11 @@ const CashflowList = () => {
           </li>
         ))}
       </ul>
+      {showEditTransaction && (
+        <div className={css.transactionForm}>
+          <TransactionForm onItemClick={() => setShowEditTransaction(false)} isEditing={true} />
+        </div>
+      )}
     </div>
   );
 };
