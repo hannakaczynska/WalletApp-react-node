@@ -1,8 +1,14 @@
 //Income and Expense in Edit transition - color change
 import css from "./transaction.module.css";
+import calendarCss from "./calendar.module.css";
+// import axios from "axios";
 import { useState, useEffect } from "react";
 import ReactDOM from "react-dom";
 import List from "../list/list";
+import Calendar from "react-calendar";
+import "react-calendar/dist/Calendar.css";
+
+console.log(Calendar);
 
 const categoryOptions = [
   "Main expenses",
@@ -19,18 +25,13 @@ const categoryOptions = [
 
 const TransactionForm = ({ onItemClick, isEditing }) => {
   const [isIncome, setIsIncome] = useState(true);
-  const [date, setDate] = useState("");
+  const [date, setDate] = useState(new Date());
+  const [inputDate, setInputDate] = useState("");
+  const [showCalendar, setShowCalendar] = useState(false);
   const [showCategoryList, setShowCategoryList] = useState(false);
   const [selectedCategory, setSelectedCategory] = useState("");
-
-  useEffect(() => {
-    const today = new Date();
-    const day = String(today.getDate()).padStart(2, "0");
-    const month = String(today.getMonth() + 1).padStart(2, "0");
-    const year = today.getFullYear();
-    const formattedDate = `${day}.${month}.${year}`;
-    setDate(formattedDate);
-  }, []);
+  const [amount, setAmount] = useState(null);
+  const [comment, setComment] = useState("");
 
   const handleModalClose = () => {
     onItemClick();
@@ -38,6 +39,10 @@ const TransactionForm = ({ onItemClick, isEditing }) => {
 
   const handleSwitchButton = () => {
     setIsIncome(!isIncome);
+  };
+
+  const toggleCalendar = () => {
+    setShowCalendar(!showCalendar);
   };
 
   const handleCategoryClick = () => {
@@ -49,6 +54,23 @@ const TransactionForm = ({ onItemClick, isEditing }) => {
     setShowCategoryList(false);
   };
 
+  const handleAmountChange = (e) => {
+    const value = Number(parseFloat(e.target.value).toFixed(2));
+    setAmount(value);
+  };
+
+  useEffect(() => {
+    const handleInputDate = () => {
+      const day = String(date.getDate()).padStart(2, "0");
+      const month = String(date.getMonth() + 1).padStart(2, "0");
+      const year = date.getFullYear();
+      const formattedDate = `${day}.${month}.${year}`;
+      setInputDate(formattedDate);
+    };
+
+    handleInputDate();
+  }, [date]);
+
   const modalContent = (
     <div className={css.modalOverlay}>
       <div
@@ -56,7 +78,12 @@ const TransactionForm = ({ onItemClick, isEditing }) => {
           isIncome ? "" : css.expenseFormWrapper
         }`}
       >
-        <img src="/close.svg" alt="Close" className={css.closeIcon} onClick={handleModalClose} />
+        <img
+          src="/close.svg"
+          alt="Close"
+          className={css.closeIcon}
+          onClick={handleModalClose}
+        />
         {isEditing ? (
           <h2 className={css.formTitle}>Edit transaction</h2>
         ) : (
@@ -107,33 +134,36 @@ const TransactionForm = ({ onItemClick, isEditing }) => {
               )}
             </div>
           )}
-            <div className={css.inputGroupRow}>
-          <div className={css.inputGroup}>
-            <input
-              type="number"
-              id="amount"
-              name="amount"
-              className={`${css.input} ${css.amountInput}`}
-              placeholder="0.00"
-              required
-            />
-          </div>
-          <div className={css.inputGroup}>
-            <input
-              type="text"
-              id="date"
-              name="date"
-              className={`${css.input} ${css.dateInput}`}
-              value={date}
-              disabled
-              required
-            />
-            <img
-              src="/calendar.svg"
-              alt="Calendar icon"
-              className={css.calendarIcon}
-            />
-          </div>
+          <div className={css.inputGroupRow}>
+            <div className={css.inputGroup}>
+              <input
+                type="number"
+                id="amount"
+                name="amount"
+                className={`${css.input} ${css.amountInput}`}
+                placeholder="0.00"
+                value={amount}
+                onChange={handleAmountChange}
+                required
+              />
+            </div>
+            <div className={css.inputGroup}>
+              <input
+                type="text"
+                id="date"
+                name="date"
+                className={`${css.input} ${css.dateInput}`}
+                value={inputDate}
+                disabled
+                required
+              />
+              <img
+                src="/calendar.svg"
+                alt="Calendar icon"
+                className={css.calendarIcon}
+                onClick={toggleCalendar}
+              />
+            </div>
           </div>
           <div className={css.inputGroup}>
             <textarea
@@ -141,6 +171,8 @@ const TransactionForm = ({ onItemClick, isEditing }) => {
               name="comment"
               className={`${css.input} ${css.commentInput}`}
               placeholder="Comment"
+              value={comment}
+              onChange={(e) => setComment(e.target.value)}
               required
             ></textarea>
           </div>
@@ -171,6 +203,19 @@ const TransactionForm = ({ onItemClick, isEditing }) => {
             </button>
           </div>
         </form>
+        {showCalendar && (
+          <div className={calendarCss.calendarContainer}>
+            <Calendar
+            locale="en-US"
+              onChange={(selectedDate) => {
+                setDate(selectedDate);
+                setShowCalendar(false);
+              }}
+              value={date}
+              className={calendarCss.reactCalendar}
+            />
+          </div>
+        )}
       </div>
     </div>
   );
