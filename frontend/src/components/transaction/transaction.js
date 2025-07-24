@@ -1,14 +1,14 @@
 //Income and Expense in Edit transition - color change
 import css from "./transaction.module.css";
 import calendarCss from "./calendar.module.css";
-// import axios from "axios";
+import axios from "axios";
 import { useState, useEffect } from "react";
 import ReactDOM from "react-dom";
 import List from "../list/list";
 import Calendar from "react-calendar";
 import "react-calendar/dist/Calendar.css";
 
-console.log(Calendar);
+console.log("axios", axios);
 
 const categoryOptions = [
   "Main expenses",
@@ -30,7 +30,7 @@ const TransactionForm = ({ onItemClick, isEditing }) => {
   const [showCalendar, setShowCalendar] = useState(false);
   const [showCategoryList, setShowCategoryList] = useState(false);
   const [selectedCategory, setSelectedCategory] = useState("");
-  const [amount, setAmount] = useState(null);
+  const [amount, setAmount] = useState(undefined);
   const [comment, setComment] = useState("");
 
   const handleModalClose = () => {
@@ -70,6 +70,36 @@ const TransactionForm = ({ onItemClick, isEditing }) => {
 
     handleInputDate();
   }, [date]);
+
+  
+    const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    const transactionData = {
+      type: isIncome ? "income" : "expense",
+      category: selectedCategory,
+      amount,
+      date,
+      comment,
+    };
+
+    try {
+      const response = await axios.post("http://localhost:3001/home", transactionData, {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+
+      if (response.status === 201) {
+        console.log("Transaction added:", response.data);
+        handleModalClose();
+      } else {
+        console.error("Failed to add transaction:", response.statusText);
+      }
+    } catch (error) {
+      console.error("Error:", error);
+    }
+  };
 
   const modalContent = (
     <div className={css.modalOverlay}>
@@ -181,7 +211,7 @@ const TransactionForm = ({ onItemClick, isEditing }) => {
               <button
                 type="submit"
                 className={css.saveButton}
-                onClick={handleModalClose}
+                onClick={handleSubmit}
               >
                 save
               </button>
@@ -189,7 +219,7 @@ const TransactionForm = ({ onItemClick, isEditing }) => {
               <button
                 type="submit"
                 className={css.addButton}
-                onClick={handleModalClose}
+                onClick={handleSubmit}
               >
                 add
               </button>
