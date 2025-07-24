@@ -1,6 +1,7 @@
 const {
   createTransaction,
   updateTransaction,
+  getTransactions,
 } = require("../models/schemas/transactionSchema");
 
 const addTransaction = async (req, res, next) => {
@@ -31,11 +32,27 @@ const editTransaction = async (req, res) => {
     });
   } catch (error) {
     res.status(500).json({ message: "Error updating transaction", error });
+    next(error);
+  }
+};
+
+const getAllTransactions = async (req, res, next) => {
+  try {
+    const transactions = await getTransactions();
+    res.status(200).json({
+      status: "success",
+      code: 200,
+      data: { transactions },
+    });
+  } catch (error) {
+    res.status(500).json({ message: "Error fetching transactions", error });
+    next(error);
   }
 };
 
 module.exports = {
   addTransaction,
   editTransaction,
+  getAllTransactions,
 };
 

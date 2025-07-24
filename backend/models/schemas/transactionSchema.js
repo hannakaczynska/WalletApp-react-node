@@ -14,7 +14,13 @@ const updateTransaction = async (id, body) => {
   return true;
 }
 
+const getTransactions = async () => {
+  const transactions = await Transaction.find();
+  return transactions;
+}
+
 module.exports = {
   createTransaction,
   updateTransaction,
-}
+  getTransactions,
+};
