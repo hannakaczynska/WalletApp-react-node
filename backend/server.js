@@ -1,25 +1,23 @@
-const express = require("express");
-const app = express();
-const PORT = 3001;
+const app = require('./app');
 
-app.use(express.json());
+const mongoose = require('mongoose');
 
-app.use((req, res, next) => {
-  res.header('Access-Control-Allow-Origin', 'http://localhost:3000');
-  res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE');
-  res.header('Access-Control-Allow-Headers', 'Content-Type');
-  next();
-});
+const PORT = process.env.PORT;
+const uriDb = process.env.MONGODB_URI;
 
+const connection = mongoose.connect(uriDb);
 
-app.get("/", (req, res) => {
-  res.send("💥 Backend działa!");
-});
+const startServer = async () => {
+  try {
+    await connection;
+    console.log(`Database connection successful`);
+    app.listen(PORT, () => {
+      console.log(`Server running on port: ${PORT}`);
+    });
+  } catch (error) {
+    console.log(`Server not running. Error message: ${error.message}`);
+    process.exit(1);
+  }
+}
 
-app.get("/api/test", (req, res) => {
-  res.json({ message: "It is working 🎉" });
-});
-
-app.listen(PORT, () => {
-  console.log(`🚀 Serwer is listening: ${PORT}`);
-});
+startServer();
