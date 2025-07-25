@@ -7,6 +7,8 @@ import ReactDOM from "react-dom";
 import List from "../list/list";
 import Calendar from "react-calendar";
 import "react-calendar/dist/Calendar.css";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
 
@@ -62,22 +64,22 @@ const TransactionForm = ({ onItemClick, isEditing }) => {
     setShowCategoryList(false);
   };
 
- const handleAmountBlur = (value, setFieldValue) => {
-  const parsedValue = parseFloat(value);
-  if (!isNaN(parsedValue)) {
-    const formattedValue = Number(parsedValue.toFixed(2));
-    setFieldValue("amount", formattedValue); 
-  } else {
-    setFieldValue("amount", ""); 
-  }
-};
+  const handleAmountBlur = (value, setFieldValue) => {
+    const parsedValue = parseFloat(value);
+    if (!isNaN(parsedValue)) {
+      const formattedValue = Number(parsedValue.toFixed(2));
+      setFieldValue("amount", formattedValue);
+    } else {
+      setFieldValue("amount", "");
+    }
+  };
 
   const handleSubmit = async (values, { setSubmitting }) => {
     const transactionData = {
-      type: isIncome ? "income" : "expense", 
+      type: isIncome ? "income" : "expense",
       ...values,
     };
-console.log('HELLO!')
+    console.log("HELLO!");
     try {
       const response = await axios.post(
         "http://localhost:3001/home",
@@ -90,29 +92,39 @@ console.log('HELLO!')
       );
 
       if (response.status === 201) {
-        console.log("Transaction added:", response.data);
-        handleModalClose();
+        toast.success(
+          isEditing
+            ? "Transaction updated successfully!"
+            : "Transaction added successfully!"
+        );
+        setTimeout(() => {
+          handleModalClose();
+        }, 3000);
       } else {
-        console.error("Failed to add transaction:", response.statusText);
+        toast.error(
+          isEditing
+            ? "Failed to update transaction."
+            : "Failed to add transaction."
+        );
       }
     } catch (error) {
-      console.error("Error:", error);
+      toast.error("An error occurred while adding the transaction.");
     } finally {
       setSubmitting(false);
     }
   };
 
   const getValidationSchema = (isIncome) =>
-  Yup.object({
-    category: isIncome
-      ? Yup.string().notRequired() 
-      : Yup.string().required("Category is required for expenses"), 
-    amount: Yup.number()
-      .min(0.01, "Amount must be greater than 0")
-      .required("Amount is required"),
-    date: Yup.date().required("Date is required").typeError("Invalid date"),
-    comment: Yup.string().max(200, "Comment must be 200 characters or less"),
-  });
+    Yup.object({
+      category: isIncome
+        ? Yup.string().notRequired()
+        : Yup.string().required("Category is required for expenses"),
+      amount: Yup.number()
+        .min(0.01, "Amount must be greater than 0")
+        .required("Amount is required"),
+      date: Yup.date().required("Date is required").typeError("Invalid date"),
+      comment: Yup.string().max(200, "Comment must be 200 characters or less"),
+    });
 
   return ReactDOM.createPortal(
     <div className={css.modalOverlay}>
@@ -121,6 +133,18 @@ console.log('HELLO!')
           isIncome ? "" : css.expenseFormWrapper
         }`}
       >
+        <ToastContainer
+          position="top-right"
+          autoClose={3000}
+          hideProgressBar={false}
+          newestOnTop={false}
+          closeOnClick
+          rtl={false}
+          pauseOnFocusLoss
+          draggable
+          pauseOnHover
+          theme="light"
+        />
         <img
           src="/close.svg"
           alt="Close"
@@ -152,7 +176,7 @@ console.log('HELLO!')
             date: new Date(),
             comment: "",
           }}
-          validationSchema={getValidationSchema(isIncome)} // Pass isIncome dynamically
+          validationSchema={getValidationSchema(isIncome)}
           onSubmit={handleSubmit}
         >
           {({ setFieldValue, values }) => (
@@ -166,7 +190,7 @@ console.log('HELLO!')
                     className={`${css.input} ${css.categoryInput}`}
                     placeholder="Select a category"
                     value={values.category}
-                    onClick={toggleCategoryList} // Show category list on click
+                    onClick={toggleCategoryList}
                     readOnly
                   />
                   <img
@@ -205,7 +229,9 @@ console.log('HELLO!')
                     step="0.01"
                     min={0}
                     value={values.amount}
-                    onBlur={(e) => handleAmountBlur(e.target.value, setFieldValue)}
+                    onBlur={(e) =>
+                      handleAmountBlur(e.target.value, setFieldValue)
+                    }
                   />
                   <ErrorMessage
                     name="amount"
@@ -229,20 +255,6 @@ console.log('HELLO!')
                     className={css.calendarIcon}
                     onClick={toggleCalendar}
                   />
-                  {/* {showCalendar && (
-                    <div className={calendarCss.calendarContainer}>
-                      <Calendar
-                        locale="en-US"
-                        onChange={(selectedDate) => {
-                          setFieldValue("date", selectedDate);
-                          setShowCalendar(false);
-                          handleInputDate(selectedDate);
-                        }}
-                        value={values.date}
-                        className={calendarCss.reactCalendar}
-                      />
-                    </div>
-                  )} */}
                 </div>
               </div>
 
@@ -274,20 +286,20 @@ console.log('HELLO!')
                   Cancel
                 </button>
               </div>
-                                {showCalendar && (
-                    <div className={calendarCss.calendarContainer}>
-                      <Calendar
-                        locale="en-US"
-                        onChange={(selectedDate) => {
-                          setFieldValue("date", selectedDate);
-                          setShowCalendar(false);
-                          handleInputDate(selectedDate);
-                        }}
-                        value={values.date}
-                        className={calendarCss.reactCalendar}
-                      />
-                    </div>
-                  )}
+              {showCalendar && (
+                <div className={calendarCss.calendarContainer}>
+                  <Calendar
+                    locale="en-US"
+                    onChange={(selectedDate) => {
+                      setFieldValue("date", selectedDate);
+                      setShowCalendar(false);
+                      handleInputDate(selectedDate);
+                    }}
+                    value={values.date}
+                    className={calendarCss.reactCalendar}
+                  />
+                </div>
+              )}
             </Form>
           )}
         </Formik>
@@ -298,5 +310,3 @@ console.log('HELLO!')
 };
 
 export default TransactionForm;
-
-

@@ -35,6 +35,22 @@
   height: 672px;
 }
 
+:global(.Toastify__toast) {
+  max-width: 90%; 
+}
+
+:global(.Toastify__toast--success .Toastify__progress-bar) {
+  background-color: var(--green); 
+}
+
+:global(.Toastify__toast--info .Toastify__progress-bar) {
+  background-color: var(--blue);
+}
+
+:global(.Toastify__toast--error .Toastify__progress-bar) {
+  background-color: var(--red);
+}
+
 @media screen and (max-height: 660px) {
   .formWrapper {
     left: 50%;
