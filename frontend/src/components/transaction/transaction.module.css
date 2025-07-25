@@ -204,6 +204,7 @@
   height: 84px;
   vertical-align: top;
   overflow: hidden;
+  resize: none;
 }
 
 .nameInput {

@@ -8,8 +8,6 @@ import List from "../list/list";
 import Calendar from "react-calendar";
 import "react-calendar/dist/Calendar.css";
 
-console.log("axios", axios);
-
 const categoryOptions = [
   "Main expenses",
   "Products",
@@ -30,7 +28,7 @@ const TransactionForm = ({ onItemClick, isEditing }) => {
   const [showCalendar, setShowCalendar] = useState(false);
   const [showCategoryList, setShowCategoryList] = useState(false);
   const [selectedCategory, setSelectedCategory] = useState("");
-  const [amount, setAmount] = useState(undefined);
+  const [amount, setAmount] = useState("");
   const [comment, setComment] = useState("");
 
   const handleModalClose = () => {
@@ -55,8 +53,13 @@ const TransactionForm = ({ onItemClick, isEditing }) => {
   };
 
   const handleAmountChange = (e) => {
-    const value = Number(parseFloat(e.target.value).toFixed(2));
-    setAmount(value);
+    const parsedValue = parseFloat(e.target.value);
+    if (isNaN(parsedValue)) {
+      setAmount(""); 
+      return;
+    }
+    const formattedValue = Number(parsedValue.toFixed(2));
+    setAmount(formattedValue); 
   };
 
   useEffect(() => {
@@ -71,7 +74,7 @@ const TransactionForm = ({ onItemClick, isEditing }) => {
     handleInputDate();
   }, [date]);
 
-  
+ 
     const handleSubmit = async (e) => {
     e.preventDefault();
 
@@ -172,6 +175,8 @@ const TransactionForm = ({ onItemClick, isEditing }) => {
                 name="amount"
                 className={`${css.input} ${css.amountInput}`}
                 placeholder="0.00"
+                step="0.01"
+                min={0}
                 value={amount}
                 onChange={handleAmountChange}
                 required
@@ -203,7 +208,6 @@ const TransactionForm = ({ onItemClick, isEditing }) => {
               placeholder="Comment"
               value={comment}
               onChange={(e) => setComment(e.target.value)}
-              required
             ></textarea>
           </div>
           <div className={css.buttonGroup}>

@@ -5,7 +5,7 @@ const transactionSchema = {
   category: { type: String, required: false },
   amount: { type: Number, required: true },
   date: { type: Date, required: true },
-  comment: { type: String, required: true },
+  comment: { type: String, required: false },
 //   userId: { type: Schema.Types.ObjectId, ref: "User", required: true },
 }
 
