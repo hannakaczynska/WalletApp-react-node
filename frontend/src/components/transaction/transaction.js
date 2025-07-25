@@ -7,6 +7,8 @@ import ReactDOM from "react-dom";
 import List from "../list/list";
 import Calendar from "react-calendar";
 import "react-calendar/dist/Calendar.css";
+import { Formik, Form, Field, ErrorMessage } from "formik";
+import * as Yup from "yup";
 
 const categoryOptions = [
   "Main expenses",
@@ -23,13 +25,21 @@ const categoryOptions = [
 
 const TransactionForm = ({ onItemClick, isEditing }) => {
   const [isIncome, setIsIncome] = useState(true);
-  const [date, setDate] = useState(new Date());
-  const [inputDate, setInputDate] = useState("");
   const [showCalendar, setShowCalendar] = useState(false);
   const [showCategoryList, setShowCategoryList] = useState(false);
-  const [selectedCategory, setSelectedCategory] = useState("");
-  const [amount, setAmount] = useState("");
-  const [comment, setComment] = useState("");
+  const [inputDate, setInputDate] = useState("");
+
+  const handleInputDate = (date) => {
+    const day = String(date.getDate()).padStart(2, "0");
+    const month = String(date.getMonth() + 1).padStart(2, "0");
+    const year = date.getFullYear();
+    const formattedDate = `${day}.${month}.${year}`;
+    setInputDate(formattedDate);
+  };
+
+  useEffect(() => {
+    handleInputDate(new Date());
+  }, []);
 
   const handleModalClose = () => {
     onItemClick();
@@ -43,55 +53,41 @@ const TransactionForm = ({ onItemClick, isEditing }) => {
     setShowCalendar(!showCalendar);
   };
 
-  const handleCategoryClick = () => {
+  const toggleCategoryList = () => {
     setShowCategoryList(!showCategoryList);
   };
 
-  const handleCategorySelect = (category) => {
-    setSelectedCategory(category);
+  const handleCategorySelect = (category, setFieldValue) => {
+    setFieldValue("category", category);
     setShowCategoryList(false);
   };
 
-  const handleAmountChange = (e) => {
-    const parsedValue = parseFloat(e.target.value);
-    if (isNaN(parsedValue)) {
-      setAmount(""); 
-      return;
-    }
+ const handleAmountBlur = (value, setFieldValue) => {
+  const parsedValue = parseFloat(value);
+  if (!isNaN(parsedValue)) {
     const formattedValue = Number(parsedValue.toFixed(2));
-    setAmount(formattedValue); 
-  };
+    setFieldValue("amount", formattedValue); 
+  } else {
+    setFieldValue("amount", ""); 
+  }
+};
 
-  useEffect(() => {
-    const handleInputDate = () => {
-      const day = String(date.getDate()).padStart(2, "0");
-      const month = String(date.getMonth() + 1).padStart(2, "0");
-      const year = date.getFullYear();
-      const formattedDate = `${day}.${month}.${year}`;
-      setInputDate(formattedDate);
-    };
-
-    handleInputDate();
-  }, [date]);
-
- 
-    const handleSubmit = async (e) => {
-    e.preventDefault();
-
+  const handleSubmit = async (values, { setSubmitting }) => {
     const transactionData = {
-      type: isIncome ? "income" : "expense",
-      category: selectedCategory,
-      amount,
-      date,
-      comment,
+      type: isIncome ? "income" : "expense", 
+      ...values,
     };
-
+console.log('HELLO!')
     try {
-      const response = await axios.post("http://localhost:3001/home", transactionData, {
-        headers: {
-          "Content-Type": "application/json",
-        },
-      });
+      const response = await axios.post(
+        "http://localhost:3001/home",
+        transactionData,
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
 
       if (response.status === 201) {
         console.log("Transaction added:", response.data);
@@ -101,10 +97,24 @@ const TransactionForm = ({ onItemClick, isEditing }) => {
       }
     } catch (error) {
       console.error("Error:", error);
+    } finally {
+      setSubmitting(false);
     }
   };
 
-  const modalContent = (
+  const getValidationSchema = (isIncome) =>
+  Yup.object({
+    category: isIncome
+      ? Yup.string().notRequired() 
+      : Yup.string().required("Category is required for expenses"), 
+    amount: Yup.number()
+      .min(0.01, "Amount must be greater than 0")
+      .required("Amount is required"),
+    date: Yup.date().required("Date is required").typeError("Invalid date"),
+    comment: Yup.string().max(200, "Comment must be 200 characters or less"),
+  });
+
+  return ReactDOM.createPortal(
     <div className={css.modalOverlay}>
       <div
         className={`${css.formWrapper} ${
@@ -123,140 +133,170 @@ const TransactionForm = ({ onItemClick, isEditing }) => {
           <h2 className={css.formTitle}>Add transaction</h2>
         )}
 
-        <div
-          className={
-            css.switchContainer + (isEditing ? ` ${css.infoContainer}` : "")
-          }
-        >
+        <div className={css.switchContainer}>
           <div className={isIncome ? css.income : css.text}>Income</div>
-          {isEditing ? (
-            <img src="/slash.svg" alt="/" className={css.slashIcon} />
-          ) : (
-            <div className={css.switchButton} onClick={handleSwitchButton}>
-              {isIncome ? (
-                <img src="/add.svg" alt="Add" className={css.plusIcon} />
-              ) : (
-                <img src="/minus.svg" alt="Minus" className={css.minusIcon} />
-              )}
-            </div>
-          )}
+          <div className={css.switchButton} onClick={handleSwitchButton}>
+            {isIncome ? (
+              <img src="/add.svg" alt="Add" className={css.plusIcon} />
+            ) : (
+              <img src="/minus.svg" alt="Minus" className={css.minusIcon} />
+            )}
+          </div>
           <div className={!isIncome ? css.expense : css.text}>Expense</div>
         </div>
 
-        <form className={css.form}>
-          {!isIncome && (
-            <div className={css.inputGroup} onClick={handleCategoryClick}>
-              <input
-                type="text"
-                id="category"
-                name="category"
-                className={`${css.input} ${css.categoryInput}`}
-                value={selectedCategory}
-                placeholder="Select a category"
-                disabled
-              />
-              <img src="/arrow.svg" alt="Arrow" className={css.arrowIcon} />
-              {showCategoryList && (
-                <div className={css.listContainer}>
-                  <List
-                    data={categoryOptions}
-                    onItemClick={handleCategorySelect}
-                    isCategoryList={true}
+        <Formik
+          initialValues={{
+            category: "",
+            amount: "",
+            date: new Date(),
+            comment: "",
+          }}
+          validationSchema={getValidationSchema(isIncome)} // Pass isIncome dynamically
+          onSubmit={handleSubmit}
+        >
+          {({ setFieldValue, values }) => (
+            <Form className={css.form}>
+              {/* Category Input */}
+              {!isIncome && (
+                <div className={css.inputGroup}>
+                  <Field
+                    type="text"
+                    name="category"
+                    className={`${css.input} ${css.categoryInput}`}
+                    placeholder="Select a category"
+                    value={values.category}
+                    onClick={toggleCategoryList} // Show category list on click
+                    readOnly
+                  />
+                  <img
+                    src="/arrow.svg"
+                    alt="Arrow icon"
+                    className={css.arrowIcon}
+                    onClick={toggleCategoryList}
+                  />
+                  {showCategoryList && (
+                    <div className={css.listContainer}>
+                      <List
+                        data={categoryOptions}
+                        onItemClick={(category) =>
+                          handleCategorySelect(category, setFieldValue)
+                        }
+                        isCategoryList={true}
+                      />
+                    </div>
+                  )}
+                  <ErrorMessage
+                    name="category"
+                    component="div"
+                    className={css.error}
                   />
                 </div>
               )}
-            </div>
+
+              {/* Amount Input */}
+              <div className={css.inputGroupRow}>
+                <div className={css.inputGroup}>
+                  <Field
+                    type="number"
+                    name="amount"
+                    className={`${css.input} ${css.amountInput}`}
+                    placeholder="0.00"
+                    step="0.01"
+                    min={0}
+                    value={values.amount}
+                    onBlur={(e) => handleAmountBlur(e.target.value, setFieldValue)}
+                  />
+                  <ErrorMessage
+                    name="amount"
+                    component="div"
+                    className={css.error}
+                  />
+                </div>
+
+                {/* Date Input */}
+                <div className={css.inputGroup}>
+                  <Field
+                    type="text"
+                    name="date"
+                    className={`${css.input} ${css.dateInput}`}
+                    value={inputDate}
+                    disabled
+                  />
+                  <img
+                    src="/calendar.svg"
+                    alt="Calendar icon"
+                    className={css.calendarIcon}
+                    onClick={toggleCalendar}
+                  />
+                  {/* {showCalendar && (
+                    <div className={calendarCss.calendarContainer}>
+                      <Calendar
+                        locale="en-US"
+                        onChange={(selectedDate) => {
+                          setFieldValue("date", selectedDate);
+                          setShowCalendar(false);
+                          handleInputDate(selectedDate);
+                        }}
+                        value={values.date}
+                        className={calendarCss.reactCalendar}
+                      />
+                    </div>
+                  )} */}
+                </div>
+              </div>
+
+              {/* Comment Input */}
+              <div className={css.inputGroup}>
+                <Field
+                  as="textarea"
+                  name="comment"
+                  className={`${css.input} ${css.commentInput}`}
+                  placeholder="Comment"
+                />
+                <ErrorMessage
+                  name="comment"
+                  component="div"
+                  className={css.error}
+                />
+              </div>
+
+              {/* Buttons */}
+              <div className={css.buttonGroup}>
+                <button type="submit" className={css.addButton}>
+                  {isEditing ? "Save" : "Add"}
+                </button>
+                <button
+                  type="button"
+                  className={css.cancelButton}
+                  onClick={handleModalClose}
+                >
+                  Cancel
+                </button>
+              </div>
+                                {showCalendar && (
+                    <div className={calendarCss.calendarContainer}>
+                      <Calendar
+                        locale="en-US"
+                        onChange={(selectedDate) => {
+                          setFieldValue("date", selectedDate);
+                          setShowCalendar(false);
+                          handleInputDate(selectedDate);
+                        }}
+                        value={values.date}
+                        className={calendarCss.reactCalendar}
+                      />
+                    </div>
+                  )}
+            </Form>
           )}
-          <div className={css.inputGroupRow}>
-            <div className={css.inputGroup}>
-              <input
-                type="number"
-                id="amount"
-                name="amount"
-                className={`${css.input} ${css.amountInput}`}
-                placeholder="0.00"
-                step="0.01"
-                min={0}
-                value={amount}
-                onChange={handleAmountChange}
-                required
-              />
-            </div>
-            <div className={css.inputGroup}>
-              <input
-                type="text"
-                id="date"
-                name="date"
-                className={`${css.input} ${css.dateInput}`}
-                value={inputDate}
-                disabled
-                required
-              />
-              <img
-                src="/calendar.svg"
-                alt="Calendar icon"
-                className={css.calendarIcon}
-                onClick={toggleCalendar}
-              />
-            </div>
-          </div>
-          <div className={css.inputGroup}>
-            <textarea
-              id="comment"
-              name="comment"
-              className={`${css.input} ${css.commentInput}`}
-              placeholder="Comment"
-              value={comment}
-              onChange={(e) => setComment(e.target.value)}
-            ></textarea>
-          </div>
-          <div className={css.buttonGroup}>
-            {isEditing ? (
-              <button
-                type="submit"
-                className={css.saveButton}
-                onClick={handleSubmit}
-              >
-                save
-              </button>
-            ) : (
-              <button
-                type="submit"
-                className={css.addButton}
-                onClick={handleSubmit}
-              >
-                add
-              </button>
-            )}
-            <button
-              type="button"
-              className={css.cancelButton}
-              onClick={handleModalClose}
-            >
-              cancel
-            </button>
-          </div>
-        </form>
-        {showCalendar && (
-          <div className={calendarCss.calendarContainer}>
-            <Calendar
-            locale="en-US"
-              onChange={(selectedDate) => {
-                setDate(selectedDate);
-                setShowCalendar(false);
-              }}
-              value={date}
-              className={calendarCss.reactCalendar}
-            />
-          </div>
-        )}
+        </Formik>
       </div>
-    </div>
-  );
-  return ReactDOM.createPortal(
-    modalContent,
+    </div>,
     document.getElementById("modal-root")
   );
 };
 
 export default TransactionForm;
+
+
