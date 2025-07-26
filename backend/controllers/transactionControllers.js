@@ -38,7 +38,9 @@ const editTransaction = async (req, res) => {
 
 const getAllTransactions = async (req, res, next) => {
   try {
-    const transactions = await getTransactions();
+    const { limit, offset } = req.query;
+    console.log("Fetching transactions with limit:", limit, "and offset:", offset);
+    const transactions = await getTransactions(limit, offset);
     res.status(200).json({
       status: "success",
       code: 200,

@@ -14,8 +14,8 @@ const updateTransaction = async (id, body) => {
   return true;
 }
 
-const getTransactions = async () => {
-  const transactions = await Transaction.find();
+const getTransactions = async (limit, offset) => {
+  const transactions = await Transaction.find().sort({date: -1}).skip(offset).limit(limit);
   return transactions;
 }
 
