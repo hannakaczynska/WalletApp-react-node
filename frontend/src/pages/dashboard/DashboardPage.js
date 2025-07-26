@@ -14,6 +14,7 @@ const DashBoardPage = () => {
 
   const [showAddTransaction, setShowAddTransaction] = useState(false);
 
+
   const renderContent = () => {
     switch (location.pathname) {
       case "/home":
