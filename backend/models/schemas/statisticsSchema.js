@@ -122,8 +122,8 @@ const getIncomeStatistics = async (month, year) => {
       },
       {
         $project: {
-          _id: 0, // Exclude the `_id` field
-          totalIncome: "$totalAmount", // Rename `totalAmount` to `totalIncome`
+          _id: 0,
+          totalIncome: "$totalAmount", 
         },
       },
     ]);

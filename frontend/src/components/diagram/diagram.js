@@ -1,6 +1,7 @@
 import css from "./diagram.module.css";
 import { PieChart, Pie, Cell, ResponsiveContainer } from "recharts";
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import axios from "axios";
 import List from "../list/list";
 
 const data = [
@@ -58,6 +59,31 @@ const Diagram = () => {
     setShowYearList(!showYearList);
     setShowMonthList(false)
   };
+
+  const fetchStatistics = async (month, year) => {
+    try {
+        const response = await axios.get("http://localhost:3001/diagram", {
+        params: {
+          month,
+          year,
+        },
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+      if (response.status !== 200) {
+        throw new Error("Failed to fetch statistics");
+      }
+      const data = response.data;
+      console.log("Fetched statistics:", data);
+    } catch (error) {
+      console.error("Error fetching statistics:", error);
+    }
+  };
+
+  useEffect(() => {
+    fetchStatistics(7, 2025);
+  }, []);
 
   return (
     <div className={css.statistics}>

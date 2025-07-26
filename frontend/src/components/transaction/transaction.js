@@ -79,7 +79,7 @@ const TransactionForm = ({ onItemClick, isEditing }) => {
       type: isIncome ? "income" : "expense",
       ...values,
     };
-    console.log("HELLO!");
+
     try {
       const response = await axios.post(
         "http://localhost:3001/home",
