@@ -1,18 +1,19 @@
 import css from "./current.module.css";
 import MediaQuery from "react-responsive";
 import { useEffect, useState } from "react";
-import axios from "axios";
+// import axios from "axios";
 
 //set midrates to store in refetch it after 1 hour
   const fetchExchangeRates = async (setMidEuroRate, setMidGbpRate) => {
     try {
-      const response = await axios.get("https://api.exchangerate.host/live", {
-        params: {
-          base: "USD",
-          currencies: "EUR, GBP",
-          access_key: process.env.REACT_APP_CURRENCY_API_KEY,
-        },
-      });
+      // const response = await axios.get("https://api.exchangerate.host/live", {
+      //   params: {
+      //     base: "USD",
+      //     currencies: "EUR, GBP",
+      //     access_key: process.env.REACT_APP_CURRENCY_API_KEY,
+      //   },
+      // });
+      let response;
       setMidEuroRate(response.data.quotes.USDEUR);
       setMidGbpRate(response.data.quotes.USDGBP);
       console.log("Exchange rates fetched successfully:", response.data.quotes);

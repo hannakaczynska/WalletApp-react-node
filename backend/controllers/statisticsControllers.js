@@ -1,5 +1,6 @@
 const {
-  getTransactionStatistics,
+  getExpenseStatistics,
+  getIncomeStatistics
 } = require("../models/schemas/statisticsSchema");
 
 const getStatistics = async (req, res, next) => {
@@ -11,12 +12,13 @@ const getStatistics = async (req, res, next) => {
     const selectedYear = year ? parseInt(year) : currentDate.getFullYear(); 
 
     console.log(`Selected Month: ${selectedMonth}, Selected Year: ${selectedYear}`);
-    const statistics = await getTransactionStatistics(selectedMonth, selectedYear);
+    const expenses = await getExpenseStatistics(selectedMonth, selectedYear);
+    const income = await getIncomeStatistics(selectedMonth, selectedYear);
 
     res.status(200).json({
       status: "success",
       code: 200,
-      data: { statistics },
+      data: { expenses, income },
     });
   } catch (error) {
     res.status(500).json({ message: "Error fetching statistics", error });
