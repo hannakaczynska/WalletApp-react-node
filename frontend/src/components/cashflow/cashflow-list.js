@@ -3,9 +3,11 @@ import TransactionForm from "../transaction/transaction";
 import { useState, useEffect } from "react";
 import axios from "axios";
 import { format } from "date-fns";
+import ClipLoader from "react-spinners/ClipLoader";
 
 const CashflowList = () => {
   const [showEditTransaction, setShowEditTransaction] = useState(false);
+  const [loading, setLoading] = useState(true);
   const [cashflowData, setCashflowData] = useState([]);
 
   const formatDate = (date) => format(new Date(date), "dd.MM.yyyy");
@@ -23,6 +25,8 @@ const CashflowList = () => {
       }
     } catch (error) {
       console.error("Error fetching data:", error);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -32,9 +36,15 @@ const CashflowList = () => {
 
   return (
     <div className={css.listContainer}>
+            {loading ? (
+        <div className={css.spinnerContainer}>
+          <ClipLoader color="#4A56E2" size={100} />
+        </div>
+      ) : (
+        <>
       <ul className={`${css.list} ${css.mobile}`}>
         {cashflowData.map((item) => (
-          <li key={item.id} className={`${css.item} ${css[item.type]}`}>
+          <li key={item._id} className={`${css.item} ${css[item.type]}`}>
             <div className={css.section}>
               <span className={css.name}>Date</span>
               <span className={css.value}>{formatDate(item.date)}</span>
@@ -86,7 +96,7 @@ const CashflowList = () => {
         </div>
         {cashflowData.map((item) => (
           <li
-            key={item.id}
+            key={item._id}
             className={`${css.tabletItem} ${
               item.type === "income" ? css.tabletIncome : css.tabletExpense
             }`}
@@ -122,6 +132,8 @@ const CashflowList = () => {
           </li>
         ))}
       </ul>
+      </>
+      )}
       {showEditTransaction && (
         <div className={css.transactionForm}>
           <TransactionForm

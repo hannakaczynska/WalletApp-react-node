@@ -79,7 +79,7 @@ const DashBoardPage = () => {
             <Navigation />
           </div>
         </MediaQuery>
-        <div class={css.dashboard}>
+        <div className={css.dashboard}>
           <MediaQuery minWidth={768}>
             <div className={css.dashboardLayout}>
               <div className={css.layoutContainer}>
