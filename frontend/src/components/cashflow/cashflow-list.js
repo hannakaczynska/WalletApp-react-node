@@ -1,14 +1,12 @@
 import css from "./cashflow-list.module.css";
 import TransactionForm from "../transaction/transaction";
 import { useState, useEffect } from "react";
-import { useSearchParams } from "react-router-dom";
-
 import axios from "axios";
 import { format } from "date-fns";
 import ClipLoader from "react-spinners/ClipLoader";
 
 const CashflowList = () => {
-  const [searchParams, setSearchParams] = useSearchParams();
+  const [transactionId, setTransactionId] = useState();
   const [type, setType] = useState();
   const [showEditTransaction, setShowEditTransaction] = useState(false);
   const [loading, setLoading] = useState(true);
@@ -18,12 +16,24 @@ const CashflowList = () => {
 
   const formatDate = (date) => format(new Date(date), "dd.MM.yyyy");
 
+    const handleEditClick = (id, transactionType) => {
+    setType(transactionType);
+    setTransactionId(id);
+    setShowEditTransaction(true);
+  };
+
+  const handleCloseEdit = () => {
+    setType();
+    setTransactionId();
+    setShowEditTransaction(false);
+  };
+
   const fetchCashflowData = async (page = 1, limit = 10) => {
     try {
       const response = await axios.get("http://localhost:3001/home", {
         params: {
           limit,
-          offset: (page - 1) * limit, 
+          offset: (page - 1) * limit,
         },
         headers: {
           "Content-Type": "application/json",
@@ -34,15 +44,16 @@ const CashflowList = () => {
         const newTransactions = response.data.data.transactions;
         console.log("Fetched transactions:", newTransactions);
 
-      setCashflowData((prevData) => {
-        const combinedData = [...prevData, ...newTransactions];
-        const uniqueData = combinedData.filter(
-          (item, index, self) => index === self.findIndex((t) => t._id === item._id)
-        );
-        return uniqueData;
-      });
+        setCashflowData((prevData) => {
+          const combinedData = [...prevData, ...newTransactions];
+          const uniqueData = combinedData.filter(
+            (item, index, self) =>
+              index === self.findIndex((t) => t._id === item._id)
+          );
+          return uniqueData;
+        });
         if (newTransactions.length < limit) {
-          setHasMore(false); 
+          setHasMore(false);
         }
       }
     } catch (error) {
@@ -60,7 +71,7 @@ const CashflowList = () => {
       ) {
         if (!loading && hasMore) {
           setLoading(true);
-        setCurrentPage((prevPage) => prevPage + 1);
+          setCurrentPage((prevPage) => prevPage + 1);
         }
       }
     };
@@ -71,22 +82,14 @@ const CashflowList = () => {
 
   useEffect(() => {
     fetchCashflowData(currentPage);
-      console.log(`Fetching data for page ${currentPage}`);
+    console.log(`Fetching data for page ${currentPage}`);
   }, [currentPage]);
 
-    const handleEditClick = (id, transactionType) => {
-    searchParams.set("id", id);
-    setSearchParams(searchParams);
-    setType(transactionType);
-    setShowEditTransaction(true);
-  };
-
-  const handleCloseEdit = () => {
-  searchParams.delete("id"); 
-  setSearchParams(searchParams); 
-  setType();
-  setShowEditTransaction(false); 
-};
+//   useEffect(() => {
+//     if(!showEditTransaction) {
+// navigate("/home");
+//     }
+//   }, [showEditTransaction]);
 
   return (
     <div className={css.listContainer}>
@@ -199,6 +202,7 @@ const CashflowList = () => {
             onItemClick={handleCloseEdit}
             isEditing={true}
             type={type}
+            transactionId={transactionId}
           />
         </div>
       )}

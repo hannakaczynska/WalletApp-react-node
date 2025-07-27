@@ -19,8 +19,14 @@ const getTransactions = async (limit, offset) => {
   return transactions;
 }
 
+const fetchTransactionById = async (id) => {
+  const transaction = await Transaction.findById(id);
+  return transaction; 
+}
+
 module.exports = {
   createTransaction,
   updateTransaction,
   getTransactions,
+  fetchTransactionById
 };

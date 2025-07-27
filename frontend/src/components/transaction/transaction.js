@@ -1,4 +1,3 @@
-//Income and Expense in Edit transition - color change
 import css from "./transaction.module.css";
 import calendarCss from "./calendar.module.css";
 import axios from "axios";
@@ -25,7 +24,8 @@ const categoryOptions = [
   "Entertainment",
 ];
 
-const TransactionForm = ({ onItemClick, isEditing, type }) => {
+const TransactionForm = ({ onItemClick, isEditing, type, transactionId }) => {
+
   const [isIncome, setIsIncome] = useState(isEditing ? (type === "income" ? true : false) : true);
   const [showCalendar, setShowCalendar] = useState(false);
   const [showCategoryList, setShowCategoryList] = useState(false);
@@ -41,7 +41,7 @@ const TransactionForm = ({ onItemClick, isEditing, type }) => {
 
   useEffect(() => {
     if (isEditing) {
-console.log("Editing mode is active");
+            fetchTransactionById();
     } else {
       handleInputDate(new Date());
     }
@@ -79,19 +79,23 @@ console.log("Editing mode is active");
     }
   };
 
-  // const fetchTransactionById = async (id) => {
-  //   try {
-  //     const response = await axios.get(`http://localhost:3001/home/${id}`);
-  //     if (response.status === 200) {
-  //       return response.data;
-  //     } else {
-  //       throw new Error("Failed to fetch transaction");
-  //     }
-  //   } catch (error) {
-  //     console.error(error);
-  //     throw error;
-  //   }
-  // };
+  const fetchTransactionById = async () => {
+    try {
+      const response = await axios.get(`http://localhost:3001/home/${transactionId}`, {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+      if (response.status === 200) {
+        console.log("Transaction fetched successfully:", response.data);
+      } else {
+        throw new Error("Failed to fetch transaction");
+      }
+    } catch (error) {
+      console.error(error);
+      throw error;
+    }
+  };
 
 
   const handleSubmit = async (values, { setSubmitting }) => {
