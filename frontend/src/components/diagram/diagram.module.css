@@ -144,7 +144,7 @@
 }
 
 .income,
-.expanses {
+.expenses {
   font-weight: var(--font-weight-regular);
 }
 
@@ -152,7 +152,7 @@
   color: var(--green);
 }
 
-.expanses {
+.expenses {
   color: var(--red);
 }
 

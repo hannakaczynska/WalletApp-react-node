@@ -93,6 +93,14 @@ const getExpenseStatistics = async (month, year) => {
       },
     ]);
 
+      if (expenses.length === 0) {
+      const initialArray = categories.map((category) => ({
+        name: category,
+        value: 0,
+      }));
+      return initialArray;
+    }
+
     return expenses;
   } catch (error) {
     console.error("Error fetching expense statistics:", error);

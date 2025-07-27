@@ -4,18 +4,6 @@ import { useState, useEffect } from "react";
 import axios from "axios";
 import List from "../list/list";
 
-const data = [
-  { name: "Other expenses", value: 610.0 },
-  { name: "Leisure", value: 1230.0 },
-  { name: "Education", value: 3400.0 },
-  { name: "Household products", value: 300.0 },
-  { name: "Child care", value: 2208.5 },
-  { name: "Self care", value: 800.0 },
-  { name: "Car", value: 1500.0 },
-  { name: "Products", value: 3800.74 },
-  { name: "Main expenses", value: 8700.0 },
-];
-
 const COLORS = [
   "#00AD84",
   "#24CCA7",
@@ -32,21 +20,32 @@ const monthOptions = ["January", "February", "March", "April", "May", "June", "J
 const yearOptions = ["2020", "2021", "2022", "2023", "2024", "2025", "2026"];
 
 const Diagram = () => {
-  const amount = "24 000.00";
-  const income = "27 350.00"
+  // const amount = "24 000.00";
+  const currentDate = new Date();
+  const currentMonthName = monthOptions[currentDate.getMonth()];
+  const currentYear = currentDate.getFullYear().toString(); 
 
+  const [data, setData] = useState([]);
+  const [expenses, setExpenses] = useState();
+  const [income, setIncome] = useState();
+  const [amount, setAmount] = useState();
   const [showMonthList, setShowMonthList] = useState(false);
   const [showYearList, setShowYearList] = useState(false);
-  const [selectedMonth, setSelectedMonth] = useState("July");
-  const [selectedYear, setSelectedYear] = useState("2025");
+  const [monthNumber, setMonthNumber] = useState();
+  const [selectedMonth, setSelectedMonth] = useState(currentMonthName);
+  const [selectedYear, setSelectedYear] = useState(currentYear);
 
   const handleMonthSelect = (month) => {
     setSelectedMonth(month);
+    const numberFromMonthName = monthOptions.indexOf(month) + 1;
+    setMonthNumber(numberFromMonthName);
+    fetchStatistics(numberFromMonthName, selectedYear);
     setShowMonthList(false);
   };
 
     const handleYearSelect = (year) => {
     setSelectedYear(year);
+    fetchStatistics(monthNumber, year);
     setShowYearList(false);
   };
 
@@ -75,15 +74,29 @@ const Diagram = () => {
         throw new Error("Failed to fetch statistics");
       }
       const data = response.data;
-      console.log("Fetched statistics:", data);
+      setData(data.data.expenses);
+      const incomeData = data.data.income.length > 0 ? data.data.income[0].totalIncome : 0;
+      setIncome(incomeData.toFixed(2));
     } catch (error) {
       console.error("Error fetching statistics:", error);
     }
   };
 
   useEffect(() => {
-    fetchStatistics(7, 2025);
+    fetchStatistics();
   }, []);
+
+  useEffect(() => {
+    const totalExpenses = data.reduce((acc, item) => acc + item.value, 0).toFixed(2);
+    setExpenses(totalExpenses);
+  }, [data]);
+
+  useEffect(() => {
+    const totalIncome = income ? income : 0;
+    const totalExpenses = expenses ? expenses : 0;
+    const balance = (totalIncome - totalExpenses).toFixed(2);
+    setAmount(balance);
+  }, [income, expenses]);
 
   return (
     <div className={css.statistics}>
@@ -160,17 +173,19 @@ const Diagram = () => {
                 <div>Sum</div>
             </div>
             {data.slice().reverse().map((item, index) => (
-                <li className={css.listItem} key={item.id}>
+                <li className={css.listItem} key={item.name}>
                     <div className={css.color} style={{ backgroundColor: COLORS[(data.length - 1 - index) % COLORS.length] }}></div>
                     <div className={css.name}>{item.name}</div>
-                    <div className={css.value}>{item.value}</div>
+                    <div className={css.value}>{item.value >= 0
+                      ? `${item.value.toFixed(2)}`
+                      : `${Math.abs(item.value).toFixed(2)}`}</div>
                 </li>
             ))}
         </ul>
         <div className={css.cashflowContainer}>
             <div className={css.cashflow}>
-                Expanses:
-                <div className={css.expanses}>{data.reduce((acc, item) => acc + item.value, 0).toFixed(2)}</div>
+                Expenses:
+                <div className={css.expenses}>{expenses}</div>
             </div>
             <div className={css.cashflow}>
                 Income:
