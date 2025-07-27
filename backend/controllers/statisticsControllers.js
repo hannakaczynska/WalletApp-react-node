@@ -10,8 +10,6 @@ const getStatistics = async (req, res, next) => {
     const currentDate = new Date();
     const selectedMonth = month ? parseInt(month) : currentDate.getMonth() + 1; 
     const selectedYear = year ? parseInt(year) : currentDate.getFullYear(); 
-
-    console.log(`Selected Month: ${selectedMonth}, Selected Year: ${selectedYear}`);
     const expenses = await getExpenseStatistics(selectedMonth, selectedYear);
     const income = await getIncomeStatistics(selectedMonth, selectedYear);
 

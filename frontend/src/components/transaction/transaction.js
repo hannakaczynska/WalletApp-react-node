@@ -25,8 +25,8 @@ const categoryOptions = [
   "Entertainment",
 ];
 
-const TransactionForm = ({ onItemClick, isEditing }) => {
-  const [isIncome, setIsIncome] = useState(true);
+const TransactionForm = ({ onItemClick, isEditing, type }) => {
+  const [isIncome, setIsIncome] = useState(isEditing ? (type === "income" ? true : false) : true);
   const [showCalendar, setShowCalendar] = useState(false);
   const [showCategoryList, setShowCategoryList] = useState(false);
   const [inputDate, setInputDate] = useState("");
@@ -40,7 +40,12 @@ const TransactionForm = ({ onItemClick, isEditing }) => {
   };
 
   useEffect(() => {
-    handleInputDate(new Date());
+    if (isEditing) {
+console.log("Editing mode is active");
+    } else {
+      handleInputDate(new Date());
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const handleModalClose = () => {
@@ -73,6 +78,21 @@ const TransactionForm = ({ onItemClick, isEditing }) => {
       setFieldValue("amount", "");
     }
   };
+
+  // const fetchTransactionById = async (id) => {
+  //   try {
+  //     const response = await axios.get(`http://localhost:3001/home/${id}`);
+  //     if (response.status === 200) {
+  //       return response.data;
+  //     } else {
+  //       throw new Error("Failed to fetch transaction");
+  //     }
+  //   } catch (error) {
+  //     console.error(error);
+  //     throw error;
+  //   }
+  // };
+
 
   const handleSubmit = async (values, { setSubmitting }) => {
     const transactionData = {
@@ -157,8 +177,9 @@ const TransactionForm = ({ onItemClick, isEditing }) => {
           <h2 className={css.formTitle}>Add transaction</h2>
         )}
 
-        <div className={css.switchContainer}>
+        <div className={`${css.switchContainer} ${isEditing ? css.infoContainer : ""}`}>
           <div className={isIncome ? css.income : css.text}>Income</div>
+          {isEditing ? (<img src="/slash.svg" alt="Slash" className={css.slashIcon} />) : (
           <div className={css.switchButton} onClick={handleSwitchButton}>
             {isIncome ? (
               <img src="/add.svg" alt="Add" className={css.plusIcon} />
@@ -166,6 +187,7 @@ const TransactionForm = ({ onItemClick, isEditing }) => {
               <img src="/minus.svg" alt="Minus" className={css.minusIcon} />
             )}
           </div>
+          )}
           <div className={!isIncome ? css.expense : css.text}>Expense</div>
         </div>
 

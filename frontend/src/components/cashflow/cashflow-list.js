@@ -1,11 +1,15 @@
 import css from "./cashflow-list.module.css";
 import TransactionForm from "../transaction/transaction";
 import { useState, useEffect } from "react";
+import { useSearchParams } from "react-router-dom";
+
 import axios from "axios";
 import { format } from "date-fns";
 import ClipLoader from "react-spinners/ClipLoader";
 
 const CashflowList = () => {
+  const [searchParams, setSearchParams] = useSearchParams();
+  const [type, setType] = useState();
   const [showEditTransaction, setShowEditTransaction] = useState(false);
   const [loading, setLoading] = useState(true);
   const [cashflowData, setCashflowData] = useState([]);
@@ -70,6 +74,20 @@ const CashflowList = () => {
       console.log(`Fetching data for page ${currentPage}`);
   }, [currentPage]);
 
+    const handleEditClick = (id, transactionType) => {
+    searchParams.set("id", id);
+    setSearchParams(searchParams);
+    setType(transactionType);
+    setShowEditTransaction(true);
+  };
+
+  const handleCloseEdit = () => {
+  searchParams.delete("id"); 
+  setSearchParams(searchParams); 
+  setType();
+  setShowEditTransaction(false); 
+};
+
   return (
     <div className={css.listContainer}>
       {loading && currentPage === 1 ? (
@@ -113,7 +131,7 @@ const CashflowList = () => {
                   <button className={css.deleteBtn}>Delete</button>
                   <button
                     className={css.editBtn}
-                    onClick={() => setShowEditTransaction(true)}
+                    onClick={() => handleEditClick(item._id, item.type)}
                   >
                     <img src="/edit.svg" alt="Edit" className={css.editIcon} />
                     Edit
@@ -159,7 +177,7 @@ const CashflowList = () => {
                 <div className={css.buttons}>
                   <button
                     className={css.editBtn}
-                    onClick={() => setShowEditTransaction(true)}
+                    onClick={() => handleEditClick(item._id, item.type)}
                   >
                     <img src="/edit.svg" alt="Edit" className={css.editIcon} />
                   </button>
@@ -178,8 +196,9 @@ const CashflowList = () => {
       {showEditTransaction && (
         <div className={css.transactionForm}>
           <TransactionForm
-            onItemClick={() => setShowEditTransaction(false)}
+            onItemClick={handleCloseEdit}
             isEditing={true}
+            type={type}
           />
         </div>
       )}

@@ -94,6 +94,8 @@
 }
 
 .infoContainer {
+  display: flex;
+  flex-direction: row;
   height: 24px;
   padding-inline: 64px;
   gap: 11px;
