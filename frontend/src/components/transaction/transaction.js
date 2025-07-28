@@ -25,11 +25,13 @@ const categoryOptions = [
 ];
 
 const TransactionForm = ({ onItemClick, isEditing, type, transactionId }) => {
-
-  const [isIncome, setIsIncome] = useState(isEditing ? (type === "income" ? true : false) : true);
+  const [isIncome, setIsIncome] = useState(
+    isEditing ? (type === "income" ? true : false) : true
+  );
   const [showCalendar, setShowCalendar] = useState(false);
   const [showCategoryList, setShowCategoryList] = useState(false);
   const [inputDate, setInputDate] = useState("");
+  const [initialValues, setInitialValues] = useState();
 
   const handleInputDate = (date) => {
     const day = String(date.getDate()).padStart(2, "0");
@@ -38,15 +40,6 @@ const TransactionForm = ({ onItemClick, isEditing, type, transactionId }) => {
     const formattedDate = `${day}.${month}.${year}`;
     setInputDate(formattedDate);
   };
-
-  useEffect(() => {
-    if (isEditing) {
-            fetchTransactionById();
-    } else {
-      handleInputDate(new Date());
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
 
   const handleModalClose = () => {
     onItemClick();
@@ -69,6 +62,15 @@ const TransactionForm = ({ onItemClick, isEditing, type, transactionId }) => {
     setShowCategoryList(false);
   };
 
+  const handleAmountFormat = (value) => {
+    const parsedValue = parseFloat(value);
+    if (!isNaN(parsedValue)) {
+      return parsedValue.toFixed(2);  
+    } else {
+      return "";
+    }
+  };
+
   const handleAmountBlur = (value, setFieldValue) => {
     const parsedValue = parseFloat(value);
     if (!isNaN(parsedValue)) {
@@ -81,13 +83,24 @@ const TransactionForm = ({ onItemClick, isEditing, type, transactionId }) => {
 
   const fetchTransactionById = async () => {
     try {
-      const response = await axios.get(`http://localhost:3001/home/${transactionId}`, {
-        headers: {
-          "Content-Type": "application/json",
-        },
-      });
+      const response = await axios.get(
+        `http://localhost:3001/home/${transactionId}`,
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
       if (response.status === 200) {
-        console.log("Transaction fetched successfully:", response.data);
+        const transaction = response.data.data.transaction;
+        const formattedAmount = handleAmountFormat(transaction.amount);
+        setInitialValues({
+          category: transaction.category,
+          amount: formattedAmount,
+          date: new Date(transaction.date),
+          comment: transaction.comment,
+        });
+        handleInputDate(new Date(transaction.date));
       } else {
         throw new Error("Failed to fetch transaction");
       }
@@ -96,7 +109,6 @@ const TransactionForm = ({ onItemClick, isEditing, type, transactionId }) => {
       throw error;
     }
   };
-
 
   const handleSubmit = async (values, { setSubmitting }) => {
     const transactionData = {
@@ -150,6 +162,21 @@ const TransactionForm = ({ onItemClick, isEditing, type, transactionId }) => {
       comment: Yup.string().max(200, "Comment must be 200 characters or less"),
     });
 
+  useEffect(() => {
+    if (isEditing) {
+      fetchTransactionById();
+    } else {
+      setInitialValues({
+        category: "",
+        amount: "",
+        date: new Date(),
+        comment: "",
+      });
+      handleInputDate(new Date());
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
   return ReactDOM.createPortal(
     <div className={css.modalOverlay}>
       <div
@@ -181,27 +208,28 @@ const TransactionForm = ({ onItemClick, isEditing, type, transactionId }) => {
           <h2 className={css.formTitle}>Add transaction</h2>
         )}
 
-        <div className={`${css.switchContainer} ${isEditing ? css.infoContainer : ""}`}>
+        <div
+          className={`${css.switchContainer} ${
+            isEditing ? css.infoContainer : ""
+          }`}
+        >
           <div className={isIncome ? css.income : css.text}>Income</div>
-          {isEditing ? (<img src="/slash.svg" alt="Slash" className={css.slashIcon} />) : (
-          <div className={css.switchButton} onClick={handleSwitchButton}>
-            {isIncome ? (
-              <img src="/add.svg" alt="Add" className={css.plusIcon} />
-            ) : (
-              <img src="/minus.svg" alt="Minus" className={css.minusIcon} />
-            )}
-          </div>
+          {isEditing ? (
+            <img src="/slash.svg" alt="Slash" className={css.slashIcon} />
+          ) : (
+            <div className={css.switchButton} onClick={handleSwitchButton}>
+              {isIncome ? (
+                <img src="/add.svg" alt="Add" className={css.plusIcon} />
+              ) : (
+                <img src="/minus.svg" alt="Minus" className={css.minusIcon} />
+              )}
+            </div>
           )}
           <div className={!isIncome ? css.expense : css.text}>Expense</div>
         </div>
-
+ {initialValues ? (
         <Formik
-          initialValues={{
-            category: "",
-            amount: "",
-            date: new Date(),
-            comment: "",
-          }}
+          initialValues={initialValues}
           validationSchema={getValidationSchema(isIncome)}
           onSubmit={handleSubmit}
         >
@@ -329,6 +357,9 @@ const TransactionForm = ({ onItemClick, isEditing, type, transactionId }) => {
             </Form>
           )}
         </Formik>
+              ) : (
+        <div>Loading...</div> // Show a loading indicator while fetching data
+      )}
       </div>
     </div>,
     document.getElementById("modal-root")
