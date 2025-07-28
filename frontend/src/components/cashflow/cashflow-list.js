@@ -2,18 +2,25 @@ import css from "./cashflow-list.module.css";
 import TransactionForm from "../transaction/transaction";
 import DeleteModal from "../modal/delete-modal";
 import { useState, useEffect, useRef } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { fetchTransactions } from "../../redux/transactions/transactionThunks";
+import {
+  setCurrentPage,
+  setLoading,
+} from "../../redux/transactions/transactionSlice";
 import axios from "axios";
 import { format } from "date-fns";
 import ClipLoader from "react-spinners/ClipLoader";
 
 const CashflowList = () => {
+   const dispatch = useDispatch();
+  const { transactions, loading, currentPage, hasMore } = useSelector(
+    (state) => state.transaction
+  );
+
   const [transactionId, setTransactionId] = useState();
   const [type, setType] = useState();
   const [showEditTransaction, setShowEditTransaction] = useState(false);
-  const [loading, setLoading] = useState(true);
-  const [cashflowData, setCashflowData] = useState([]);
-  const [currentPage, setCurrentPage] = useState(1);
-  const [hasMore, setHasMore] = useState(true);
 
   const deleteDialogRef = useRef(null); 
 
@@ -57,62 +64,26 @@ const CashflowList = () => {
     }
   }
 
-  const fetchCashflowData = async (page = 1, limit = 10) => {
-    try {
-      const response = await axios.get("http://localhost:3001/home", {
-        params: {
-          limit,
-          offset: (page - 1) * limit,
-        },
-        headers: {
-          "Content-Type": "application/json",
-        },
-      });
-
-      if (response.status === 200) {
-        const newTransactions = response.data.data.transactions;
-        console.log("Fetched transactions:", newTransactions);
-
-        setCashflowData((prevData) => {
-          const combinedData = [...prevData, ...newTransactions];
-          const uniqueData = combinedData.filter(
-            (item, index, self) =>
-              index === self.findIndex((t) => t._id === item._id)
-          );
-          return uniqueData;
-        });
-        if (newTransactions.length < limit) {
-          setHasMore(false);
-        }
+useEffect(() => {
+  const handleScroll = () => {
+    if (
+      window.innerHeight + document.documentElement.scrollTop >=
+      document.documentElement.offsetHeight - 100
+    ) {
+      if (!loading && hasMore) {
+        dispatch(setLoading(true));
+        dispatch(setCurrentPage(currentPage + 1));
       }
-    } catch (error) {
-      console.error("Error fetching data:", error);
-    } finally {
-      setLoading(false);
     }
   };
 
-  useEffect(() => {
-    const handleScroll = () => {
-      if (
-        window.innerHeight + document.documentElement.scrollTop >=
-        document.documentElement.offsetHeight - 100
-      ) {
-        if (!loading && hasMore) {
-          setLoading(true);
-          setCurrentPage((prevPage) => prevPage + 1);
-        }
-      }
-    };
-
-    window.addEventListener("scroll", handleScroll);
-    return () => window.removeEventListener("scroll", handleScroll);
-  }, [loading, hasMore]);
+  window.addEventListener("scroll", handleScroll);
+  return () => window.removeEventListener("scroll", handleScroll);
+}, [loading, hasMore, currentPage, dispatch]);
 
   useEffect(() => {
-    fetchCashflowData(currentPage);
-    console.log(`Fetching data for page ${currentPage}`);
-  }, [currentPage]);
+    dispatch(fetchTransactions({ page: currentPage, limit: 10 }));
+  }, [dispatch, currentPage]);
 
   return (
     <div className={css.listContainer}>
@@ -123,7 +94,7 @@ const CashflowList = () => {
       ) : (
         <>
           <ul className={`${css.list} ${css.mobile}`}>
-            {cashflowData.map((item) => (
+            {transactions.map((item) => (
               <li key={item._id} className={`${css.item} ${css[item.type]}`}>
                 <div className={css.section}>
                   <span className={css.name}>Date</span>
@@ -154,7 +125,7 @@ const CashflowList = () => {
                   </span>
                 </div>
                 <div className={css.buttons}>
-                  <button className={css.deleteBtn}>Delete</button>
+                  <button className={css.deleteBtn} onClick={() => handleDeleteClick(item._id)}>Delete</button>
                   <button
                     className={css.editBtn}
                     onClick={() => handleEditClick(item._id, item.type)}
@@ -174,7 +145,7 @@ const CashflowList = () => {
               <span className={css.comment}>Comment</span>
               <span>Sum</span>
             </div>
-            {cashflowData.map((item) => (
+            {transactions.map((item) => (
               <li
                 key={item._id}
                 className={`${css.tabletItem} ${
