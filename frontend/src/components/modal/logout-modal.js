@@ -1,5 +1,5 @@
 import ReactDOM from "react-dom";
-import css from "./logout-modal.module.css";
+import css from "./modal.module.css";
 
 const LogoutModal = ({ onClose, onConfirm }) => {
   const modalContent = (

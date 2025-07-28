@@ -42,7 +42,19 @@ const CashflowList = () => {
   };
 
   const handleConfirmDelete = async () => {
-console.log("Deleting transaction with ID:", transactionId);
+    try {
+      const response = await axios.delete(`http://localhost:3001/home/${transactionId}`, {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+      setTransactionId();
+      deleteDialogRef.current.close();
+      console.log("Delete response ok:", response.data);
+    } catch (error) {
+      console.error("Error deleting transaction:", error);
+      return;
+    }
   }
 
   const fetchCashflowData = async (page = 1, limit = 10) => {
