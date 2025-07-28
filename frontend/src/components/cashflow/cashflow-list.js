@@ -1,6 +1,7 @@
 import css from "./cashflow-list.module.css";
 import TransactionForm from "../transaction/transaction";
-import { useState, useEffect } from "react";
+import DeleteModal from "../modal/delete-modal";
+import { useState, useEffect, useRef } from "react";
 import axios from "axios";
 import { format } from "date-fns";
 import ClipLoader from "react-spinners/ClipLoader";
@@ -14,9 +15,11 @@ const CashflowList = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [hasMore, setHasMore] = useState(true);
 
+  const deleteDialogRef = useRef(null); 
+
   const formatDate = (date) => format(new Date(date), "dd.MM.yyyy");
 
-    const handleEditClick = (id, transactionType) => {
+  const handleEditClick = (id, transactionType) => {
     setType(transactionType);
     setTransactionId(id);
     setShowEditTransaction(true);
@@ -27,6 +30,20 @@ const CashflowList = () => {
     setTransactionId();
     setShowEditTransaction(false);
   };
+
+  const handleDeleteClick = (id) => {
+    setTransactionId(id);
+    deleteDialogRef.current.showModal();
+  };
+
+    const handleCancelDelete = () => {
+    setTransactionId();
+    deleteDialogRef.current.close();
+  };
+
+  const handleConfirmDelete = async () => {
+console.log("Deleting transaction with ID:", transactionId);
+  }
 
   const fetchCashflowData = async (page = 1, limit = 10) => {
     try {
@@ -178,7 +195,7 @@ const CashflowList = () => {
                   >
                     <img src="/edit.svg" alt="Edit" className={css.editIcon} />
                   </button>
-                  <button className={css.deleteBtn}>Delete</button>
+                  <button className={css.deleteBtn} onClick={() => handleDeleteClick(item._id)}>Delete</button>
                 </div>
               </li>
             ))}
@@ -200,6 +217,11 @@ const CashflowList = () => {
           />
         </div>
       )}
+      <DeleteModal
+      ref={deleteDialogRef}
+        onCancel={handleCancelDelete}
+        onDelete={handleConfirmDelete}
+     />
     </div>
   );
 };

@@ -1,5 +1,5 @@
 import css from "./header.module.css";
-import LogoutModal from "../logout-modal/logout-modal";
+import LogoutModal from "../modal/logout-modal";
 import { useState } from "react";
 
 const Header = () => {
