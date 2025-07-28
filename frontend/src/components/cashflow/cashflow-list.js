@@ -85,12 +85,6 @@ const CashflowList = () => {
     console.log(`Fetching data for page ${currentPage}`);
   }, [currentPage]);
 
-//   useEffect(() => {
-//     if(!showEditTransaction) {
-// navigate("/home");
-//     }
-//   }, [showEditTransaction]);
-
   return (
     <div className={css.listContainer}>
       {loading && currentPage === 1 ? (

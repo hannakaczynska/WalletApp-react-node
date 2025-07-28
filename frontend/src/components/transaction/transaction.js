@@ -9,6 +9,7 @@ import "react-calendar/dist/Calendar.css";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { Formik, Form, Field, ErrorMessage } from "formik";
+import ClipLoader from "react-spinners/ClipLoader";
 import * as Yup from "yup";
 
 const categoryOptions = [
@@ -23,6 +24,8 @@ const categoryOptions = [
   "Other expenses",
   "Entertainment",
 ];
+
+///updateing vuex state for cashflow list after adding, editing or deleting transaction
 
 const TransactionForm = ({ onItemClick, isEditing, type, transactionId }) => {
   const [isIncome, setIsIncome] = useState(
@@ -65,7 +68,7 @@ const TransactionForm = ({ onItemClick, isEditing, type, transactionId }) => {
   const handleAmountFormat = (value) => {
     const parsedValue = parseFloat(value);
     if (!isNaN(parsedValue)) {
-      return parsedValue.toFixed(2);  
+      return parsedValue.toFixed(2);
     } else {
       return "";
     }
@@ -117,17 +120,31 @@ const TransactionForm = ({ onItemClick, isEditing, type, transactionId }) => {
     };
 
     try {
-      const response = await axios.post(
-        "http://localhost:3001/home",
-        transactionData,
-        {
-          headers: {
-            "Content-Type": "application/json",
-          },
-        }
-      );
+      let response;
+      if (isEditing) {
+        response = await axios.put(
+          `http://localhost:3001/home/${transactionId}`,
+          transactionData,
+          {
+            headers: {
+              "Content-Type": "application/json",
+            },
+          }
+        );
+      } else {
+        response = await axios.post(
+          "http://localhost:3001/home",
+          transactionData,
+          {
+            headers: {
+              "Content-Type": "application/json",
+            },
+          }
+        );
+      }
 
-      if (response.status === 201) {
+      if (response.status === 201 || response.status === 200) {
+        console.log("Transaction added/updated successfully:", response);
         toast.success(
           isEditing
             ? "Transaction updated successfully!"
@@ -184,6 +201,8 @@ const TransactionForm = ({ onItemClick, isEditing, type, transactionId }) => {
           isIncome ? "" : css.expenseFormWrapper
         }`}
       >
+        {initialValues ? (
+          <>
         <ToastContainer
           position="top-right"
           autoClose={3000}
@@ -227,139 +246,142 @@ const TransactionForm = ({ onItemClick, isEditing, type, transactionId }) => {
           )}
           <div className={!isIncome ? css.expense : css.text}>Expense</div>
         </div>
- {initialValues ? (
-        <Formik
-          initialValues={initialValues}
-          validationSchema={getValidationSchema(isIncome)}
-          onSubmit={handleSubmit}
-        >
-          {({ setFieldValue, values }) => (
-            <Form className={css.form}>
-              {/* Category Input */}
-              {!isIncome && (
+
+          <Formik
+            initialValues={initialValues}
+            validationSchema={getValidationSchema(isIncome)}
+            onSubmit={handleSubmit}
+          >
+            {({ setFieldValue, values }) => (
+              <Form className={css.form}>
+                {/* Category Input */}
+                {!isIncome && (
+                  <div className={css.inputGroup}>
+                    <Field
+                      type="text"
+                      name="category"
+                      className={`${css.input} ${css.categoryInput}`}
+                      placeholder="Select a category"
+                      value={values.category}
+                      onClick={toggleCategoryList}
+                      readOnly
+                    />
+                    <img
+                      src="/arrow.svg"
+                      alt="Arrow icon"
+                      className={css.arrowIcon}
+                      onClick={toggleCategoryList}
+                    />
+                    {showCategoryList && (
+                      <div className={css.listContainer}>
+                        <List
+                          data={categoryOptions}
+                          onItemClick={(category) =>
+                            handleCategorySelect(category, setFieldValue)
+                          }
+                          isCategoryList={true}
+                        />
+                      </div>
+                    )}
+                    <ErrorMessage
+                      name="category"
+                      component="div"
+                      className={css.error}
+                    />
+                  </div>
+                )}
+
+                {/* Amount Input */}
+                <div className={css.inputGroupRow}>
+                  <div className={css.inputGroup}>
+                    <Field
+                      type="number"
+                      name="amount"
+                      className={`${css.input} ${css.amountInput}`}
+                      placeholder="0.00"
+                      step="0.01"
+                      min={0}
+                      value={values.amount}
+                      onBlur={(e) =>
+                        handleAmountBlur(e.target.value, setFieldValue)
+                      }
+                    />
+                    <ErrorMessage
+                      name="amount"
+                      component="div"
+                      className={css.error}
+                    />
+                  </div>
+
+                  {/* Date Input */}
+                  <div className={css.inputGroup}>
+                    <Field
+                      type="text"
+                      name="date"
+                      className={`${css.input} ${css.dateInput}`}
+                      value={inputDate}
+                      disabled
+                    />
+                    <img
+                      src="/calendar.svg"
+                      alt="Calendar icon"
+                      className={css.calendarIcon}
+                      onClick={toggleCalendar}
+                    />
+                  </div>
+                </div>
+
+                {/* Comment Input */}
                 <div className={css.inputGroup}>
                   <Field
-                    type="text"
-                    name="category"
-                    className={`${css.input} ${css.categoryInput}`}
-                    placeholder="Select a category"
-                    value={values.category}
-                    onClick={toggleCategoryList}
-                    readOnly
+                    as="textarea"
+                    name="comment"
+                    className={`${css.input} ${css.commentInput}`}
+                    placeholder="Comment"
                   />
-                  <img
-                    src="/arrow.svg"
-                    alt="Arrow icon"
-                    className={css.arrowIcon}
-                    onClick={toggleCategoryList}
-                  />
-                  {showCategoryList && (
-                    <div className={css.listContainer}>
-                      <List
-                        data={categoryOptions}
-                        onItemClick={(category) =>
-                          handleCategorySelect(category, setFieldValue)
-                        }
-                        isCategoryList={true}
-                      />
-                    </div>
-                  )}
                   <ErrorMessage
-                    name="category"
+                    name="comment"
                     component="div"
                     className={css.error}
                   />
                 </div>
-              )}
 
-              {/* Amount Input */}
-              <div className={css.inputGroupRow}>
-                <div className={css.inputGroup}>
-                  <Field
-                    type="number"
-                    name="amount"
-                    className={`${css.input} ${css.amountInput}`}
-                    placeholder="0.00"
-                    step="0.01"
-                    min={0}
-                    value={values.amount}
-                    onBlur={(e) =>
-                      handleAmountBlur(e.target.value, setFieldValue)
-                    }
-                  />
-                  <ErrorMessage
-                    name="amount"
-                    component="div"
-                    className={css.error}
-                  />
+                {/* Buttons */}
+                <div className={css.buttonGroup}>
+                  <button type="submit" className={css.addButton}>
+                    {isEditing ? "Save" : "Add"}
+                  </button>
+                  <button
+                    type="button"
+                    className={css.cancelButton}
+                    onClick={handleModalClose}
+                  >
+                    Cancel
+                  </button>
                 </div>
+                {showCalendar && (
+                  <div className={calendarCss.calendarContainer}>
+                    <Calendar
+                      locale="en-US"
+                      onChange={(selectedDate) => {
+                        setFieldValue("date", selectedDate);
+                        setShowCalendar(false);
+                        handleInputDate(selectedDate);
+                      }}
+                      value={values.date}
+                      className={calendarCss.reactCalendar}
+                    />
+                  </div>
+                )}
+              </Form>
+            )}
+          </Formik>
+          </>
+        ) : (
 
-                {/* Date Input */}
-                <div className={css.inputGroup}>
-                  <Field
-                    type="text"
-                    name="date"
-                    className={`${css.input} ${css.dateInput}`}
-                    value={inputDate}
-                    disabled
-                  />
-                  <img
-                    src="/calendar.svg"
-                    alt="Calendar icon"
-                    className={css.calendarIcon}
-                    onClick={toggleCalendar}
-                  />
-                </div>
-              </div>
+          <ClipLoader color="#4A56E2" size={100} />
 
-              {/* Comment Input */}
-              <div className={css.inputGroup}>
-                <Field
-                  as="textarea"
-                  name="comment"
-                  className={`${css.input} ${css.commentInput}`}
-                  placeholder="Comment"
-                />
-                <ErrorMessage
-                  name="comment"
-                  component="div"
-                  className={css.error}
-                />
-              </div>
-
-              {/* Buttons */}
-              <div className={css.buttonGroup}>
-                <button type="submit" className={css.addButton}>
-                  {isEditing ? "Save" : "Add"}
-                </button>
-                <button
-                  type="button"
-                  className={css.cancelButton}
-                  onClick={handleModalClose}
-                >
-                  Cancel
-                </button>
-              </div>
-              {showCalendar && (
-                <div className={calendarCss.calendarContainer}>
-                  <Calendar
-                    locale="en-US"
-                    onChange={(selectedDate) => {
-                      setFieldValue("date", selectedDate);
-                      setShowCalendar(false);
-                      handleInputDate(selectedDate);
-                    }}
-                    value={values.date}
-                    className={calendarCss.reactCalendar}
-                  />
-                </div>
-              )}
-            </Form>
-          )}
-        </Formik>
-              ) : (
-        <div>Loading...</div> // Show a loading indicator while fetching data
-      )}
+        )}
       </div>
     </div>,
     document.getElementById("modal-root")
