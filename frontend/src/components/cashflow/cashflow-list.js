@@ -3,83 +3,73 @@ import TransactionForm from "../transaction/transaction";
 import DeleteModal from "../modal/delete-modal";
 import { useState, useEffect, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { fetchTransactions } from "../../redux/transactions/transactionThunks";
+import {
+  fetchTransactions,
+  deleteTransaction,
+} from "../../redux/transactions/transactionThunks";
 import {
   setCurrentPage,
   setLoading,
+  setTransactionId,
 } from "../../redux/transactions/transactionSlice";
-import axios from "axios";
 import { format } from "date-fns";
 import ClipLoader from "react-spinners/ClipLoader";
 
 const CashflowList = () => {
-   const dispatch = useDispatch();
-  const { transactions, loading, currentPage, hasMore } = useSelector(
-    (state) => state.transaction
-  );
+  const dispatch = useDispatch();
+  const { transactions, loading, currentPage, hasMore, transactionId } =
+    useSelector((state) => state.transaction);
 
-  const [transactionId, setTransactionId] = useState();
   const [type, setType] = useState();
   const [showEditTransaction, setShowEditTransaction] = useState(false);
 
-  const deleteDialogRef = useRef(null); 
+  const deleteDialogRef = useRef(null);
 
   const formatDate = (date) => format(new Date(date), "dd.MM.yyyy");
 
   const handleEditClick = (id, transactionType) => {
     setType(transactionType);
-    setTransactionId(id);
+    dispatch(setTransactionId(id));
     setShowEditTransaction(true);
   };
 
   const handleCloseEdit = () => {
     setType();
-    setTransactionId();
+    dispatch(setTransactionId(null));
     setShowEditTransaction(false);
   };
 
   const handleDeleteClick = (id) => {
-    setTransactionId(id);
+    dispatch(setTransactionId(id));
     deleteDialogRef.current.showModal();
   };
 
-    const handleCancelDelete = () => {
-    setTransactionId();
+  const handleCancelDelete = () => {
+    dispatch(setTransactionId(null));
     deleteDialogRef.current.close();
   };
 
   const handleConfirmDelete = async () => {
-    try {
-      const response = await axios.delete(`http://localhost:3001/home/${transactionId}`, {
-        headers: {
-          "Content-Type": "application/json",
-        },
-      });
-      setTransactionId();
-      deleteDialogRef.current.close();
-      console.log("Delete response ok:", response.data);
-    } catch (error) {
-      console.error("Error deleting transaction:", error);
-      return;
-    }
-  }
-
-useEffect(() => {
-  const handleScroll = () => {
-    if (
-      window.innerHeight + document.documentElement.scrollTop >=
-      document.documentElement.offsetHeight - 100
-    ) {
-      if (!loading && hasMore) {
-        dispatch(setLoading(true));
-        dispatch(setCurrentPage(currentPage + 1));
-      }
-    }
+    dispatch(deleteTransaction(transactionId));
+    deleteDialogRef.current.close();
   };
 
-  window.addEventListener("scroll", handleScroll);
-  return () => window.removeEventListener("scroll", handleScroll);
-}, [loading, hasMore, currentPage, dispatch]);
+  useEffect(() => {
+    const handleScroll = () => {
+      if (
+        window.innerHeight + document.documentElement.scrollTop >=
+        document.documentElement.offsetHeight - 100
+      ) {
+        if (!loading && hasMore) {
+          dispatch(setLoading(true));
+          dispatch(setCurrentPage(currentPage + 1));
+        }
+      }
+    };
+
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, [loading, hasMore, currentPage, dispatch]);
 
   useEffect(() => {
     dispatch(fetchTransactions({ page: currentPage, limit: 10 }));
@@ -125,7 +115,12 @@ useEffect(() => {
                   </span>
                 </div>
                 <div className={css.buttons}>
-                  <button className={css.deleteBtn} onClick={() => handleDeleteClick(item._id)}>Delete</button>
+                  <button
+                    className={css.deleteBtn}
+                    onClick={() => handleDeleteClick(item._id)}
+                  >
+                    Delete
+                  </button>
                   <button
                     className={css.editBtn}
                     onClick={() => handleEditClick(item._id, item.type)}
@@ -178,7 +173,12 @@ useEffect(() => {
                   >
                     <img src="/edit.svg" alt="Edit" className={css.editIcon} />
                   </button>
-                  <button className={css.deleteBtn} onClick={() => handleDeleteClick(item._id)}>Delete</button>
+                  <button
+                    className={css.deleteBtn}
+                    onClick={() => handleDeleteClick(item._id)}
+                  >
+                    Delete
+                  </button>
                 </div>
               </li>
             ))}
@@ -201,10 +201,10 @@ useEffect(() => {
         </div>
       )}
       <DeleteModal
-      ref={deleteDialogRef}
+        ref={deleteDialogRef}
         onCancel={handleCancelDelete}
         onDelete={handleConfirmDelete}
-     />
+      />
     </div>
   );
 };

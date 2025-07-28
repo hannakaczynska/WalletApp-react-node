@@ -4,6 +4,8 @@ import {
   setLoading,
   setError,
   setHasMore,
+  setTransactionId,
+  deleteTransactionReducer
 } from "./transactionSlice";
 
 export const fetchTransactions = ({ page = 1, limit = 10 }) => async (dispatch) => {
@@ -32,3 +34,21 @@ export const fetchTransactions = ({ page = 1, limit = 10 }) => async (dispatch) 
     dispatch(setLoading(false));
   }
 };
+
+export const deleteTransaction = (id) => async (dispatch) => {
+        try {
+      const response = await axios.delete(`http://localhost:3001/home/${id}`, {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+
+dispatch(deleteTransactionReducer(id));
+      dispatch(setTransactionId(null));
+    //   deleteDialogRef.current.close();
+      console.log("Delete response ok:", response.data);
+    } catch (error) {
+      console.error("Error deleting transaction:", error);
+      return;
+    }
+}

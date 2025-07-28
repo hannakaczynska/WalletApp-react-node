@@ -8,6 +8,7 @@ export const transactionSlice = createSlice({
     error: null,
     currentPage: 1,
     hasMore: true,
+    transactionId: null,
   },
   reducers: {
     setTransactions(state, action) {
@@ -31,6 +32,15 @@ export const transactionSlice = createSlice({
     setHasMore(state, action) {
       state.hasMore = action.payload;
     },
+    setTransactionId(state, action) {
+      state.transactionId = action.payload;
+    },
+    deleteTransactionReducer(state, action ) {
+      const transactionId = action.payload;
+      state.transactions = state.transactions.filter(
+        (transaction) => transaction._id !== transactionId
+      );
+    }
   },
 });
 
@@ -40,6 +50,8 @@ export const {
   setError,
   setCurrentPage,
   setHasMore,
+  setTransactionId,
+  deleteTransactionReducer
 } = transactionSlice.actions;
 
 export default transactionSlice.reducer;
