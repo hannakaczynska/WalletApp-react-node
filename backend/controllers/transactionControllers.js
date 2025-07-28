@@ -3,6 +3,7 @@ const {
   updateTransaction,
   getTransactions,
   fetchTransactionById,
+  findAndDeleteTransaction
 } = require("../models/schemas/transactionSchema");
 
 const addTransaction = async (req, res, next) => {
@@ -71,10 +72,29 @@ const getTransactionById = async (req, res, next) => {
   }
 };
 
+const deleteTransaction = async (req, res, next) => {
+  try {
+    const { id } = req.params;
+    const deletedTransaction = await findAndDeleteTransaction(id);
+    if (!deletedTransaction) {
+      return res.status(404).json({ message: "Transaction not found" });
+    }
+    res.status(200).json({
+      status: "success",
+      code: 200,
+      message: "Transaction deleted successfully",
+    });
+  } catch (error) {
+    res.status(500).json({ message: "Error deleting transaction", error });
+    next(error);
+  }
+}
+
 module.exports = {
   addTransaction,
   editTransaction,
   getAllTransactions,
-  getTransactionById
+  getTransactionById,
+  deleteTransaction
 };
 

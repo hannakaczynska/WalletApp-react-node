@@ -24,9 +24,15 @@ const fetchTransactionById = async (id) => {
   return transaction; 
 }
 
+const findAndDeleteTransaction = async (id) => {
+  const deletedTransaction = await Transaction.findByIdAndDelete(id);
+  return deletedTransaction;
+}
+
 module.exports = {
   createTransaction,
   updateTransaction,
   getTransactions,
-  fetchTransactionById
+  fetchTransactionById,
+  findAndDeleteTransaction
 };
