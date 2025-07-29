@@ -1,12 +1,17 @@
 const User = require("../User");
 
 const addUser = async (body) => {
-  const { email } = body;
+  const { email, password, name } = body;
   const existingUser = await User.findOne({ email });
   if (existingUser) {
     return false;
   }
-  const user = await User.create(body);
+  const newUser = new User({
+    email,
+    name,
+  });
+  newUser.setPassword(password);
+  const user = await newUser.save();
   return user;
 };
 

@@ -15,7 +15,7 @@ const registerUser = async (req, res, next) => {
     res.status(201).json({
       status: "success",
       code: 201,
-      data: { user },
+      data: { email: user.email, name: user.name, token: user.token, id: user._id, balance: user.balance },
     });
   } catch (err) {
     res.status(500).json({ message: "Error registering user", err });
