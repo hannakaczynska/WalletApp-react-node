@@ -2,6 +2,7 @@ const express = require("express");
 
 const transactionRoutes = require("../backend/routes/transactionRoutes.js");
 const statisticsRoutes = require("../backend/routes/statisticsRoutes.js");
+const userRoutes = require("../backend/routes/userRoutes.js");
 
 const app = express();
 
@@ -16,6 +17,7 @@ app.use((req, res, next) => {
   next();
 });
 
+app.use("/", userRoutes);
 app.use("/", transactionRoutes);
 app.use("/", statisticsRoutes);
 

@@ -23,7 +23,7 @@ function App() {
           <Route path="/diagram" element={<DashboardPage />} />
           <Route path="/current" element={<DashboardPage />} />
           
-          <Route path="/registration" element={<RegistrationPage />} />
+          <Route path="/register" element={<RegistrationPage />} />
           <Route path="/login" element={<LoginPage />} />
         </Routes>
       </Suspense>
