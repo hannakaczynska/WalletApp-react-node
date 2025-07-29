@@ -1,9 +1,13 @@
 //strengthBar - changing width on password strenght with external package/api
 import css from "./registration-form.module.css";
+import {registerUser} from "../../redux/user/userThunks";
+import {useDispatch} from "react-redux";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
 
 const RegistrationForm = () => {
+  const dispatch = useDispatch();
+
   const validationSchema = Yup.object({
     email: Yup.string()
       .email("Invalid email address")
@@ -29,7 +33,12 @@ const RegistrationForm = () => {
   };
 
   const handleSubmit = (values, { setSubmitting }) => {
-    console.log("Form submitted with values:", values);
+    const userData = {
+      name: values.name,
+      email: values.email,
+      password: values.password,
+    };
+    dispatch(registerUser(userData));
     setSubmitting(false);
   };
 
