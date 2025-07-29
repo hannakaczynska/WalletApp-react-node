@@ -11,6 +11,7 @@ import {
   setCurrentPage,
   setLoading,
   setTransactionId,
+  resetState,
 } from "../../redux/transactions/transactionSlice";
 import { format } from "date-fns";
 import ClipLoader from "react-spinners/ClipLoader";
@@ -53,10 +54,14 @@ const CashflowList = () => {
     dispatch(deleteTransaction(transactionId));
     deleteDialogRef.current.close();
   };
+
   useEffect(() => {
-    console.log("Updated transactions:", transactions);
-  }, [transactions]);
-  
+    dispatch(fetchTransactions({ page: 1, limit: 10 }));
+    return () => {
+      dispatch(resetState());
+    };
+  }, [dispatch]);
+ 
   useEffect(() => {
     const handleScroll = () => {
       if (
@@ -75,7 +80,9 @@ const CashflowList = () => {
   }, [loading, hasMore, currentPage, dispatch]);
 
   useEffect(() => {
+        if (currentPage > 1) {
     dispatch(fetchTransactions({ page: currentPage, limit: 10 }));
+        }
   }, [dispatch, currentPage]);
 
   return (

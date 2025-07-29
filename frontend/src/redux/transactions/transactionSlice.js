@@ -38,19 +38,31 @@ export const transactionSlice = createSlice({
     addTransactionReducer(state, action) {
       const newTransaction = action.payload;
       state.transactions.push(newTransaction);
+      state.transactions.sort((a, b) => new Date(b.date) - new Date(a.date));
     },
     editTransactionReducer(state, action) {
       const updatedTransaction = action.payload;
       state.transactions = state.transactions.map((transaction) =>
-        transaction._id === updatedTransaction._id ? updatedTransaction : transaction
+        transaction._id === updatedTransaction._id
+          ? updatedTransaction
+          : transaction
       );
+      state.transactions.sort((a, b) => new Date(b.date) - new Date(a.date));
     },
-    deleteTransactionReducer(state, action ) {
+    deleteTransactionReducer(state, action) {
       const transactionId = action.payload;
       state.transactions = state.transactions.filter(
         (transaction) => transaction._id !== transactionId
       );
-    }
+    },
+        resetState(state) {
+      state.transactions = [];
+      state.loading = false;
+      state.error = null;
+      state.currentPage = 1;
+      state.hasMore = true;
+      state.transactionId = null;
+    },
   },
 });
 
@@ -63,7 +75,8 @@ export const {
   setTransactionId,
   addTransactionReducer,
   editTransactionReducer,
-  deleteTransactionReducer
+  deleteTransactionReducer,
+  resetState,
 } = transactionSlice.actions;
 
 export default transactionSlice.reducer;
