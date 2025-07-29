@@ -25,11 +25,6 @@ app.get("/", (req, res) => {
   res.send("💥 Backend działa!");
 });
 
-
-app.get("/api/test", (req, res) => {
-  res.json({ message: "It is working 🎉" });
-});
-
 app.post("/home", (req, res) => {
   const { name, email } = req.body;
   res.json({ message: "User created", user: { name, email } });

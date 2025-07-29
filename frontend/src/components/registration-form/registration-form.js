@@ -1,70 +1,130 @@
 //strengthBar - changing width on password strenght with external package/api
-
 import css from "./registration-form.module.css";
+import { Formik, Form, Field, ErrorMessage } from "formik";
+import * as Yup from "yup";
 
 const RegistrationForm = () => {
+  const validationSchema = Yup.object({
+    email: Yup.string()
+      .email("Invalid email address")
+      .required("Email is required"),
+    password: Yup.string()
+      .min(6, "Password must be at least 6 characters")
+      .max(12, "Password must be at most 12 characters")
+      .required("Password is required"),
+    confirmPassword: Yup.string()
+      .oneOf([Yup.ref("password"), null], "Passwords must match")
+      .required("Confirm password is required"),
+    name: Yup.string()
+      .min(1, "Name must be at least 1 character")
+      .max(12, "Name must be at most 12 characters")
+      .required("Name is required"),
+  });
+
+  const initialValues = {
+    email: "",
+    password: "",
+    confirmPassword: "",
+    name: "",
+  };
+
+  const handleSubmit = (values, { setSubmitting }) => {
+    console.log("Form submitted with values:", values);
+    setSubmitting(false);
+  };
+
   return (
     <div className={css.formWrapper}>
       <img src="/logo.svg" alt="Logo" className={css.logo} />
-      <form className={css.form}>
-        <div className={css.inputGroup}>
-          <img src="/email.svg" alt="Email icon" className={css.icon} />
-          <input
-            type="email"
-            id="email"
-            name="email"
-            className={css.input}
-            placeholder="E-mail"
-            required
-          />
-        </div>
+      <Formik
+        initialValues={initialValues}
+        validationSchema={validationSchema}
+        onSubmit={handleSubmit}
+      >
+        {({ isSubmitting }) => (
+          <Form className={css.form}>
+            {/* Email Input */}
+            <div className={css.inputGroup}>
+              <img src="/email.svg" alt="Email icon" className={css.icon} />
+              <Field
+                type="email"
+                name="email"
+                className={css.input}
+                placeholder="E-mail"
+              />
+              <ErrorMessage
+                name="email"
+                component="div"
+                className={css.error}
+              />
+            </div>
 
-        <div className={css.inputGroup}>
-          <img src="/lock.svg" alt="Lock icon" className={css.icon} />
-          <input
-            type="password"
-            id="password"
-            name="password"
-            className={css.input}
-            placeholder="Password"
-            required
-          />
-        </div>
+            {/* Password Input */}
+            <div className={css.inputGroup}>
+              <img src="/lock.svg" alt="Lock icon" className={css.icon} />
+              <Field
+                type="password"
+                name="password"
+                className={css.input}
+                placeholder="Password"
+              />
+              <ErrorMessage
+                name="password"
+                component="div"
+                className={css.error}
+              />
+            </div>
 
-        <div className={css.inputGroup}>
-          <img src="/lock.svg" alt="Lock icon" className={css.icon} />
-          <input
-            type="password"
-            id="confirmPassword"
-            name="confirmPassword"
-            className={css.input}
-            placeholder="Confirm password"
-            required
-          />
-          <div className={css.strengthStrip}></div>
-          <div className={css.strengthBar}></div>
-        </div>
-        <div className={css.inputGroup}>
-          <img src="/account.svg" alt="Account icon" className={css.icon} />
-          <input
-            type="text"
-            id="firstName"
-            name="firstName"
-            className={`${css.input} ${css.nameInput}`}
-            placeholder="First name"
-            required
-          />
-        </div>
+            {/* Confirm Password Input */}
+            <div className={css.inputGroup}>
+              <img src="/lock.svg" alt="Lock icon" className={css.icon} />
+              <Field
+                type="password"
+                name="confirmPassword"
+                className={css.input}
+                placeholder="Confirm password"
+              />
+              <div className={css.strengthStrip}></div>
+              <div className={css.strengthBar}></div>
+              <ErrorMessage
+                name="confirmPassword"
+                component="div"
+                className={`${css.error} ${css.confirmPasswordError}`}
+              />
+            </div>
 
-        <div className={css.buttonGroup}>
-          <button type="submit" className={css.registerButton}>
-            Register
-          </button>
-          <button type="button" className={css.loginButton}>
-            Login
-          </button>
-        </div>
-      </form>
+            {/* Name Input */}
+            <div className={css.inputGroup}>
+              <img src="/account.svg" alt="Account icon" className={css.icon} />
+              <Field
+                type="text"
+                name="name"
+                className={`${css.input} ${css.nameInput}`}
+                placeholder="First name"
+              />
+              <ErrorMessage
+                name="name"
+                component="div"
+                className={css.error}
+              />
+            </div>
+
+            {/* Buttons */}
+            <div className={css.buttonGroup}>
+              <button
+                type="submit"
+                className={css.registerButton}
+                disabled={isSubmitting}
+              >
+                Register
+              </button>
+              <button type="button" className={css.loginButton}>
+                Login
+              </button>
+            </div>
+          </Form>
+        )}
+      </Formik>
     </div>
   );
 };
