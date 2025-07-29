@@ -2,6 +2,11 @@ import css from "./transaction.module.css";
 import calendarCss from "./calendar.module.css";
 import axios from "axios";
 import { useState, useEffect } from "react";
+import { useDispatch } from "react-redux";
+import {
+  addTransaction,
+  editTransaction,
+} from "../../redux/transactions/transactionThunks";
 import ReactDOM from "react-dom";
 import List from "../list/list";
 import Calendar from "react-calendar";
@@ -25,9 +30,8 @@ const categoryOptions = [
   "Entertainment",
 ];
 
-///updateing vuex state for cashflow list after adding, editing or deleting transaction
-
 const TransactionForm = ({ onItemClick, isEditing, type, transactionId }) => {
+  const dispatch = useDispatch();
   const [isIncome, setIsIncome] = useState(
     isEditing ? (type === "income" ? true : false) : true
   );
@@ -120,48 +124,22 @@ const TransactionForm = ({ onItemClick, isEditing, type, transactionId }) => {
     };
 
     try {
-      let response;
       if (isEditing) {
-        response = await axios.put(
-          `http://localhost:3001/home/${transactionId}`,
-          transactionData,
-          {
-            headers: {
-              "Content-Type": "application/json",
-            },
-          }
-        );
+        dispatch(editTransaction(transactionId, transactionData));
+        toast.success("Transaction updated successfully!");
       } else {
-        response = await axios.post(
-          "http://localhost:3001/home",
-          transactionData,
-          {
-            headers: {
-              "Content-Type": "application/json",
-            },
-          }
-        );
+        dispatch(addTransaction(transactionData));
+        toast.success("Transaction added successfully!");
       }
-
-      if (response.status === 201 || response.status === 200) {
-        console.log("Transaction added/updated successfully:", response);
-        toast.success(
-          isEditing
-            ? "Transaction updated successfully!"
-            : "Transaction added successfully!"
-        );
-        setTimeout(() => {
-          handleModalClose();
-        }, 3000);
-      } else {
-        toast.error(
-          isEditing
-            ? "Failed to update transaction."
-            : "Failed to add transaction."
-        );
-      }
+      setTimeout(() => {
+        handleModalClose();
+      }, 3000);
     } catch (error) {
-      toast.error("An error occurred while adding the transaction.");
+      toast.error(
+        isEditing
+          ? "Failed to update transaction."
+          : "Failed to add transaction."
+      );
     } finally {
       setSubmitting(false);
     }
@@ -203,184 +181,186 @@ const TransactionForm = ({ onItemClick, isEditing, type, transactionId }) => {
       >
         {initialValues ? (
           <>
-        <ToastContainer
-          position="top-right"
-          autoClose={3000}
-          hideProgressBar={false}
-          newestOnTop={false}
-          closeOnClick
-          rtl={false}
-          pauseOnFocusLoss
-          draggable
-          pauseOnHover
-          theme="light"
-        />
-        <img
-          src="/close.svg"
-          alt="Close"
-          className={css.closeIcon}
-          onClick={handleModalClose}
-        />
-        {isEditing ? (
-          <h2 className={css.formTitle}>Edit transaction</h2>
-        ) : (
-          <h2 className={css.formTitle}>Add transaction</h2>
-        )}
-
-        <div
-          className={`${css.switchContainer} ${
-            isEditing ? css.infoContainer : ""
-          }`}
-        >
-          <div className={isIncome ? css.income : css.text}>Income</div>
-          {isEditing ? (
-            <img src="/slash.svg" alt="Slash" className={css.slashIcon} />
-          ) : (
-            <div className={css.switchButton} onClick={handleSwitchButton}>
-              {isIncome ? (
-                <img src="/add.svg" alt="Add" className={css.plusIcon} />
-              ) : (
-                <img src="/minus.svg" alt="Minus" className={css.minusIcon} />
-              )}
-            </div>
-          )}
-          <div className={!isIncome ? css.expense : css.text}>Expense</div>
-        </div>
-
-          <Formik
-            initialValues={initialValues}
-            validationSchema={getValidationSchema(isIncome)}
-            onSubmit={handleSubmit}
-          >
-            {({ setFieldValue, values }) => (
-              <Form className={css.form}>
-                {/* Category Input */}
-                {!isIncome && (
-                  <div className={css.inputGroup}>
-                    <Field
-                      type="text"
-                      name="category"
-                      className={`${css.input} ${css.categoryInput}`}
-                      placeholder="Select a category"
-                      value={values.category}
-                      onClick={toggleCategoryList}
-                      readOnly
-                    />
-                    <img
-                      src="/arrow.svg"
-                      alt="Arrow icon"
-                      className={css.arrowIcon}
-                      onClick={toggleCategoryList}
-                    />
-                    {showCategoryList && (
-                      <div className={css.listContainer}>
-                        <List
-                          data={categoryOptions}
-                          onItemClick={(category) =>
-                            handleCategorySelect(category, setFieldValue)
-                          }
-                          isCategoryList={true}
-                        />
-                      </div>
-                    )}
-                    <ErrorMessage
-                      name="category"
-                      component="div"
-                      className={css.error}
-                    />
-                  </div>
-                )}
-
-                {/* Amount Input */}
-                <div className={css.inputGroupRow}>
-                  <div className={css.inputGroup}>
-                    <Field
-                      type="number"
-                      name="amount"
-                      className={`${css.input} ${css.amountInput}`}
-                      placeholder="0.00"
-                      step="0.01"
-                      min={0}
-                      value={values.amount}
-                      onBlur={(e) =>
-                        handleAmountBlur(e.target.value, setFieldValue)
-                      }
-                    />
-                    <ErrorMessage
-                      name="amount"
-                      component="div"
-                      className={css.error}
-                    />
-                  </div>
-
-                  {/* Date Input */}
-                  <div className={css.inputGroup}>
-                    <Field
-                      type="text"
-                      name="date"
-                      className={`${css.input} ${css.dateInput}`}
-                      value={inputDate}
-                      disabled
-                    />
-                    <img
-                      src="/calendar.svg"
-                      alt="Calendar icon"
-                      className={css.calendarIcon}
-                      onClick={toggleCalendar}
-                    />
-                  </div>
-                </div>
-
-                {/* Comment Input */}
-                <div className={css.inputGroup}>
-                  <Field
-                    as="textarea"
-                    name="comment"
-                    className={`${css.input} ${css.commentInput}`}
-                    placeholder="Comment"
-                  />
-                  <ErrorMessage
-                    name="comment"
-                    component="div"
-                    className={css.error}
-                  />
-                </div>
-
-                {/* Buttons */}
-                <div className={css.buttonGroup}>
-                  <button type="submit" className={css.addButton}>
-                    {isEditing ? "Save" : "Add"}
-                  </button>
-                  <button
-                    type="button"
-                    className={css.cancelButton}
-                    onClick={handleModalClose}
-                  >
-                    Cancel
-                  </button>
-                </div>
-                {showCalendar && (
-                  <div className={calendarCss.calendarContainer}>
-                    <Calendar
-                      locale="en-US"
-                      onChange={(selectedDate) => {
-                        setFieldValue("date", selectedDate);
-                        setShowCalendar(false);
-                        handleInputDate(selectedDate);
-                      }}
-                      value={values.date}
-                      className={calendarCss.reactCalendar}
-                    />
-                  </div>
-                )}
-              </Form>
+            <ToastContainer
+              position="top-right"
+              autoClose={3000}
+              hideProgressBar={false}
+              newestOnTop={false}
+              closeOnClick
+              rtl={false}
+              pauseOnFocusLoss
+              draggable
+              pauseOnHover
+              theme="light"
+            />
+            <img
+              src="/close.svg"
+              alt="Close"
+              className={css.closeIcon}
+              onClick={handleModalClose}
+            />
+            {isEditing ? (
+              <h2 className={css.formTitle}>Edit transaction</h2>
+            ) : (
+              <h2 className={css.formTitle}>Add transaction</h2>
             )}
-          </Formik>
+
+            <div
+              className={`${css.switchContainer} ${
+                isEditing ? css.infoContainer : ""
+              }`}
+            >
+              <div className={isIncome ? css.income : css.text}>Income</div>
+              {isEditing ? (
+                <img src="/slash.svg" alt="Slash" className={css.slashIcon} />
+              ) : (
+                <div className={css.switchButton} onClick={handleSwitchButton}>
+                  {isIncome ? (
+                    <img src="/add.svg" alt="Add" className={css.plusIcon} />
+                  ) : (
+                    <img
+                      src="/minus.svg"
+                      alt="Minus"
+                      className={css.minusIcon}
+                    />
+                  )}
+                </div>
+              )}
+              <div className={!isIncome ? css.expense : css.text}>Expense</div>
+            </div>
+
+            <Formik
+              initialValues={initialValues}
+              validationSchema={getValidationSchema(isIncome)}
+              onSubmit={handleSubmit}
+            >
+              {({ setFieldValue, values }) => (
+                <Form className={css.form}>
+                  {/* Category Input */}
+                  {!isIncome && (
+                    <div className={css.inputGroup}>
+                      <Field
+                        type="text"
+                        name="category"
+                        className={`${css.input} ${css.categoryInput}`}
+                        placeholder="Select a category"
+                        value={values.category}
+                        onClick={toggleCategoryList}
+                        readOnly
+                      />
+                      <img
+                        src="/arrow.svg"
+                        alt="Arrow icon"
+                        className={css.arrowIcon}
+                        onClick={toggleCategoryList}
+                      />
+                      {showCategoryList && (
+                        <div className={css.listContainer}>
+                          <List
+                            data={categoryOptions}
+                            onItemClick={(category) =>
+                              handleCategorySelect(category, setFieldValue)
+                            }
+                            isCategoryList={true}
+                          />
+                        </div>
+                      )}
+                      <ErrorMessage
+                        name="category"
+                        component="div"
+                        className={css.error}
+                      />
+                    </div>
+                  )}
+
+                  {/* Amount Input */}
+                  <div className={css.inputGroupRow}>
+                    <div className={css.inputGroup}>
+                      <Field
+                        type="number"
+                        name="amount"
+                        className={`${css.input} ${css.amountInput}`}
+                        placeholder="0.00"
+                        step="0.01"
+                        min={0}
+                        value={values.amount}
+                        onBlur={(e) =>
+                          handleAmountBlur(e.target.value, setFieldValue)
+                        }
+                      />
+                      <ErrorMessage
+                        name="amount"
+                        component="div"
+                        className={css.error}
+                      />
+                    </div>
+
+                    {/* Date Input */}
+                    <div className={css.inputGroup}>
+                      <Field
+                        type="text"
+                        name="date"
+                        className={`${css.input} ${css.dateInput}`}
+                        value={inputDate}
+                        disabled
+                      />
+                      <img
+                        src="/calendar.svg"
+                        alt="Calendar icon"
+                        className={css.calendarIcon}
+                        onClick={toggleCalendar}
+                      />
+                    </div>
+                  </div>
+
+                  {/* Comment Input */}
+                  <div className={css.inputGroup}>
+                    <Field
+                      as="textarea"
+                      name="comment"
+                      className={`${css.input} ${css.commentInput}`}
+                      placeholder="Comment"
+                    />
+                    <ErrorMessage
+                      name="comment"
+                      component="div"
+                      className={css.error}
+                    />
+                  </div>
+
+                  {/* Buttons */}
+                  <div className={css.buttonGroup}>
+                    <button type="submit" className={css.addButton}>
+                      {isEditing ? "Save" : "Add"}
+                    </button>
+                    <button
+                      type="button"
+                      className={css.cancelButton}
+                      onClick={handleModalClose}
+                    >
+                      Cancel
+                    </button>
+                  </div>
+                  {showCalendar && (
+                    <div className={calendarCss.calendarContainer}>
+                      <Calendar
+                        locale="en-US"
+                        onChange={(selectedDate) => {
+                          setFieldValue("date", selectedDate);
+                          setShowCalendar(false);
+                          handleInputDate(selectedDate);
+                        }}
+                        value={values.date}
+                        className={calendarCss.reactCalendar}
+                      />
+                    </div>
+                  )}
+                </Form>
+              )}
+            </Formik>
           </>
         ) : (
-
           <ClipLoader color="#4A56E2" size={100} />
-
         )}
       </div>
     </div>,

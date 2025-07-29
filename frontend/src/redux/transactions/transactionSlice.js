@@ -35,6 +35,16 @@ export const transactionSlice = createSlice({
     setTransactionId(state, action) {
       state.transactionId = action.payload;
     },
+    addTransactionReducer(state, action) {
+      const newTransaction = action.payload;
+      state.transactions.push(newTransaction);
+    },
+    editTransactionReducer(state, action) {
+      const updatedTransaction = action.payload;
+      state.transactions = state.transactions.map((transaction) =>
+        transaction._id === updatedTransaction._id ? updatedTransaction : transaction
+      );
+    },
     deleteTransactionReducer(state, action ) {
       const transactionId = action.payload;
       state.transactions = state.transactions.filter(
@@ -51,6 +61,8 @@ export const {
   setCurrentPage,
   setHasMore,
   setTransactionId,
+  addTransactionReducer,
+  editTransactionReducer,
   deleteTransactionReducer
 } = transactionSlice.actions;
 

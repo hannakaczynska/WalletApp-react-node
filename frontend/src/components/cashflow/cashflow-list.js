@@ -53,7 +53,10 @@ const CashflowList = () => {
     dispatch(deleteTransaction(transactionId));
     deleteDialogRef.current.close();
   };
-
+  useEffect(() => {
+    console.log("Updated transactions:", transactions);
+  }, [transactions]);
+  
   useEffect(() => {
     const handleScroll = () => {
       if (

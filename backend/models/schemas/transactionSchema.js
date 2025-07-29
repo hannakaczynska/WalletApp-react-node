@@ -6,12 +6,12 @@ const createTransaction = async (body) => {
 }
 
 const updateTransaction = async (id, body) => {
-  const updatedTransaction = await Transaction.findById(id);
-  if (!updatedTransaction) {
+  const findTransaction = await Transaction.findById(id);
+  if (!findTransaction) {
     return false;
-  } 
-  await Transaction.findByIdAndUpdate(id, body);
-  return true;
+  }
+  const updatedTransaction = await Transaction.findByIdAndUpdate(id, body);
+  return updatedTransaction;
 }
 
 const getTransactions = async (limit, offset) => {
