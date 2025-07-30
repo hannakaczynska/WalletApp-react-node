@@ -1,3 +1,5 @@
+require('dotenv').config();
+
 const express = require("express");
 
 const transactionRoutes = require("../backend/routes/transactionRoutes.js");
@@ -5,8 +7,6 @@ const statisticsRoutes = require("../backend/routes/statisticsRoutes.js");
 const userRoutes = require("../backend/routes/userRoutes.js");
 
 const app = express();
-
-require('dotenv').config();
 
 app.use(express.json());
 

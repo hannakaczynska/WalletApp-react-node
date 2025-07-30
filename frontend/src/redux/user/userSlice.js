@@ -3,12 +3,17 @@ import { createSlice } from "@reduxjs/toolkit";
 export const sessionSlice = createSlice({
   name: "session",
   initialState: {
+    isAuth: false,
     token: null,
     loading: false,
     error: null,
     user: null,
+    balance: 0,
   },
   reducers: {
+    setIsAuth(state, action) {
+      state.isAuth = action.payload;
+    },
     setUser(state, action) {
       state.user = action.payload;
     },
@@ -20,6 +25,9 @@ export const sessionSlice = createSlice({
     },
     setToken(state, action) {
       state.token = action.payload;
+    },
+    setBalance(state, action) {
+      state.balance = action.payload;
     },
     resetState(state) {
       state.token = null;
@@ -35,6 +43,7 @@ export const {
   setLoading,
   setError,
   setToken,
+    setBalance,
   resetState,
 } = sessionSlice.actions;
 

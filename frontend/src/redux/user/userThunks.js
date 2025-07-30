@@ -1,5 +1,5 @@
 import axios from "axios";
-import { setError } from "../user/userSlice";
+import { setError, setUser, setToken, setBalance } from "../user/userSlice";
 
 export const registerUser = (userData) => async (dispatch) => {
   try {
@@ -12,8 +12,11 @@ export const registerUser = (userData) => async (dispatch) => {
       dispatch(setError("Email already in use"));
       return;
     }
-    console.log("User registered successfully:", response.data);
-    //   dispatch(setUser(response.data));
+    const { token, email, name, id, balance } = response.data.data;
+    console.log("User registered successfully:", response.data.data);
+    dispatch(setUser({ email, name, id }));
+    dispatch(setToken(token));
+    dispatch(setBalance(balance));
   } catch (error) {
     console.error("Error registering user:", error);
   }
