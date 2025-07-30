@@ -1,12 +1,9 @@
-import axios from "axios";
+import api from "../../api/api"; 
 import { setError, setUser, setToken, setBalance } from "../user/userSlice";
 
 export const registerUser = (userData) => async (dispatch) => {
   try {
-    const response = await axios.post(
-      "http://localhost:3001/register",
-      userData
-    );
+    const response = await api.post("/register", userData);
     if (response.status === 409) {
       console.error("Email already in use");
       dispatch(setError("Email already in use"));

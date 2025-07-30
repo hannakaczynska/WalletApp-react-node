@@ -1,7 +1,7 @@
 import css from "./diagram.module.css";
 import { PieChart, Pie, Cell, ResponsiveContainer } from "recharts";
 import { useState, useEffect } from "react";
-import axios from "axios";
+import api from "../../api/api";
 import List from "../list/list";
 
 const COLORS = [
@@ -61,15 +61,12 @@ const Diagram = () => {
 
   const fetchStatistics = async (month, year) => {
     try {
-        const response = await axios.get("http://localhost:3001/diagram", {
-        params: {
-          month,
-          year,
-        },
-        headers: {
-          "Content-Type": "application/json",
-        },
-      });
+    const response = await api.get("/diagram", {
+      params: {
+        month,
+        year,
+      },
+    });
       if (response.status !== 200) {
         throw new Error("Failed to fetch statistics");
       }

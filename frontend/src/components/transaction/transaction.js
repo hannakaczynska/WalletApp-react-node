@@ -1,6 +1,6 @@
 import css from "./transaction.module.css";
 import calendarCss from "./calendar.module.css";
-import axios from "axios";
+import api from "../../api/api"; 
 import { useState, useEffect } from "react";
 import { useDispatch } from "react-redux";
 import {
@@ -90,14 +90,7 @@ const TransactionForm = ({ onItemClick, isEditing, type, transactionId }) => {
 
   const fetchTransactionById = async () => {
     try {
-      const response = await axios.get(
-        `http://localhost:3001/home/${transactionId}`,
-        {
-          headers: {
-            "Content-Type": "application/json",
-          },
-        }
-      );
+const response = await api.get(`/home/${transactionId}`); 
       if (response.status === 200) {
         const transaction = response.data.data.transaction;
         const formattedAmount = handleAmountFormat(transaction.amount);

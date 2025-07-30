@@ -1,4 +1,4 @@
-import axios from "axios";
+import api from "../../api/api";
 import {
   setTransactions,
   setLoading,
@@ -15,13 +15,10 @@ export const fetchTransactions =
   async (dispatch) => {
     dispatch(setLoading(true));
     try {
-      const response = await axios.get("http://localhost:3001/home", {
+      const response = await api.get("/home", {
         params: {
           limit,
           offset: (page - 1) * limit,
-        },
-        headers: {
-          "Content-Type": "application/json",
         },
       });
 
@@ -40,11 +37,7 @@ export const fetchTransactions =
 
 export const deleteTransaction = (id) => async (dispatch) => {
   try {
-    await axios.delete(`http://localhost:3001/home/${id}`, {
-      headers: {
-        "Content-Type": "application/json",
-      },
-    });
+    await api.delete(`/home/${id}`);
 
     dispatch(deleteTransactionReducer(id));
     dispatch(setTransactionId(null));
@@ -56,27 +49,19 @@ export const deleteTransaction = (id) => async (dispatch) => {
 
 export const addTransaction = (transaction) => async (dispatch) => {
   try {
-    const response = await axios.post("http://localhost:3001/home", transaction, {
-      headers: {
-        "Content-Type": "application/json",
-      },
-    });
+    const response = await api.post("/home", transaction);
 
     if (response.status === 201) {
       dispatch(addTransactionReducer(response.data.data.transaction));
     }
   } catch (error) {
     console.error("Error adding transaction:", error);
-  } 
+  }
 };
 
 export const editTransaction = (id, updatedTransaction) => async (dispatch) => {
   try {
-    const response = await axios.put(`http://localhost:3001/home/${id}`, updatedTransaction, {
-      headers: {
-        "Content-Type": "application/json",
-      },
-    });
+    const response = await api.put(`/home/${id}`, updatedTransaction);
     if (response.status === 200) {
       dispatch(editTransactionReducer(response.data.data.transaction));
       dispatch(setTransactionId(null));
