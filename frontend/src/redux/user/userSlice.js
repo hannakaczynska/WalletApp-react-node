@@ -39,6 +39,7 @@ export const sessionSlice = createSlice({
 });
 
 export const {
+  setIsAuth,
   setUser,
   setLoading,
   setError,
