@@ -9,7 +9,7 @@ export const registerUser = (userData) => async (dispatch) => {
     if (response.status === 409) {
       dispatch(setError("Email already in use"));
       dispatch(setIsAuth(false));
-      return;
+      return false;
     }
     const { token, email, name, id, balance } = response.data.data;
     dispatch(setIsAuth(true));
@@ -17,22 +17,28 @@ export const registerUser = (userData) => async (dispatch) => {
     dispatch(setUser({ email, name, id }));
     dispatch(setToken(token));
     dispatch(setBalance(balance));
+    console.log("User registered successfully:", response.data);
+    return true;
   } catch (error) {
     dispatch(setIsAuth(false));
     dispatch(setError("Registration failed"));
     console.error("Error registering user:", error);
+    return false;
   }
 };
 
 
-export const logoutUser = () => async (dispatch) => {
+export const logoutUser = () => async (dispatch, getState) => {
+  const { user } = getState().session;
   try {
-    // await api.post("/logout");
+    await api.post("/logout", {
+        id: user.id
+    });
     dispatch(resetUserState());
     dispatch(resetState());
-    console.log("User logged out successfully");
-//redirect
+    return true;
   } catch (error) {
     console.error("Error logging out user:", error);
+    return false;
   }
 }

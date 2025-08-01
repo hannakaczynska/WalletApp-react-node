@@ -13,7 +13,7 @@ const DashboardPage = lazy(() => import("./pages/dashboard/DashboardPage"));
 const NotFoundPage = lazy(() => import("./pages/not-found/NotFoundPage"));
 
 function App() {
-  const hideHeaderRoutes = ["/login", "/registration"];
+  const hideHeaderRoutes = ["/login", "/register"];
   const shouldShowHeader = !hideHeaderRoutes.includes(window.location.pathname);
 
   const navigate = useNavigate();

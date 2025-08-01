@@ -1,13 +1,27 @@
 import css from "./header.module.css";
 import LogoutModal from "../modal/logout-modal";
 import { useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { logoutUser } from "../../redux/user/userThunks";
+import { useNavigate } from "react-router-dom"; 
 
 const Header = () => {
-  const name = "Name";
+  const user = useSelector((state) => state.session.user);
+  const name = user?.name || "User";
   const [isLogoutModalOpen, setLogoutModalOpen] = useState(false);
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   const handleLogoutModal = () => {
     setLogoutModalOpen(!isLogoutModalOpen);
+  };
+
+  const handleLogout = () => {
+   const result = dispatch(logoutUser());
+    if (result) {
+          handleLogoutModal();
+      navigate("/login");
+    }
   };
 
   return (
@@ -23,7 +37,7 @@ const Header = () => {
       </div>
       {isLogoutModalOpen && (
       <div className={css.logoutModal}>
-        <LogoutModal onClose={handleLogoutModal} onConfirm={handleLogoutModal} />
+        <LogoutModal onClose={handleLogoutModal} onConfirm={handleLogout} />
       </div>
     )}
     </div>

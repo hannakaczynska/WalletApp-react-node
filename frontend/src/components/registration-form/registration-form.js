@@ -2,11 +2,13 @@
 import css from "./registration-form.module.css";
 import {registerUser} from "../../redux/user/userThunks";
 import {useDispatch} from "react-redux";
+import { useNavigate } from "react-router-dom";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
 
 const RegistrationForm = () => {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   const validationSchema = Yup.object({
     email: Yup.string()
@@ -32,13 +34,16 @@ const RegistrationForm = () => {
     name: "",
   };
 
-  const handleSubmit = (values, { setSubmitting }) => {
+  const handleSubmit = async (values, { setSubmitting }) => {
     const userData = {
       name: values.name,
       email: values.email,
       password: values.password,
     };
-    dispatch(registerUser(userData));
+   const result = dispatch(registerUser(userData));
+    if (result) {
+      navigate("/home");
+    }
     setSubmitting(false);
   };
 
