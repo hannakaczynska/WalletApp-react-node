@@ -66,6 +66,16 @@
   line-height: 100%;
 }
 
+.error {
+  position: absolute;
+  width: 100%;
+  font-size: 12px;
+  font-family: var(--font-secondary);
+  color: var(--red);
+  bottom: -20px;
+  left: 0;  
+}
+
 .buttonGroup {
   display: flex;
   flex-direction: column;

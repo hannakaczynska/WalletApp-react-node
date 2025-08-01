@@ -40,7 +40,7 @@ const RegistrationForm = () => {
       email: values.email,
       password: values.password,
     };
-   const result = dispatch(registerUser(userData));
+   const result = await dispatch(registerUser(userData));
     if (result) {
       navigate("/home");
     }
