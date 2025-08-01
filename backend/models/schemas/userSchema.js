@@ -27,6 +27,18 @@ const addUser = async (body) => {
   return user;
 };
 
+const login = async (body) => {
+  const { email, password } = body;
+  const user = await User.findOne({ email });
+  if (!user || !user.validPassword(password)) {
+    return false;
+  }
+  const token = jwt.sign({ id: user._id }, JWT_SECRET, { expiresIn: "1h" });
+  user.token = token;
+  await user.save();
+  return user;
+};
+
 const logout = async (id) => {
   const user = await User.findById({ _id: id });
   if (!user) {
@@ -39,5 +51,6 @@ const logout = async (id) => {
 
 module.exports = {
   addUser,
+  login,
   logout,
 };

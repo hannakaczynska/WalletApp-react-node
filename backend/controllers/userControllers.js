@@ -1,5 +1,6 @@
 const {
   addUser,
+  login,
   logout
 } = require("../models/schemas/userSchema");
 
@@ -20,6 +21,27 @@ const registerUser = async (req, res, next) => {
     });
   } catch (err) {
     res.status(500).json({ message: "Error registering user", err });
+    next(err);
+  }
+};
+
+const loginUser = async (req, res, next) => {
+  try {
+    const user = await login(req.body);
+    if (!user) {
+      return res.status(401).json({
+        status: "error",
+        code: 401,
+        message: "Invalid email or password",
+      });
+    }
+    res.status(200).json({
+      status: "success",
+      code: 200,
+      data: { email: user.email, name: user.name, token: user.token, id: user._id, balance: user.balance },
+    });
+  } catch (err) {
+    res.status(500).json({ message: "Error logging in user", err });
     next(err);
   }
 };
@@ -46,5 +68,6 @@ const logoutUser = async (req, res, next) => {
 
 module.exports = {
   registerUser,
+  loginUser,
   logoutUser
 };
