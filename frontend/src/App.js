@@ -5,9 +5,12 @@ import { useNavigate } from "react-router-dom";
 import { setNavigate } from "./utils/navigation";
 import "./App.css";
 import Header from "./components/header/header";
+import ClipLoader from "react-spinners/ClipLoader";
 import ProtectedRoute from "../src/guards/protectedRoute";
 
-const RegistrationPage = lazy(() => import("./pages/registration/RegistrationPage"));
+const RegistrationPage = lazy(() =>
+  import("./pages/registration/RegistrationPage")
+);
 const LoginPage = lazy(() => import("./pages/login/LoginPage"));
 const DashboardPage = lazy(() => import("./pages/dashboard/DashboardPage"));
 const NotFoundPage = lazy(() => import("./pages/not-found/NotFoundPage"));
@@ -18,43 +21,49 @@ function App() {
 
   const navigate = useNavigate();
   React.useEffect(() => {
-    setNavigate(navigate); 
+    setNavigate(navigate);
   }, [navigate]);
 
   return (
     <>
       {shouldShowHeader && <Header />}
-      <Suspense fallback={<div>Loading...</div>}>
-          <Routes>
-            <Route path="/" element={<Navigate to="/home" replace />} />
-            <Route
-              path="/home"
-              element={
-                <ProtectedRoute>
-                  <DashboardPage />
-                </ProtectedRoute>
-              }
-            />
-            <Route
-              path="/diagram"
-              element={
-                <ProtectedRoute>
-                  <DashboardPage />
-                </ProtectedRoute>
-              }
-            />
-            <Route
-              path="/current"
-              element={
-                <ProtectedRoute>
-                  <DashboardPage />
-                </ProtectedRoute>
-              }
-            />
-            <Route path="/register" element={<RegistrationPage />} />
-            <Route path="/login" element={<LoginPage />} />
-            <Route path="*" element={<NotFoundPage />} />
-          </Routes>
+      <Suspense
+        fallback={
+          <div className="spinner-container">
+            <ClipLoader color="#4A56E2" size={100} />
+          </div>
+        }
+      >
+        <Routes>
+          <Route path="/" element={<Navigate to="/home" replace />} />
+          <Route
+            path="/home"
+            element={
+              <ProtectedRoute>
+                <DashboardPage />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/diagram"
+            element={
+              <ProtectedRoute>
+                <DashboardPage />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/current"
+            element={
+              <ProtectedRoute>
+                <DashboardPage />
+              </ProtectedRoute>
+            }
+          />
+          <Route path="/register" element={<RegistrationPage />} />
+          <Route path="/login" element={<LoginPage />} />
+          <Route path="*" element={<NotFoundPage />} />
+        </Routes>
       </Suspense>
     </>
   );

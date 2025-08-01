@@ -2,7 +2,7 @@
 import css from "./registration-form.module.css";
 import {registerUser} from "../../redux/user/userThunks";
 import {useDispatch} from "react-redux";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
 
@@ -132,9 +132,11 @@ const RegistrationForm = () => {
               >
                 Register
               </button>
+              <Link to="/login">
               <button type="button" className={css.loginButton}>
                 Login
               </button>
+              </Link>
             </div>
           </Form>
         )}

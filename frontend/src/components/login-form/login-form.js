@@ -1,6 +1,5 @@
-//strengthBar - changing width on password strenght with external package/api
-
 import css from "./login-form.module.css";
+import { Link } from "react-router-dom";
 
 const LoginForm = () => {
   return (
@@ -32,12 +31,14 @@ const LoginForm = () => {
         </div>
 
         <div className={css.buttonGroup}>
-          <button type="button" className={css.loginButton}>
+          <button type="submit" className={css.loginButton}>
             Login
           </button>
-          <button type="submit" className={css.registerButton}>
+          <Link to="/register">
+          <button type="button" className={css.registerButton}>
             Register
           </button>
+          </Link>
         </div>
       </form>
     </div>
