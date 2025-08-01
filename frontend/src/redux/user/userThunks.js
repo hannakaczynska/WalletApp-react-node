@@ -1,5 +1,7 @@
 import api from "../../api/api"; 
-import { setIsAuth, setError, setUser, setToken, setBalance } from "../user/userSlice";
+import { setIsAuth, setError, setUser, setToken, setBalance, resetUserState
+ } from "../user/userSlice";
+ import { resetState } from "../transactions/transactionSlice"; 
 
 export const registerUser = (userData) => async (dispatch) => {
   try {
@@ -21,3 +23,16 @@ export const registerUser = (userData) => async (dispatch) => {
     console.error("Error registering user:", error);
   }
 };
+
+
+export const logoutUser = () => async (dispatch) => {
+  try {
+    // await api.post("/logout");
+    dispatch(resetUserState());
+    dispatch(resetState());
+    console.log("User logged out successfully");
+//redirect
+  } catch (error) {
+    console.error("Error logging out user:", error);
+  }
+}

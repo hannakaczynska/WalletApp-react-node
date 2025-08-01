@@ -29,11 +29,13 @@ export const sessionSlice = createSlice({
     setBalance(state, action) {
       state.balance = action.payload;
     },
-    resetState(state) {
+    resetUserState(state) {
+      state.isAuth = false;
       state.token = null;
       state.loading = false;
       state.error = null;
       state.user = null;
+      state.balance = 0;
     },
   },
 });
@@ -45,7 +47,7 @@ export const {
   setError,
   setToken,
     setBalance,
-  resetState,
+    resetUserState,
 } = sessionSlice.actions;
 
 export default sessionSlice.reducer;

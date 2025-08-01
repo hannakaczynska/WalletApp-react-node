@@ -1,5 +1,6 @@
 const {
-  addUser
+  addUser,
+  logout
 } = require("../models/schemas/userSchema");
 
 const registerUser = async (req, res, next) => {
@@ -23,6 +24,27 @@ const registerUser = async (req, res, next) => {
   }
 };
 
+const logoutUser = async (req, res, next) => {
+  try {
+    const user = await logout(req.body.id);
+    if (!user) {
+      return res.status(401).json({
+        status: "error",
+        code: 401,
+        message: "Not authorized",
+      });
+    }
+    res.status(204).json({
+      status: "success",
+      code: 204,
+    });
+  } catch (err) {
+    res.status(500).json({ message: "Error logging out user", err });
+    next(err);
+  }
+}
+
 module.exports = {
   registerUser,
+  logoutUser
 };
