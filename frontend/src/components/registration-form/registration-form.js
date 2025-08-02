@@ -6,6 +6,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
+import zxcvbn from "zxcvbn";
 
 const RegistrationForm = () => {
   const dispatch = useDispatch();
@@ -14,6 +15,7 @@ const RegistrationForm = () => {
   const error = useSelector((state) => state.session.error);
   const isLoading = useSelector((state) => state.session.loading);
   const [formSubmitted, setFormSubmitted] = useState(false);
+  const [passwordStrength, setPasswordStrength] = useState(0);
 
   const validationSchema = Yup.object({
     email: Yup.string()
@@ -54,12 +56,18 @@ const RegistrationForm = () => {
   };
 
   const onInputChange = (e, handleChange) => {
-    // Reset formSubmitted state
     if (formSubmitted) {
       setFormSubmitted(false);
     }
+    handleChange(e);
+  };
 
-    // Call Formik's handleChange to update the form values
+    const onPasswordChange = (e, handleChange) => {
+    const password = e.target.value;
+
+    const strength = zxcvbn(password).score;
+    setPasswordStrength(strength); 
+
     handleChange(e);
   };
 
@@ -98,7 +106,7 @@ const RegistrationForm = () => {
                 name="password"
                 className={css.input}
                 placeholder="Password"
-                onChange={(e) => onInputChange(e, handleChange)}
+                onChange={(e) => onPasswordChange(e, handleChange)}
               />
               <ErrorMessage
                 name="password"
@@ -118,7 +126,8 @@ const RegistrationForm = () => {
                 onChange={(e) => onInputChange(e, handleChange)}
               />
               <div className={css.strengthStrip}></div>
-              <div className={css.strengthBar}></div>
+              <div className={css.strengthBar} 
+              style={{      width: values.password ? `${(passwordStrength + 1) * 20}%` : "0%",}}></div>
               <ErrorMessage
                 name="confirmPassword"
                 component="div"
