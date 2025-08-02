@@ -21,6 +21,7 @@ export const sessionSlice = createSlice({
       state.loading = action.payload;
     },
     setError(state, action) {
+      console.log("Updating error state:", action.payload);
       state.error = action.payload;
     },
     setToken(state, action) {

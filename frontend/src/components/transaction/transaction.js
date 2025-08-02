@@ -228,7 +228,7 @@ const response = await api.get(`/home/${transactionId}`);
               onSubmit={handleSubmit}
             >
               {({ setFieldValue, values }) => (
-                <Form className={css.form}>
+                <Form className={css.form} autoComplete="off">
                   {/* Category Input */}
                   {!isIncome && (
                     <div className={css.inputGroup}>

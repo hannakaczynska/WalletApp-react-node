@@ -1,7 +1,8 @@
 //strengthBar - changing width on password strenght with external package/api
 import css from "./registration-form.module.css";
-import {registerUser} from "../../redux/user/userThunks";
-import {useDispatch} from "react-redux";
+import { useState } from "react";
+import { registerUser } from "../../redux/user/userThunks";
+import { useDispatch, useSelector } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
@@ -9,6 +10,10 @@ import * as Yup from "yup";
 const RegistrationForm = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
+
+  const error = useSelector((state) => state.session.error);
+  const isLoading = useSelector((state) => state.session.loading);
+  const [formSubmitted, setFormSubmitted] = useState(false);
 
   const validationSchema = Yup.object({
     email: Yup.string()
@@ -35,6 +40,7 @@ const RegistrationForm = () => {
   };
 
   const handleSubmit = async (values, { setSubmitting }) => {
+    setFormSubmitted(true);
     const userData = {
       name: values.name,
       email: values.email,
@@ -47,6 +53,16 @@ const RegistrationForm = () => {
     setSubmitting(false);
   };
 
+  const onInputChange = (e, handleChange) => {
+    // Reset formSubmitted state
+    if (formSubmitted) {
+      setFormSubmitted(false);
+    }
+
+    // Call Formik's handleChange to update the form values
+    handleChange(e);
+  };
+
   return (
     <div className={css.formWrapper}>
       <img src="/logo.svg" alt="Logo" className={css.logo} />
@@ -55,8 +71,8 @@ const RegistrationForm = () => {
         validationSchema={validationSchema}
         onSubmit={handleSubmit}
       >
-        {({ isSubmitting }) => (
-          <Form className={css.form}>
+        {({ isSubmitting, values, handleChange }) => (
+          <Form className={css.form} autoComplete="off">
             {/* Email Input */}
             <div className={css.inputGroup}>
               <img src="/email.svg" alt="Email icon" className={css.icon} />
@@ -65,6 +81,7 @@ const RegistrationForm = () => {
                 name="email"
                 className={css.input}
                 placeholder="E-mail"
+                onChange={(e) => onInputChange(e, handleChange)}
               />
               <ErrorMessage
                 name="email"
@@ -81,6 +98,7 @@ const RegistrationForm = () => {
                 name="password"
                 className={css.input}
                 placeholder="Password"
+                onChange={(e) => onInputChange(e, handleChange)}
               />
               <ErrorMessage
                 name="password"
@@ -97,6 +115,7 @@ const RegistrationForm = () => {
                 name="confirmPassword"
                 className={css.input}
                 placeholder="Confirm password"
+                onChange={(e) => onInputChange(e, handleChange)}
               />
               <div className={css.strengthStrip}></div>
               <div className={css.strengthBar}></div>
@@ -115,12 +134,19 @@ const RegistrationForm = () => {
                 name="name"
                 className={`${css.input} ${css.nameInput}`}
                 placeholder="First name"
+                onChange={(e) => onInputChange(e, handleChange)}
               />
               <ErrorMessage
                 name="name"
                 component="div"
                 className={css.error}
               />
+              {!isLoading && formSubmitted &&
+                values.email &&
+                values.password &&
+                values.name &&
+                values.confirmPassword &&
+                error && <div className={css.error}>{error}</div>}
             </div>
 
             {/* Buttons */}

@@ -1,6 +1,7 @@
 import css from "./login-form.module.css";
+import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import {useDispatch} from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { loginUser } from "../../redux/user/userThunks";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
@@ -8,6 +9,10 @@ import * as Yup from "yup";
 const LoginForm = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
+
+  const error = useSelector((state) => state.session.error);
+  const isLoading = useSelector((state) => state.session.loading);
+    const [formSubmitted, setFormSubmitted] = useState(false);
 
   const validationSchema = Yup.object({
     email: Yup.string()
@@ -23,13 +28,22 @@ const LoginForm = () => {
   };
 
   const handleSubmit = async (values, { setSubmitting }) => {
+    setFormSubmitted(true);
     const result = await dispatch(loginUser(values));
-    if (result) {
+    if (loginUser.fulfilled.match(result)) {
       navigate("/home");
+    } else {
+      console.error("Login failed:", result.error.message);
+      console.log("Error details:", error);
     }
-    console.log("Login result:", result);
-    console.log("Login data:", values);
     setSubmitting(false);
+  };
+
+  const onInputChange = (e, handleChange) => {
+      if (formSubmitted) {
+      setFormSubmitted(false);
+    }
+    handleChange(e);
   };
 
   return (
@@ -40,8 +54,8 @@ const LoginForm = () => {
         validationSchema={validationSchema}
         onSubmit={handleSubmit}
       >
-        {({ isSubmitting }) => (
-          <Form className={css.form}>
+        {({ isSubmitting, values, handleChange }) => (
+          <Form className={css.form} autoComplete="off">
             {/* Email Input */}
             <div className={css.inputGroup}>
               <img src="/email.svg" alt="Email icon" className={css.icon} />
@@ -50,6 +64,7 @@ const LoginForm = () => {
                 name="email"
                 className={css.input}
                 placeholder="E-mail"
+                onChange={(e) => onInputChange(e, handleChange)}
               />
               <ErrorMessage
                 name="email"
@@ -66,12 +81,14 @@ const LoginForm = () => {
                 name="password"
                 className={css.input}
                 placeholder="Password"
+                onChange={(e) => onInputChange(e, handleChange)}
               />
               <ErrorMessage
                 name="password"
                 component="div"
                 className={css.error}
               />
+              {!isLoading &&formSubmitted && values.email && values.password && error && <div className={css.error}>{error}</div>}
             </div>
 
             {/* Buttons */}
