@@ -11,7 +11,7 @@
 }
 
 .closeIcon {
-    display: none;
+  display: none;
 }
 
 .formWrapper {
@@ -36,11 +36,11 @@
 }
 
 :global(.Toastify__toast) {
-  max-width: 90%; 
+  max-width: 90%;
 }
 
 :global(.Toastify__toast--success .Toastify__progress-bar) {
-  background-color: var(--green); 
+  background-color: var(--green);
 }
 
 :global(.Toastify__toast--info .Toastify__progress-bar) {
@@ -253,7 +253,7 @@
   font-family: var(--font-secondary);
   color: var(--red);
   bottom: -20px;
-  left: 0;  
+  left: 0;
 }
 
 .buttonGroup {
@@ -300,17 +300,17 @@
     z-index: 100;
   }
 
-
   .formWrapper {
     position: relative;
     width: 540px;
     height: 508px;
     padding-inline: 66px 73px;
-    padding-block: 40px;
+    padding-block: 10px 40px;
     box-sizing: border-box;
     left: 50%;
     top: 50%;
     transform: translate(-50%, -50%);
+    overflow: hidden;
     border-radius: 20px;
   }
 
@@ -324,12 +324,13 @@
     cursor: pointer;
   }
 
-.expenseFormWrapper { 
+  .expenseFormWrapper {
     height: 603px;
   }
 
   .formTitle {
     font-size: 30px;
+    height: 40px;
   }
 
   .switchContainer {
@@ -337,7 +338,7 @@
   }
 
   .infoContainer {
-padding-inline: 121px;
+    padding-inline: 121px;
   }
 
   .form {
@@ -357,21 +358,21 @@ padding-inline: 121px;
   }
 
   .calendarContainer {
-  position: absolute;
-  width: 250px; 
-  background-color: var(--white);
-  border-radius: 20px;
-  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.25);
-  padding: 10px;
-  z-index: 10;
-}
+    position: absolute;
+    width: 250px;
+    background-color: var(--white);
+    border-radius: 20px;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.25);
+    padding: 10px;
+    z-index: 10;
+  }
 
-.reactCalendar {
-  width: 100%;
-  border: none;
-  font-family: var(--font-secondary);
-  font-size: 12px;
-}
+  .reactCalendar {
+    width: 100%;
+    border: none;
+    font-family: var(--font-secondary);
+    font-size: 12px;
+  }
 
   .input {
     width: 100%;
@@ -387,18 +388,19 @@ padding-inline: 121px;
   }
 
   .commentInput {
-padding-top: 6px;
-box-sizing: border-box;
+    padding-top: 6px;
+    box-sizing: border-box;
   }
-.dateInput {
+  .dateInput {
     padding-left: 20px;
-}
+  }
 
   .buttonGroup {
     width: 300px;
+    padding-bottom: 20px;
   }
 
   .listContainer {
-  height: 352px;
-}
+    height: 352px;
+  }
 }
