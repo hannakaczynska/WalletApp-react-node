@@ -1,4 +1,5 @@
 const Transaction = require("../Transaction");
+const mongoose = require("mongoose");
 
 const categories = [
   "Other expenses",
@@ -12,7 +13,7 @@ const categories = [
   "Main expenses",
 ];
 
-const getExpenseStatistics = async (month, year) => {
+const getExpenseStatistics = async (month, year, userId) => {
   try {
     const expenses = await Transaction.aggregate([
       {
@@ -22,6 +23,7 @@ const getExpenseStatistics = async (month, year) => {
               { $eq: [{ $month: "$date" }, month] },
               { $eq: [{ $year: "$date" }, year] },
               { $eq: ["$type", "expense"] }, // Filter only expense transactions
+              { $eq: ["$userId", new mongoose.Types.ObjectId(userId)] }, // Filter by userId
             ],
           },
         },
@@ -100,7 +102,6 @@ const getExpenseStatistics = async (month, year) => {
       }));
       return initialArray;
     }
-
     return expenses;
   } catch (error) {
     console.error("Error fetching expense statistics:", error);
@@ -108,7 +109,7 @@ const getExpenseStatistics = async (month, year) => {
   }
 };
 
-const getIncomeStatistics = async (month, year) => {
+const getIncomeStatistics = async (month, year, userId) => {
   try {
     const incomes = await Transaction.aggregate([
       {
@@ -118,6 +119,7 @@ const getIncomeStatistics = async (month, year) => {
               { $eq: [{ $month: "$date" }, month] },
               { $eq: [{ $year: "$date" }, year] },
               { $eq: ["$type", "income"] }, // Filter only income transactions
+              { $eq: ["$userId", new mongoose.Types.ObjectId(userId)] }, // Filter by userId
             ],
           },
         },
@@ -135,8 +137,7 @@ const getIncomeStatistics = async (month, year) => {
         },
       },
     ]);
-
-    return incomes; // Return the first result or default if empty
+    return incomes; 
   } catch (error) {
     console.error("Error fetching income statistics:", error);
     throw error;

@@ -1,6 +1,7 @@
 import css from "./diagram.module.css";
 import { PieChart, Pie, Cell, ResponsiveContainer } from "recharts";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
+import { useSelector } from "react-redux";
 import api from "../../api/api";
 import List from "../list/list";
 
@@ -20,10 +21,11 @@ const monthOptions = ["January", "February", "March", "April", "May", "June", "J
 const yearOptions = ["2020", "2021", "2022", "2023", "2024", "2025", "2026"];
 
 const Diagram = () => {
-  // const amount = "24 000.00";
   const currentDate = new Date();
   const currentMonthName = monthOptions[currentDate.getMonth()];
   const currentYear = currentDate.getFullYear().toString(); 
+
+  const userId = useSelector((state) => state.session.user.id);
 
   const [data, setData] = useState([]);
   const [expenses, setExpenses] = useState();
@@ -59,12 +61,13 @@ const Diagram = () => {
     setShowMonthList(false)
   };
 
-  const fetchStatistics = async (month, year) => {
+  const fetchStatistics = useCallback(async (month, year) => {
     try {
     const response = await api.get("/diagram", {
       params: {
         month,
         year,
+        userId
       },
     });
       if (response.status !== 200) {
@@ -77,11 +80,11 @@ const Diagram = () => {
     } catch (error) {
       console.error("Error fetching statistics:", error);
     }
-  };
+  }, [userId]);
 
   useEffect(() => {
     fetchStatistics();
-  }, []);
+  }, [fetchStatistics]);
 
   useEffect(() => {
     const totalExpenses = data.reduce((acc, item) => acc + item.value, 0).toFixed(2);
