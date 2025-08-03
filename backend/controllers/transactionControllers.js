@@ -85,7 +85,8 @@ const getTransactionById = async (req, res, next) => {
 const deleteTransaction = async (req, res, next) => {
   try {
     const { id } = req.params;
-    const deletedTransaction = await findAndDeleteTransaction(id);
+    const userId = req.query.userId;
+    const deletedTransaction = await findAndDeleteTransaction(id, userId);
     if (!deletedTransaction) {
       return res.status(404).json({ message: "Transaction not found" });
     }

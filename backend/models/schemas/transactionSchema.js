@@ -24,8 +24,8 @@ const fetchTransactionById = async (id, userId) => {
   return transaction;
 }
 
-const findAndDeleteTransaction = async (id) => {
-  const deletedTransaction = await Transaction.findByIdAndDelete(id);
+const findAndDeleteTransaction = async (id, userId) => {
+  const deletedTransaction = await Transaction.findOneAndDelete({ _id: id, userId });
   return deletedTransaction;
 }
 

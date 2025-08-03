@@ -36,9 +36,9 @@ export const fetchTransactions =
     }
   };
 
-export const deleteTransaction = (id) => async (dispatch) => {
+export const deleteTransaction = (id, userId) => async (dispatch) => {
   try {
-    await api.delete(`/home/${id}`);
+    await api.delete(`/home/${id}`, { params: { userId } });
     dispatch(deleteTransactionReducer(id));
     dispatch(setTransactionId(null));
   } catch (error) {
