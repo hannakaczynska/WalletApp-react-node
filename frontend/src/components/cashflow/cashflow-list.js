@@ -18,6 +18,7 @@ import ClipLoader from "react-spinners/ClipLoader";
 
 const CashflowList = () => {
   const dispatch = useDispatch();
+  const userId = useSelector((state) => state.session.user.id);
   const { transactions, loading, currentPage, hasMore, transactionId } =
     useSelector((state) => state.transaction);
 
@@ -56,12 +57,12 @@ const CashflowList = () => {
   };
 
   useEffect(() => {
-    dispatch(fetchTransactions({ page: 1, limit: 10 }));
+    dispatch(fetchTransactions({ page: 1, limit: 10, userId }));
     return () => {
       dispatch(resetState());
     };
-  }, [dispatch]);
- 
+  }, [dispatch, userId]);
+
   useEffect(() => {
     const handleScroll = () => {
       if (
@@ -81,9 +82,9 @@ const CashflowList = () => {
 
   useEffect(() => {
         if (currentPage > 1) {
-    dispatch(fetchTransactions({ page: currentPage, limit: 10 }));
+    dispatch(fetchTransactions({ page: currentPage, limit: 10, userId }));
         }
-  }, [dispatch, currentPage]);
+  }, [dispatch, currentPage, userId]);
 
   return (
     <div className={css.listContainer}>

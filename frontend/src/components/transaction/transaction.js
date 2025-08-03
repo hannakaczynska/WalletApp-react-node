@@ -2,7 +2,7 @@ import css from "./transaction.module.css";
 import calendarCss from "./calendar.module.css";
 import api from "../../api/api"; 
 import { useState, useEffect } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import {
   addTransaction,
   editTransaction,
@@ -32,6 +32,7 @@ const categoryOptions = [
 
 const TransactionForm = ({ onItemClick, isEditing, type, transactionId }) => {
   const dispatch = useDispatch();
+   const userId = useSelector((state) => state.session.user.id);
   const [isIncome, setIsIncome] = useState(
     isEditing ? (type === "income" ? true : false) : true
   );
@@ -114,6 +115,7 @@ const response = await api.get(`/home/${transactionId}`);
     const transactionData = {
       type: isIncome ? "income" : "expense",
       ...values,
+      userId,
     };
 
     try {

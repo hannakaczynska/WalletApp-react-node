@@ -14,14 +14,14 @@ const updateTransaction = async (id, body) => {
   return updatedTransaction;
 }
 
-const getTransactions = async (limit, offset) => {
-  const transactions = await Transaction.find().sort({date: -1}).skip(offset).limit(limit);
+const getTransactions = async (limit, offset, userId) => {
+  const transactions = await Transaction.find({ userId }).sort({ date: -1 }).skip(offset).limit(limit);
   return transactions;
 }
-
+//userId
 const fetchTransactionById = async (id) => {
-  const transaction = await Transaction.findById(id);
-  return transaction; 
+  const transaction = await Transaction.findOne({ _id: id, userId });
+  return transaction;
 }
 
 const findAndDeleteTransaction = async (id) => {

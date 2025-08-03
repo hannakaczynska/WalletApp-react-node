@@ -11,7 +11,7 @@ import {
 } from "./transactionSlice";
 
 export const fetchTransactions =
-  ({ page = 1, limit = 10 }) =>
+  ({ page = 1, limit = 10, userId }) =>
   async (dispatch) => {
     dispatch(setLoading(true));
     try {
@@ -19,6 +19,7 @@ export const fetchTransactions =
         params: {
           limit,
           offset: (page - 1) * limit,
+          userId,
         },
       });
 
@@ -38,7 +39,6 @@ export const fetchTransactions =
 export const deleteTransaction = (id) => async (dispatch) => {
   try {
     await api.delete(`/home/${id}`);
-
     dispatch(deleteTransactionReducer(id));
     dispatch(setTransactionId(null));
   } catch (error) {
@@ -48,7 +48,7 @@ export const deleteTransaction = (id) => async (dispatch) => {
 };
 
 export const addTransaction = (transaction) => async (dispatch) => {
-  try {
+    try {
     const response = await api.post("/home", transaction);
 
     if (response.status === 201) {
