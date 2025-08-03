@@ -91,7 +91,9 @@ const TransactionForm = ({ onItemClick, isEditing, type, transactionId }) => {
 
   const fetchTransactionById = async () => {
     try {
-const response = await api.get(`/home/${transactionId}`); 
+      const response = await api.get(`/home/${transactionId}`, {
+        params: { userId },
+      });
       if (response.status === 200) {
         const transaction = response.data.data.transaction;
         const formattedAmount = handleAmountFormat(transaction.amount);

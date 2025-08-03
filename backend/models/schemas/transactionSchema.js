@@ -18,8 +18,8 @@ const getTransactions = async (limit, offset, userId) => {
   const transactions = await Transaction.find({ userId }).sort({ date: -1 }).skip(offset).limit(limit);
   return transactions;
 }
-//userId
-const fetchTransactionById = async (id) => {
+
+const fetchTransactionById = async (id, userId) => {
   const transaction = await Transaction.findOne({ _id: id, userId });
   return transaction;
 }

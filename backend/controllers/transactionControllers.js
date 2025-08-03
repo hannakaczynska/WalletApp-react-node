@@ -66,7 +66,8 @@ const getAllTransactions = async (req, res, next) => {
 const getTransactionById = async (req, res, next) => {
   try {
     const { id } = req.params;
-    const transaction = await fetchTransactionById(id);
+    const userId = req.query.userId; 
+    const transaction = await fetchTransactionById(id, userId);
     if (!transaction) {
       return res.status(404).json({ message: "Transaction not found" });
     }
