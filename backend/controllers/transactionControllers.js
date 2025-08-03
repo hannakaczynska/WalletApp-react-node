@@ -23,8 +23,9 @@ const addTransaction = async (req, res, next) => {
 const editTransaction = async (req, res) => {
   try {
     const { id } = req.params;
-    const updatedTransaction = await updateTransaction(id, req.body);
-    const editedTransaction = await fetchTransactionById(id);
+    const userId = req.query.userId;
+    const updatedTransaction = await updateTransaction(id, userId, req.body);
+    const editedTransaction = await fetchTransactionById(id, userId);
     if (!updatedTransaction || !editedTransaction) {
       return res.status(404).json({ message: "Transaction not found" });
     }

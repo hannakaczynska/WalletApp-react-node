@@ -59,9 +59,11 @@ export const addTransaction = (transaction) => async (dispatch) => {
   }
 };
 
-export const editTransaction = (id, updatedTransaction) => async (dispatch) => {
+export const editTransaction = (id, userId, updatedTransaction) => async (dispatch) => {
   try {
-    const response = await api.put(`/home/${id}`, updatedTransaction);
+    const response = await api.put(`/home/${id}`, updatedTransaction, {
+      params: { userId },
+    });
     if (response.status === 200) {
       dispatch(editTransactionReducer(response.data.data.transaction));
       dispatch(setTransactionId(null));

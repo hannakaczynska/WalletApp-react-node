@@ -5,12 +5,16 @@ const createTransaction = async (body) => {
   return transaction;
 }
 
-const updateTransaction = async (id, body) => {
-  const findTransaction = await Transaction.findById(id);
+const updateTransaction = async (id, userId, body) => {
+  const findTransaction = await Transaction.findOne({ _id: id, userId })
   if (!findTransaction) {
     return false;
   }
-  const updatedTransaction = await Transaction.findByIdAndUpdate(id, body);
+   const updatedTransaction = await Transaction.findOneAndUpdate(
+    { _id: id, userId },
+    body,
+    { new: true }
+  );
   return updatedTransaction;
 }
 

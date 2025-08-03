@@ -122,7 +122,7 @@ const TransactionForm = ({ onItemClick, isEditing, type, transactionId }) => {
 
     try {
       if (isEditing) {
-        dispatch(editTransaction(transactionId, transactionData));
+        dispatch(editTransaction(transactionId, userId, transactionData));
         toast.success("Transaction updated successfully!");
       } else {
         dispatch(addTransaction(transactionData));
