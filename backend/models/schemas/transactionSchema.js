@@ -1,7 +1,24 @@
 const Transaction = require("../Transaction");
+const User = require("../User");
 
 const createTransaction = async (body) => {
+  const {amount, type, userId} = body;
   const transaction = await Transaction.create(body);
+  if (transaction) {
+    const user = await User.findById(userId);
+    if (user) {
+      if (type === "income") {
+        user.balance += amount;
+      } 
+      if (type === "expense") {
+        user.balance -= amount;
+      }
+      await user.save();
+    } else {
+      console.error("User not found with ID:", userId);
+      throw new Error("User not found");
+    }
+  }
   return transaction;
 }
 
@@ -15,6 +32,17 @@ const updateTransaction = async (id, userId, body) => {
     body,
     { new: true }
   );
+  if (updatedTransaction) {
+    const user = await User.findById(userId);
+    if (user) {
+      if (body.type === "income") {
+        user.balance = user.balance - findTransaction.amount + body.amount; 
+      } else if (body.type === "expense") {
+        user.balance = user.balance + findTransaction.amount - body.amount;
+      }
+      await user.save();
+    }
+  }
   return updatedTransaction;
 }
 
