@@ -30,6 +30,14 @@ export const sessionSlice = createSlice({
     setBalance(state, action) {
       state.balance = action.payload;
     },
+    changeBalance(state, action) {
+      const { amount, type } = action.payload;
+      if (type === "plus") {
+        state.balance += amount;
+      } else if (type === "minus") {
+        state.balance -= amount;
+      }
+    },
     resetUserState(state) {
       state.isAuth = false;
       state.token = null;
@@ -48,6 +56,7 @@ export const {
   setError,
   setToken,
     setBalance,
+    changeBalance,
     resetUserState,
 } = sessionSlice.actions;
 

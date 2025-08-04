@@ -9,6 +9,7 @@ import {
   editTransactionReducer,
   deleteTransactionReducer,
 } from "./transactionSlice";
+import { changeBalance } from "../user/userSlice";
 
 export const fetchTransactions =
   ({ page = 1, limit = 10, userId }) =>
@@ -38,9 +39,23 @@ export const fetchTransactions =
 
 export const deleteTransaction = (id, userId) => async (dispatch) => {
   try {
-    await api.delete(`/home/${id}`, { params: { userId } });
-    dispatch(deleteTransactionReducer(id));
-    dispatch(setTransactionId(null));
+    const deletedTransaction = await api.delete(`/home/${id}`, {
+      params: { userId },
+    });
+
+    if (deletedTransaction.status === 200) {
+      const transaction = deletedTransaction.data.data.transaction;
+      if (transaction) {
+        dispatch(
+          changeBalance({
+            amount: transaction.amount,
+            type: transaction.type === "income" ? "minus" : "plus",
+          })
+        );
+      }
+      dispatch(deleteTransactionReducer(id));
+      dispatch(setTransactionId(null));
+    }
   } catch (error) {
     console.error("Error deleting transaction:", error);
     return;
@@ -48,10 +63,19 @@ export const deleteTransaction = (id, userId) => async (dispatch) => {
 };
 
 export const addTransaction = (transaction) => async (dispatch) => {
-    try {
+  try {
     const response = await api.post("/home", transaction);
 
     if (response.status === 201) {
+      const newTransaction = response.data.data.transaction;
+      if (newTransaction) {
+        dispatch(
+          changeBalance({
+            amount: newTransaction.amount,
+            type: newTransaction.type === "income" ? "plus" : "minus",
+          })
+        );
+      }
       dispatch(addTransactionReducer(response.data.data.transaction));
     }
   } catch (error) {
@@ -59,17 +83,18 @@ export const addTransaction = (transaction) => async (dispatch) => {
   }
 };
 
-export const editTransaction = (id, userId, updatedTransaction) => async (dispatch) => {
-  try {
-    const response = await api.put(`/home/${id}`, updatedTransaction, {
-      params: { userId },
-    });
-    if (response.status === 200) {
-      dispatch(editTransactionReducer(response.data.data.transaction));
-      dispatch(setTransactionId(null));
+export const editTransaction =
+  (id, userId, updatedTransaction) => async (dispatch) => {
+    try {
+      const response = await api.put(`/home/${id}`, updatedTransaction, {
+        params: { userId },
+      });
+      if (response.status === 200) {
+        dispatch(editTransactionReducer(response.data.data.transaction));
+        dispatch(setTransactionId(null));
+      }
+    } catch (error) {
+      console.error("Error editing transaction:", error);
+      return;
     }
-  } catch (error) {
-    console.error("Error editing transaction:", error);
-    return;
-  }
-};
+  };

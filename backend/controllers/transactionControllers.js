@@ -33,7 +33,9 @@ const editTransaction = async (req, res) => {
       status: "success",
       code: 200,
       message: "Transaction updated successfully",
-      data: { transaction: editedTransaction },
+      data: { transaction: editedTransaction,
+        updatedTransaction: updatedTransaction
+       },
     });
   } catch (error) {
     res.status(500).json({ message: "Error updating transaction", error });
@@ -87,6 +89,7 @@ const deleteTransaction = async (req, res, next) => {
       status: "success",
       code: 200,
       message: "Transaction deleted successfully",
+      data: { transaction: deletedTransaction },
     });
   } catch (error) {
     res.status(500).json({ message: "Error deleting transaction", error });

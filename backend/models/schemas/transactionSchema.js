@@ -58,13 +58,13 @@ const fetchTransactionById = async (id, userId) => {
 
 const findAndDeleteTransaction = async (id, userId) => {
   const deletedTransaction = await Transaction.findOneAndDelete({ _id: id, userId });
-  console.log("Deleted transaction:", deletedTransaction);
   if (deletedTransaction) {
     const user = await User.findById(userId);
     if (user) {
       if (deletedTransaction.type === "income") {
         user.balance -= deletedTransaction.amount;
-      } else if (deletedTransaction.type === "expense") {
+      }
+      if (deletedTransaction.type === "expense") {
         user.balance += deletedTransaction.amount;
       }
       await user.save();
