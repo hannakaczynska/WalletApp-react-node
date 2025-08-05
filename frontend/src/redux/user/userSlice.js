@@ -30,6 +30,16 @@ export const sessionSlice = createSlice({
     setBalance(state, action) {
       state.balance = action.payload;
     },
+    editBalance(state, action) {
+      const { oldamount, newamount, type } = action.payload;
+      if (type === "income") {
+        console.log("INCOME")
+        state.balance = state.balance - oldamount + newamount;
+      } else if (type === "expense") {
+        console.log("EXPENSE")
+        state.balance = state.balance + oldamount - newamount;
+      }
+    },
     changeBalance(state, action) {
       const { amount, type } = action.payload;
       if (type === "plus") {
@@ -55,9 +65,10 @@ export const {
   setLoading,
   setError,
   setToken,
-    setBalance,
-    changeBalance,
-    resetUserState,
+  setBalance,
+  editBalance,
+  changeBalance,
+  resetUserState,
 } = sessionSlice.actions;
 
 export default sessionSlice.reducer;

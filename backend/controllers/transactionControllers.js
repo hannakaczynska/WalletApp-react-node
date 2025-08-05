@@ -24,8 +24,8 @@ const editTransaction = async (req, res) => {
   try {
     const { id } = req.params;
     const userId = req.query.userId;
-    const updatedTransaction = await updateTransaction(id, userId, req.body);
     const editedTransaction = await fetchTransactionById(id, userId);
+    const updatedTransaction = await updateTransaction(id, userId, req.body);
     if (!updatedTransaction || !editedTransaction) {
       return res.status(404).json({ message: "Transaction not found" });
     }
@@ -33,11 +33,11 @@ const editTransaction = async (req, res) => {
       status: "success",
       code: 200,
       message: "Transaction updated successfully",
-      data: { transaction: editedTransaction,
+      data: { oldTransaction: editedTransaction,
         updatedTransaction: updatedTransaction
        },
     });
-  } catch (error) {
+    } catch (error) {
     res.status(500).json({ message: "Error updating transaction", error });
     next(error);
   }

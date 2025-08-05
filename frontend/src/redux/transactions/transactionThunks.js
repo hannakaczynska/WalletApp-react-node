@@ -9,7 +9,7 @@ import {
   editTransactionReducer,
   deleteTransactionReducer,
 } from "./transactionSlice";
-import { changeBalance } from "../user/userSlice";
+import { changeBalance, editBalance } from "../user/userSlice";
 
 export const fetchTransactions =
   ({ page = 1, limit = 10, userId }) =>
@@ -90,9 +90,15 @@ export const editTransaction =
         params: { userId },
       });
       if (response.status === 200) {
-        dispatch(editTransactionReducer(response.data.data.transaction));
+        const newTransaction = response.data.data.updatedTransaction;
+        const oldTransaction = response.data.data.oldTransaction;
+        if (newTransaction && oldTransaction) {
+          dispatch(editBalance({ oldamount: oldTransaction.amount, newamount: newTransaction.amount, type: newTransaction.type }));
+        }
+        dispatch(editTransactionReducer(response.data.data.updatedTransaction));
         dispatch(setTransactionId(null));
       }
+      console.log("Transaction edited successfully:", response.data.data);
     } catch (error) {
       console.error("Error editing transaction:", error);
       return;
