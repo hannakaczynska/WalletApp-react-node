@@ -98,7 +98,6 @@ export const editTransaction =
         dispatch(editTransactionReducer(response.data.data.updatedTransaction));
         dispatch(setTransactionId(null));
       }
-      console.log("Transaction edited successfully:", response.data.data);
     } catch (error) {
       console.error("Error editing transaction:", error);
       return;

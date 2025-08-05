@@ -34,7 +34,6 @@ const LoginForm = () => {
       navigate("/home");
     } else {
       console.error("Login failed:", result.error.message);
-      console.log("Error details:", error);
     }
     setSubmitting(false);
   };

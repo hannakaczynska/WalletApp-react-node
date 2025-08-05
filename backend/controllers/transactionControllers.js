@@ -33,11 +33,12 @@ const editTransaction = async (req, res) => {
       status: "success",
       code: 200,
       message: "Transaction updated successfully",
-      data: { oldTransaction: editedTransaction,
-        updatedTransaction: updatedTransaction
-       },
+      data: {
+        oldTransaction: editedTransaction,
+        updatedTransaction: updatedTransaction,
+      },
     });
-    } catch (error) {
+  } catch (error) {
     res.status(500).json({ message: "Error updating transaction", error });
     next(error);
   }
@@ -61,7 +62,7 @@ const getAllTransactions = async (req, res, next) => {
 const getTransactionById = async (req, res, next) => {
   try {
     const { id } = req.params;
-    const userId = req.query.userId; 
+    const userId = req.query.userId;
     const transaction = await fetchTransactionById(id, userId);
     if (!transaction) {
       return res.status(404).json({ message: "Transaction not found" });

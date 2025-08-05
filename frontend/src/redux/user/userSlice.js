@@ -21,7 +21,6 @@ export const sessionSlice = createSlice({
       state.loading = action.payload;
     },
     setError(state, action) {
-      console.log("Updating error state:", action.payload);
       state.error = action.payload;
     },
     setToken(state, action) {
@@ -33,10 +32,8 @@ export const sessionSlice = createSlice({
     editBalance(state, action) {
       const { oldamount, newamount, type } = action.payload;
       if (type === "income") {
-        console.log("INCOME")
         state.balance = state.balance - oldamount + newamount;
       } else if (type === "expense") {
-        console.log("EXPENSE")
         state.balance = state.balance + oldamount - newamount;
       }
     },

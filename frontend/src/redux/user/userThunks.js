@@ -30,7 +30,6 @@ export const registerUser = createAsyncThunk(
       dispatch(setToken(token));
       dispatch(setBalance(balance));
         dispatch(setLoading(false));
-      console.log("User registered successfully:", response.data);
       return response.data.data;
     } catch (error) {
       dispatch(setIsAuth(false));
@@ -61,7 +60,6 @@ export const loginUser = createAsyncThunk(
       dispatch(setToken(token));
       dispatch(setBalance(balance));
         dispatch(setLoading(false));
-      console.log("User logged in successfully:", response.data.data);
       return response.data.data;
     } catch (error) {
       dispatch(setIsAuth(false));
