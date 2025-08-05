@@ -86,6 +86,31 @@ const swaggerOptions = {
             },
           },
         },
+        ExpenseStatistics: {
+          type: "object",
+          properties: {
+            name: {
+              type: "string",
+              description: "The category name",
+              example: "Products",
+            },
+            value: {
+              type: "number",
+              description: "The total amount for this category",
+              example: 200.0,
+            },
+          },
+        },
+        IncomeStatistics: {
+          type: "object",
+          properties: {
+            totalIncome: {
+              type: "number",
+              description: "The total income for the selected period",
+              example: 1500.0,
+            },
+          },
+        },
       },
     },
   },
