@@ -45,6 +45,47 @@ const swaggerOptions = {
             },
           },
         },
+        Transaction: {
+          type: "object",
+          properties: {
+            id: {
+              type: "string",
+              description: "The transaction ID",
+              example: "64b8f9e2e4b0f5a1c2d3e4f5",
+            },
+            type: {
+              type: "string",
+              description: "The type of transaction (income or expense)",
+              example: "income",
+            },
+            category: {
+              type: "string",
+              description: "The category of the transaction",
+              example: "Salary",
+            },
+            amount: {
+              type: "number",
+              description: "The amount of the transaction",
+              example: 500.0,
+            },
+            date: {
+              type: "string",
+              format: "date",
+              description: "The date of the transaction",
+              example: "2023-08-01",
+            },
+            comment: {
+              type: "string",
+              description: "Additional comments about the transaction",
+              example: "Monthly salary",
+            },
+            userId: {
+              type: "string",
+              description: "The ID of the user associated with the transaction",
+              example: "64b8f9e2e4b0f5a1c2d3e4f5",
+            },
+          },
+        },
       },
     },
   },
