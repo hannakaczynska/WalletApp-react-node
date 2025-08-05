@@ -1,6 +1,9 @@
 import axios from "axios";
 import { store } from "../redux/store"; 
 import { setIsAuth } from "../redux/user/userSlice";
+import { resetUserState } from "../redux/user/userSlice";
+import { resetState } from "../redux/transactions/transactionSlice";
+import { resetCurrency } from "../redux/currency/currencySlice";
 import { getNavigate } from "../utils/navigation";
 
 
@@ -22,6 +25,9 @@ api.interceptors.response.use(
     if (error.response && (error.response.status === 401 || error.response.status === 403)) {
 
       store.dispatch(setIsAuth(false));
+      store.dispatch(resetUserState());
+      store.dispatch(resetState());
+      store.dispatch(resetCurrency());
 
       const navigate = getNavigate();
       if (navigate) {

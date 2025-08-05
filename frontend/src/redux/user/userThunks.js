@@ -10,6 +10,7 @@ import {
   resetUserState,
 } from "../user/userSlice";
 import { resetState } from "../transactions/transactionSlice";
+import { resetCurrency } from "../currency/currencySlice";
 
 export const registerUser = createAsyncThunk(
   "user/register",
@@ -81,6 +82,7 @@ export const logoutUser = createAsyncThunk(
       });
       dispatch(resetUserState());
       dispatch(resetState());
+      dispatch(resetCurrency());
       return true;
     } catch (error) {
       console.error("Error logging out user:", error);

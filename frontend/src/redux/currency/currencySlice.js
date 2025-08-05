@@ -7,8 +7,13 @@ export const currencySlice = createSlice({
     setMidEuroRate: (state, action) => { state.midEuroRate = action.payload },
     setMidGbpRate: (state, action) => { state.midGbpRate = action.payload },
     setLastFetchTime: (state, action) => { state.lastFetchTime = action.payload },
+    resetCurrency: (state) => {
+      state.midEuroRate = null;
+      state.midGbpRate = null;
+      state.lastFetchTime = null;
+    }
   },
 });
 
-export const { setMidEuroRate, setMidGbpRate, setLastFetchTime } = currencySlice.actions;
+export const { setMidEuroRate, setMidGbpRate, setLastFetchTime, resetCurrency } = currencySlice.actions;
 export default currencySlice.reducer;

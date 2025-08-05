@@ -18,7 +18,7 @@ const addUser = async (body) => {
   const token = jwt.sign(
     { id: newUser._id },
     JWT_SECRET,
-    { expiresIn: "1h" }
+    { expiresIn: "2m" }
   );
 
   newUser.token = token;
@@ -33,7 +33,7 @@ const login = async (body) => {
   if (!user || !user.validPassword(password)) {
     return false;
   }
-  const token = jwt.sign({ id: user._id }, JWT_SECRET, { expiresIn: "1h" });
+  const token = jwt.sign({ id: user._id }, JWT_SECRET, { expiresIn: "2m" });
   user.token = token;
   await user.save();
   return user;
