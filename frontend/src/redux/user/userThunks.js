@@ -15,7 +15,7 @@ export const registerUser = createAsyncThunk(
   "user/register",
   async (userData, { dispatch, rejectWithValue }) => {
     try {
-        dispatch(setLoading(true));
+      dispatch(setLoading(true));
       const response = await api.post("/register", userData);
       if (response.status === 409) {
         dispatch(setError("Email already in use"));
@@ -29,7 +29,7 @@ export const registerUser = createAsyncThunk(
       dispatch(setUser({ email, name, id }));
       dispatch(setToken(token));
       dispatch(setBalance(balance));
-        dispatch(setLoading(false));
+      dispatch(setLoading(false));
       return response.data.data;
     } catch (error) {
       dispatch(setIsAuth(false));
@@ -45,7 +45,7 @@ export const loginUser = createAsyncThunk(
   "user/login",
   async (userData, { dispatch, rejectWithValue }) => {
     try {
-        dispatch(setLoading(true));
+      dispatch(setLoading(true));
       const response = await api.post("/login", userData);
       if (response.status === 401) {
         dispatch(setError("Invalid email or password"));
@@ -59,12 +59,12 @@ export const loginUser = createAsyncThunk(
       dispatch(setUser({ email, name, id }));
       dispatch(setToken(token));
       dispatch(setBalance(balance));
-        dispatch(setLoading(false));
+      dispatch(setLoading(false));
       return response.data.data;
     } catch (error) {
       dispatch(setIsAuth(false));
       dispatch(setError("Login failed"));
-        dispatch(setLoading(false));
+      dispatch(setLoading(false));
       console.error("Error logging in user:", error);
       return rejectWithValue(error.response?.data || "Login failed");
     }

@@ -1,33 +1,45 @@
 import css from "./current.module.css";
 import MediaQuery from "react-responsive";
-import { useEffect, useState } from "react";
-// import axios from "axios";
+import { useEffect, useCallback} from "react";
+import { useDispatch, useSelector } from "react-redux";
+import axios from "axios";
+import { setMidEuroRate, setMidGbpRate, setLastFetchTime } from "../../redux/currency/currencySlice";
 
-//set midrates to store in refetch it after 1 hour
-const fetchExchangeRates = async (setMidEuroRate, setMidGbpRate) => {
+const Current = () => {
+  const dispatch = useDispatch();
+  const { midEuroRate, midGbpRate, lastFetchTime } = useSelector((state) => state.currency);
+
+const fetchExchangeRates = useCallback(async () => {
   try {
-    // const response = await axios.get("https://openexchangerates.org/api/latest.json", {
-    //   params: {
-    //     app_id: process.env.REACT_APP_OPEN_EXCHANGE_API_KEY, 
-    //     symbols: "EUR,GBP",
-    //   },
-    // });
+    const response = await axios.get("https://openexchangerates.org/api/latest.json", {
+      params: {
+        app_id: process.env.REACT_APP_OPEN_EXCHANGE_API_KEY, 
+        symbols: "EUR,GBP",
+      },
+    });
 
-    // setMidEuroRate(response.data.rates.EUR);
-    // setMidGbpRate(response.data.rates.GBP);
-    // console.log("Exchange rates fetched successfully:", response.data);
+    const midEuroRate = response.data.rates.EUR;
+    const midGbpRate = response.data.rates.GBP;
+    const lastFetchTime = new Date().toISOString();
+
+    dispatch(setMidEuroRate(midEuroRate));
+    dispatch(setMidGbpRate(midGbpRate));
+    dispatch(setLastFetchTime(lastFetchTime));
+
+    console.log("Exchange rates fetched successfully:", response.data);
   } catch (error) {
     console.error("Error fetching exchange rates:", error);
   }
-};
-
-const Current = () => {
-  const [midEuroRate, setMidEuroRate] = useState("");
-  const [midGbpRate, setMidGbpRate] = useState("");
+}, [dispatch]);
 
   useEffect(() => {
-    fetchExchangeRates(setMidEuroRate, setMidGbpRate);
-  }, []);
+    const now = new Date();
+    const lastFetch = lastFetchTime ? new Date(lastFetchTime) : null;
+
+    if (!lastFetch || now - lastFetch > 60 * 60 * 1000) {
+      fetchExchangeRates();
+    }
+  }, [lastFetchTime, fetchExchangeRates]);
 
   const handlePurchase = (midRate) => {
     if (!midRate) return "";
