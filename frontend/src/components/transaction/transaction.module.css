@@ -192,6 +192,7 @@
   bottom: 8px;
   width: 18px;
   height: 20px;
+  cursor: pointer;
 }
 
 .arrowIcon {
@@ -200,6 +201,7 @@
   height: 9px;
   right: 20px;
   bottom: 15px;
+  cursor: pointer;
 }
 
 .input {
@@ -229,6 +231,10 @@
   padding-left: 37px;
 }
 
+.categoryInput {
+  cursor: pointer;
+}
+
 .input::placeholder {
   color: var(--grey-text);
   font-family: var(--font-secondary);
@@ -239,7 +245,7 @@
 
 .input:disabled {
   background-color: inherit;
-  cursor: not-allowed;
+  cursor: default;
 }
 
 .amountInput::placeholder {

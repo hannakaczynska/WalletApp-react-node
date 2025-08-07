@@ -118,8 +118,8 @@
   .separator {
     display: block;
     height: 100vh;
-    position: absolute;
-    left: 462px;
+    position: fixed;
+    right: calc(50% + 160px);
     border: 1px solid #e7e5f2;
     box-shadow: 1px 0px 0px 0px #ffffff99;
     box-shadow: -1px 0px 0px 0px #0000000d;

@@ -27,7 +27,7 @@ const CashflowList = () => {
 
   const deleteDialogRef = useRef(null);
 
-  const formatDate = (date) => format(new Date(date), "dd.MM.yyyy");
+  const formatDate = (date) => format(new Date(date), "dd.MM.yy");
 
   const handleEditClick = (id, transactionType) => {
     setType(transactionType);
