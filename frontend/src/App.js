@@ -62,7 +62,7 @@ function App() {
           />
           <Route path="/register" element={<RegistrationPage />} />
           <Route path="/login" element={<LoginPage />} />
-          <Route path="*" element={<NotFoundPage />} />
+          <Route path="*" element={<ProtectedRoute><NotFoundPage /></ProtectedRoute>} />
         </Routes>
       </Suspense>
     </>

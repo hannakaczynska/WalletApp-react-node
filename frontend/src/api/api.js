@@ -27,7 +27,6 @@ api.interceptors.response.use(
       (error.response.status === 401 || error.response.status === 403)
     ) {
       const refreshToken = store.getState().session.refreshToken;
-      console.log("Refreshing access token...", refreshToken);
       const newAccessToken = await refreshAccessToken(refreshToken);
       if (newAccessToken) {
         store.dispatch(setToken(newAccessToken));
