@@ -5,6 +5,7 @@ export const sessionSlice = createSlice({
   initialState: {
     isAuth: false,
     token: null,
+    refreshToken: null,
     loading: false,
     error: null,
     user: null,
@@ -25,6 +26,9 @@ export const sessionSlice = createSlice({
     },
     setToken(state, action) {
       state.token = action.payload;
+    },
+    setRefreshToken(state, action) {
+      state.refreshToken = action.payload;
     },
     setBalance(state, action) {
       state.balance = action.payload;
@@ -48,6 +52,7 @@ export const sessionSlice = createSlice({
     resetUserState(state) {
       state.isAuth = false;
       state.token = null;
+      state.refreshToken = null;
       state.loading = false;
       state.error = null;
       state.user = null;
@@ -62,6 +67,7 @@ export const {
   setLoading,
   setError,
   setToken,
+  setRefreshToken,
   setBalance,
   editBalance,
   changeBalance,

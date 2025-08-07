@@ -6,6 +6,7 @@ import {
   setLoading,
   setUser,
   setToken,
+  setRefreshToken,
   setBalance,
   resetUserState,
 } from "../user/userSlice";
@@ -24,11 +25,12 @@ export const registerUser = createAsyncThunk(
         dispatch(setLoading(false));
         return rejectWithValue;
       }
-      const { token, email, name, id, balance } = response.data.data;
+      const { token, refreshToken, email, name, id, balance } = response.data.data;
       dispatch(setIsAuth(true));
       dispatch(setError(null));
       dispatch(setUser({ email, name, id }));
       dispatch(setToken(token));
+      dispatch(setRefreshToken(refreshToken));
       dispatch(setBalance(balance));
       dispatch(setLoading(false));
       return response.data.data;
@@ -54,11 +56,12 @@ export const loginUser = createAsyncThunk(
         dispatch(setLoading(false));
         return rejectWithValue("Invalid email or password");
       }
-      const { token, email, name, id, balance } = response.data.data;
+      const { token, refreshToken, email, name, id, balance } = response.data.data;
       dispatch(setIsAuth(true));
       dispatch(setError(null));
       dispatch(setUser({ email, name, id }));
       dispatch(setToken(token));
+      dispatch(setRefreshToken(refreshToken));
       dispatch(setBalance(balance));
       dispatch(setLoading(false));
       return response.data.data;
