@@ -35,9 +35,9 @@ const login = async (body) => {
   if (!user || !user.validPassword(password)) {
     return false;
   }
-  const token = jwt.sign({ id: user._id }, JWT_SECRET, { expiresIn: "1h" });
+  const token = jwt.sign({ id: user._id }, JWT_SECRET, { expiresIn: "1m" });
   const refreshToken = jwt.sign({ id: user._id }, REFRESH_TOKEN_SECRET, {
-    expiresIn: "7d",
+    expiresIn: "2m",
   });
   user.token = token;
   user.refreshToken = refreshToken;
@@ -62,7 +62,7 @@ const refreshTokenSchema = async (refreshToken) => {
   if (!user || user.refreshToken !== refreshToken) {
     return false;
   }
-  const newToken = jwt.sign({ id: user._id }, JWT_SECRET, { expiresIn: "1h" });
+  const newToken = jwt.sign({ id: user._id }, JWT_SECRET, { expiresIn: "1m" });
   user.token = newToken;
   await user.save();
   return { token: newToken };
