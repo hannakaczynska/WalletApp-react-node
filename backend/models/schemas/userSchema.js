@@ -2,6 +2,7 @@ const User = require("../User");
 const jwt = require("jsonwebtoken");
 
 const JWT_SECRET = process.env.JWT_SECRET;
+const REFRESH_TOKEN_SECRET = process.env.REFRESH_TOKEN_SECRET;
 
 const addUser = async (body) => {
   const { email, password, name } = body;
@@ -15,13 +16,14 @@ const addUser = async (body) => {
   });
   newUser.setPassword(password);
 
-  const token = jwt.sign(
-    { id: newUser._id },
-    JWT_SECRET,
-    { expiresIn: "1h" }
-  );
+  const token = jwt.sign({ id: newUser._id }, JWT_SECRET, { expiresIn: "1h" });
+
+  const refreshToken = jwt.sign({ id: user._id }, REFRESH_TOKEN_SECRET, {
+    expiresIn: "7d",
+  });
 
   newUser.token = token;
+  newUser.refreshToken = refreshToken;
 
   const user = await newUser.save();
   return user;
@@ -34,7 +36,11 @@ const login = async (body) => {
     return false;
   }
   const token = jwt.sign({ id: user._id }, JWT_SECRET, { expiresIn: "1h" });
+  const refreshToken = jwt.sign({ id: user._id }, REFRESH_TOKEN_SECRET, {
+    expiresIn: "7d",
+  });
   user.token = token;
+  user.refreshToken = refreshToken;
   await user.save();
   return user;
 };
@@ -45,12 +51,26 @@ const logout = async (id) => {
     return false;
   }
   user.token = null;
+  user.refreshToken = null;
   await user.save();
   return true;
+};
+
+const refreshTokenSchema = async (refreshToken) => {
+  const decoded = jwt.verify(refreshToken, REFRESH_TOKEN_SECRET);
+  const user = await User.findById(decoded.id);
+  if (!user || user.refreshToken !== refreshToken) {
+    return false;
+  }
+  const newToken = jwt.sign({ id: user._id }, JWT_SECRET, { expiresIn: "1h" });
+  user.token = newToken;
+  await user.save();
+  return { token: newToken };
 };
 
 module.exports = {
   addUser,
   login,
   logout,
+  refreshTokenSchema,
 };

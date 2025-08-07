@@ -6,6 +6,7 @@ const user  = new mongoose.Schema({
   email: { type: String, required: true, unique: true },
   password: { type: String, required: true },
   token: { type: String, default: null },
+  refreshToken: { type: String, default: null },
   balance: { type: Number, default: 0 },
 }, { versionKey: false });
 

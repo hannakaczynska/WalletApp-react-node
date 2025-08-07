@@ -3,6 +3,7 @@ const {
   registerUser,
   loginUser,
   logoutUser,
+  refreshTokenController
 } = require('../controllers/userControllers.js');
 const authenticateToken = require('../middlewares/auth.js');
 
@@ -131,5 +132,7 @@ router.post('/login', loginUser);
  *         description: Internal server error
  */
 router.post('/logout', authenticateToken, logoutUser);
+
+router.post('/refresh-token', refreshTokenController);
 
 module.exports = router;
