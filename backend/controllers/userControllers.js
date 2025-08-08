@@ -63,7 +63,7 @@ const loginUser = async (req, res, next) => {
 
 const logoutUser = async (req, res, next) => {
   try {
-    const user = await logout(req.body.id);
+    const user = await logout(req.body);
     if (!user) {
       return res.status(401).json({
         status: "error",

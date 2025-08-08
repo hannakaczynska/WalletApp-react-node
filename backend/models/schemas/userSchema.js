@@ -1,6 +1,8 @@
 const User = require("../User");
 const jwt = require("jsonwebtoken");
 
+const BlacklistedToken = require("../BlacklistedToken");
+
 const JWT_SECRET = process.env.JWT_SECRET;
 const REFRESH_TOKEN_SECRET = process.env.REFRESH_TOKEN_SECRET;
 
@@ -45,7 +47,8 @@ const login = async (body) => {
   return user;
 };
 
-const logout = async (id) => {
+const logout = async (body) => {
+  const { id, token, refreshToken } = body;
   const user = await User.findById({ _id: id });
   if (!user) {
     return false;
@@ -53,6 +56,23 @@ const logout = async (id) => {
   user.token = null;
   user.refreshToken = null;
   await user.save();
+  const decodedToken = jwt.decode(token);
+  const decodedRefreshToken = jwt.decode(refreshToken);
+  if (!decodedToken || !decodedRefreshToken) {
+    return false;
+  }
+  await BlacklistedToken.create({
+    token: token,
+    type: "access",
+    userId: user._id, 
+    expiresAt: decodedToken.exp * 1000,
+  });
+  await BlacklistedToken.create({
+    token: refreshToken,
+    type: "refresh",
+    userId: user._id,
+    expiresAt: decodedRefreshToken.exp * 1000,
+  });
   return true;
 };
 

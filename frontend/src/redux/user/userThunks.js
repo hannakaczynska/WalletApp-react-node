@@ -79,9 +79,13 @@ export const logoutUser = createAsyncThunk(
   "user/logout",
   async (_, { dispatch, getState }) => {
     const { user } = getState().session;
+const {token, refreshToken} = getState().session;
+console.log("Logging out user:", user.id, token, refreshToken);
     try {
       await api.post("/logout", {
         id: user.id,
+        token: token,
+        refreshToken: refreshToken
       });
       dispatch(resetUserState());
       dispatch(resetState());
