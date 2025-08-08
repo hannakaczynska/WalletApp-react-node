@@ -92,7 +92,6 @@ const refreshTokenController = async (req, res, next) => {
     if (!token) {
       return res.status(403).json({ message: "Invalid refresh token" });
     }
-    console.log("New token generated:", token);
     res.status(200).json({ token: token.token });
   } catch (error) {
     return res

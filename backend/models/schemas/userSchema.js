@@ -82,6 +82,10 @@ const refreshTokenSchema = async (refreshToken) => {
   if (!user || user.refreshToken !== refreshToken) {
     return false;
   }
+  const blacklisted = await BlacklistedToken.findOne({ token: refreshToken, type: "refresh" });
+  if (blacklisted) {
+    return false;;
+  }
   const newToken = jwt.sign({ id: user._id }, JWT_SECRET, { expiresIn: "1m" });
   user.token = newToken;
   await user.save();
