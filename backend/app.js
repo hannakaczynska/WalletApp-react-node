@@ -5,6 +5,7 @@ const cors = require("cors");
 
 const transactionRoutes = require("../backend/routes/transactionRoutes.js");
 const statisticsRoutes = require("../backend/routes/statisticsRoutes.js");
+const checkBlacklist = require("../backend/middlewares/tokenBlacklist.js");
 const userRoutes = require("../backend/routes/userRoutes.js");
 const swaggerUi = require("swagger-ui-express");
 const swaggerSpec = require("./swaggerConfig");
@@ -24,8 +25,8 @@ app.use(express.json());
 app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 
 app.use("/", userRoutes);
-app.use("/", transactionRoutes);
-app.use("/", statisticsRoutes);
+app.use("/", checkBlacklist, transactionRoutes);
+app.use("/", checkBlacklist, statisticsRoutes);
 
 app.get("/", (req, res) => {
   res.send("💥 Backend działa!");
