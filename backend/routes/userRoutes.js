@@ -133,6 +133,32 @@ router.post('/login', loginUser);
  */
 router.post('/logout', authenticateToken, logoutUser);
 
+/**
+ * @swagger
+ * /refresh-token:
+ *   post:
+ *     summary: Refresh the access token
+ *     tags: [Users]
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             $ref: '#/components/schemas/RefreshTokenRequest'
+ *     responses:
+ *       200:
+ *         description: Access token refreshed successfully
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/RefreshTokenResponse'
+ *       401:
+ *         description: Refresh token required
+ *       403:
+ *         description: Invalid or expired refresh token
+ *       500:
+ *         description: Internal server error
+ */
 router.post('/refresh-token', refreshTokenController);
 
 module.exports = router;

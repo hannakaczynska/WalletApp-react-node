@@ -111,6 +111,26 @@ const swaggerOptions = {
             },
           },
         },
+        RefreshTokenRequest: {
+          type: "object",
+          properties: {
+            refreshToken: {
+              type: "string",
+              description: "The refresh token",
+              example: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...",
+            },
+          },
+        },
+        RefreshTokenResponse: {
+          type: "object",
+          properties: {
+            token: {
+              type: "string",
+              description: "The new access token",
+              example: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...",
+            },
+          },
+        },
       },
     },
   },
