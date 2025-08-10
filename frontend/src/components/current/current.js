@@ -25,8 +25,6 @@ const fetchExchangeRates = useCallback(async () => {
     dispatch(setMidEuroRate(midEuroRate));
     dispatch(setMidGbpRate(midGbpRate));
     dispatch(setLastFetchTime(lastFetchTime));
-
-    console.log("Exchange rates fetched successfully:", response.data);
   } catch (error) {
     console.error("Error fetching exchange rates:", error);
   }
