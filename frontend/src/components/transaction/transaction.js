@@ -16,19 +16,7 @@ import "react-toastify/dist/ReactToastify.css";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import ClipLoader from "react-spinners/ClipLoader";
 import * as Yup from "yup";
-
-const categoryOptions = [
-  "Main expenses",
-  "Products",
-  "Car",
-  "Self care",
-  "Child care",
-  "Household products",
-  "Education",
-  "Leisure",
-  "Other expenses",
-  "Entertainment",
-];
+import { categoryOptions } from "../../constants/constants";
 
 const TransactionForm = ({ onItemClick, isEditing, type, transactionId }) => {
   const dispatch = useDispatch();

@@ -1,17 +1,6 @@
 const Transaction = require("../Transaction");
 const mongoose = require("mongoose");
-
-const categories = [
-  "Other expenses",
-  "Leisure",
-  "Education",
-  "Household products",
-  "Child care",
-  "Self care",
-  "Car",
-  "Products",
-  "Main expenses",
-];
+const { categories } = require("../../constants/constants");
 
 const getExpenseStatistics = async (month, year, userId) => {
   try {

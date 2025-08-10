@@ -5,6 +5,7 @@ const { faker } = require("@faker-js/faker");
 
 const User = require("../backend/models/User");
 const Transaction = require("../backend/models/Transaction");
+const {categories} = require("../backend/constants/constants");
 
 async function seedDemoData() {
   try {
@@ -28,18 +29,6 @@ async function seedDemoData() {
     });
 
     console.log("Demo user created");
-
-    const categories = [
-      "Other expenses",
-      "Leisure",
-      "Education",
-      "Household products",
-      "Child care",
-      "Self care",
-      "Car",
-      "Products",
-      "Main expenses",
-    ];
 
     let transactions = [];
     let totalIncome = 0;

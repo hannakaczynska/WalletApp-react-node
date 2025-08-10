@@ -4,21 +4,7 @@ import { useState, useEffect, useCallback } from "react";
 import { useSelector } from "react-redux";
 import api from "../../api/api";
 import List from "../list/list";
-
-const COLORS = [
-  "#00AD84",
-  "#24CCA7",
-  "#81E1FF",
-  "#4A56E2",
-  "#6E78E8",
-  "#C5BAFF",
-  "#FD9498",
-  "#FFD8D0",
-  "#FED057",
-];
-
-const monthOptions = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
-const yearOptions = ["2020", "2021", "2022", "2023", "2024", "2025", "2026"];
+import { COLORS, monthOptions, yearOptions } from "../../constants/constants";
 
 const Diagram = () => {
   const currentDate = new Date();
