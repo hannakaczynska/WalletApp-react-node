@@ -64,6 +64,7 @@ export const loginUser = createAsyncThunk(
       dispatch(setRefreshToken(refreshToken));
       dispatch(setBalance(balance));
       dispatch(setLoading(false));
+      console.log("User logged in successfully:", response.data.data);
       return response.data.data;
     } catch (error) {
       dispatch(setIsAuth(false));

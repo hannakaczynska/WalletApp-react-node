@@ -12,14 +12,13 @@ const LoginForm = () => {
 
   const error = useSelector((state) => state.session.error);
   const isLoading = useSelector((state) => state.session.loading);
-    const [formSubmitted, setFormSubmitted] = useState(false);
+  const [formSubmitted, setFormSubmitted] = useState(false);
 
   const validationSchema = Yup.object({
     email: Yup.string()
       .email("Invalid email address")
       .required("Email is required"),
-    password: Yup.string()
-      .required("Password is required"),
+    password: Yup.string().required("Password is required"),
   });
 
   const initialValues = {
@@ -30,6 +29,7 @@ const LoginForm = () => {
   const handleSubmit = async (values, { setSubmitting }) => {
     setFormSubmitted(true);
     const result = await dispatch(loginUser(values));
+    console.log("Login result:", result);
     if (loginUser.fulfilled.match(result)) {
       navigate("/home");
     } else {
@@ -39,10 +39,21 @@ const LoginForm = () => {
   };
 
   const onInputChange = (e, handleChange) => {
-      if (formSubmitted) {
+    if (formSubmitted) {
       setFormSubmitted(false);
     }
     handleChange(e);
+  };
+
+  const handleDemo = async () => {
+    const result = await dispatch(
+      loginUser({ email: "demo@example.com", password: "password123" })
+    );
+    if (loginUser.fulfilled.match(result)) {
+      navigate("/home");
+    } else {
+      console.error("Login failed:", result.error.message);
+    }
   };
 
   return (
@@ -87,7 +98,11 @@ const LoginForm = () => {
                 component="div"
                 className={css.error}
               />
-              {!isLoading &&formSubmitted && values.email && values.password && error && <div className={css.error}>{error}</div>}
+              {!isLoading &&
+                formSubmitted &&
+                values.email &&
+                values.password &&
+                error && <div className={css.error}>{error}</div>}
             </div>
 
             {/* Buttons */}
@@ -104,6 +119,13 @@ const LoginForm = () => {
                   Register
                 </button>
               </Link>
+              <button
+                type="button"
+                className={css.demoButton}
+                onClick={handleDemo}
+              >
+                Try Demo
+              </button>
             </div>
           </Form>
         )}
