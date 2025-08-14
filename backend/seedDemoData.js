@@ -33,7 +33,7 @@ async function seedDemoData() {
     let transactions = [];
     let totalIncome = 0;
     let totalExpense = 0;
-    for (let i = 0; i < 15; i++) {
+    for (let i = 0; i < 35; i++) {
       const type = faker.helpers.arrayElement(["income", "expense"]);
       const amount = parseFloat(faker.finance.amount(5, 500, 2));
       transactions.push({
@@ -47,7 +47,7 @@ async function seedDemoData() {
         date: faker.date.between({
           from: new Date(
             new Date().getFullYear(),
-            new Date().getMonth() - 1,
+            new Date().getMonth() - 3,
             1
           ),
           to: new Date(),

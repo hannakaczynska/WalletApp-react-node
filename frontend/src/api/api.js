@@ -9,7 +9,7 @@ import { refreshAccessToken } from "../guards/refreshToken";
 import { logoutUser } from "../redux/user/userThunks";
 
 const api = axios.create({
-  baseURL: "http://localhost:3001",
+  baseURL: process.env.REACT_APP_API_URL || "http://localhost:3001",
 });
 
 api.interceptors.request.use((config) => {
