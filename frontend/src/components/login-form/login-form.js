@@ -29,7 +29,6 @@ const LoginForm = () => {
   const handleSubmit = async (values, { setSubmitting }) => {
     setFormSubmitted(true);
     const result = await dispatch(loginUser(values));
-    console.log("Login result:", result);
     if (loginUser.fulfilled.match(result)) {
       navigate("/home");
     } else {

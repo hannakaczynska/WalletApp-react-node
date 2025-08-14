@@ -1,8 +1,11 @@
 import React from "react";
-import { lazy, Suspense } from "react";
+import { lazy, Suspense, useEffect } from "react";
 import { Routes, Route, Navigate } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import { setNavigate } from "./utils/navigation";
+import { useDispatch } from "react-redux";
+import { refreshAccessToken } from "./guards/refreshToken";
+import { setToken, resetUserState, setLoading } from "./redux/user/userSlice";
 import "./App.css";
 import Header from "./components/header/header";
 import ClipLoader from "react-spinners/ClipLoader";
@@ -16,13 +19,35 @@ const DashboardPage = lazy(() => import("./pages/dashboard/DashboardPage"));
 const NotFoundPage = lazy(() => import("./pages/not-found/NotFoundPage"));
 
 function App() {
-  const hideHeaderRoutes = ["/login", "/register"];
-  const shouldShowHeader = !hideHeaderRoutes.includes(window.location.pathname);
+  const dispatch = useDispatch();
 
   const navigate = useNavigate();
   React.useEffect(() => {
     setNavigate(navigate);
   }, [navigate]);
+
+    useEffect(() => {
+    const initAuth = async () => {
+      dispatch(setLoading(true));
+      try {
+        const refreshToken = localStorage.getItem("refreshToken"); // lub z redux
+        if (refreshToken) {
+          const newToken = await refreshAccessToken(refreshToken);
+          if (newToken) {
+            dispatch(setToken(newToken));
+          } else {
+            dispatch(resetUserState());
+          }
+        }
+      } finally {
+        dispatch(setLoading(false));
+      }
+    };
+    initAuth();
+  }, [dispatch]);
+
+  const hideHeaderRoutes = ["/login", "/register"];
+  const shouldShowHeader = !hideHeaderRoutes.includes(window.location.pathname);
 
   return (
     <>

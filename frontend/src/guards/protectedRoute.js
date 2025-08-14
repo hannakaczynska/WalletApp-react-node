@@ -1,31 +1,19 @@
-import { useEffect } from "react";
-import { useSelector, useDispatch } from "react-redux";
+import { useSelector } from "react-redux";
 import { Navigate } from "react-router-dom";
-import { resetUserState, setToken } from "../redux/user/userSlice";
-import { resetState } from "../redux/transactions/transactionSlice";
-import { resetCurrency } from "../redux/currency/currencySlice";
-import { refreshAccessToken } from "./refreshToken";
-import api from "../api/api"; 
+import ClipLoader from "react-spinners/ClipLoader";
 
 const ProtectedRoute = ({ children }) => {
-  const dispatch = useDispatch();
-  const isAuth = useSelector((state) => state.session.isAuth);
-  const refreshToken = useSelector((state) => state.session.refreshToken);
+  const { isAuth, loading } = useSelector(
+    (state) => state.session
+  );
 
-  useEffect(() => {
-    const checkToken = async () => {
-      const newToken = await refreshAccessToken(refreshToken);
-      if (newToken) {
-        dispatch(setToken(newToken));
-        api.defaults.headers.common["Authorization"] = `Bearer ${newToken}`;
-      } else {
-        dispatch(resetUserState());
-        dispatch(resetState());
-        dispatch(resetCurrency());
-      }
-    };
-    checkToken();
-  }, [refreshToken, dispatch]);
+  if (loading) {
+    return (
+      <div className="spinner-container">
+        <ClipLoader color="#4A56E2" size={100} />
+      </div>
+    );
+  }
 
   if (!isAuth) {
     return <Navigate to="/login" replace />;
