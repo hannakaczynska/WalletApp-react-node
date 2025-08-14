@@ -6,6 +6,7 @@ import { resetState } from "../redux/transactions/transactionSlice";
 import { resetCurrency } from "../redux/currency/currencySlice";
 import { getNavigate } from "../utils/navigation";
 import { refreshAccessToken } from "../guards/refreshToken";
+import { logoutUser } from "../redux/user/userThunks";
 
 const api = axios.create({
   baseURL: "http://localhost:3001",
@@ -33,6 +34,7 @@ api.interceptors.response.use(
         error.config.headers.Authorization = `Bearer ${newAccessToken}`;
         return api(error.config);
       } else {
+        await store.dispatch(logoutUser());
         store.dispatch(setIsAuth(false));
         store.dispatch(resetUserState());
         store.dispatch(resetState());
