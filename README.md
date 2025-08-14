@@ -227,4 +227,4 @@ This project is licensed under the MIT License.
 
 Hanna Kaczyńska - [hanna.kaczynska.dev@gmail.com](mailto:hanna.kaczynska.dev@gmail.com)
 
-Project Link: [https://github.com/your-username/WalletApp-react-node](https://github.com/your-username/WalletApp-react-node)
+Project Link: [https://github.com/hannakaczynska/WalletApp-react-node](https://github.com/hannakaczynska/WalletApp-react-node)
