@@ -1,5 +1,5 @@
-import css from "./header.module.css";
-import LogoutModal from "../modal/logout-modal";
+import css from "./Header.module.css";
+import LogoutModal from "../Modal/LogoutModal";
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { logoutUser } from "../../redux/user/userThunks";

@@ -1,4 +1,4 @@
-import css from "./login-form.module.css";
+import css from "./LoginForm.module.css";
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
@@ -65,7 +65,6 @@ const LoginForm = () => {
       >
         {({ isSubmitting, values, handleChange }) => (
           <Form className={css.form} autoComplete="off">
-            {/* Email Input */}
             <div className={css.inputGroup}>
               <img src="/email.svg" alt="Email icon" className={css.icon} />
               <Field
@@ -82,7 +81,6 @@ const LoginForm = () => {
               />
             </div>
 
-            {/* Password Input */}
             <div className={css.inputGroup}>
               <img src="/lock.svg" alt="Lock icon" className={css.icon} />
               <Field
@@ -104,7 +102,6 @@ const LoginForm = () => {
                 error && <div className={css.error}>{error}</div>}
             </div>
 
-            {/* Buttons */}
             <div className={css.buttonGroup}>
               <button
                 type="submit"

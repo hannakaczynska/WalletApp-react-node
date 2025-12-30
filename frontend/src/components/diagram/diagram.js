@@ -1,9 +1,9 @@
-import css from "./diagram.module.css";
+import css from "./Diagram.module.css";
 import { PieChart, Pie, Cell, ResponsiveContainer } from "recharts";
 import { useState, useEffect, useCallback } from "react";
 import { useSelector } from "react-redux";
 import api from "../../api/api";
-import List from "../list/list";
+import List from "../List/List";
 import { COLORS, monthOptions, yearOptions } from "../../constants/constants";
 
 const Diagram = () => {

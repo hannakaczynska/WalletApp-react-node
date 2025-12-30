@@ -1,6 +1,6 @@
 import { NavLink } from "react-router-dom";
 import MediaQuery from "react-responsive";
-import css from "./navigation.module.css";
+import css from "./Navigation.module.css";
 
 const Navigation = () => {
 

@@ -1,4 +1,4 @@
-import css from "./balance.module.css";
+import css from "./Balance.module.css";
 import {useSelector} from "react-redux";
 
 const Balance = () => {

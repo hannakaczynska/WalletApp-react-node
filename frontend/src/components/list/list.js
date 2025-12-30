@@ -1,4 +1,4 @@
-import css from './list.module.css';
+import css from './List.module.css';
 
 const List = ({ data, onItemClick, isCategoryList }) => {
     const handleItemClick = (item) => {

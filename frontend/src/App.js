@@ -7,16 +7,16 @@ import { useDispatch } from "react-redux";
 import { refreshAccessToken } from "./guards/refreshToken";
 import { setToken, resetUserState, setLoading } from "./redux/user/userSlice";
 import "./App.css";
-import Header from "./components/header/header";
+import Header from "./components/Header/Header";
 import ClipLoader from "react-spinners/ClipLoader";
 import ProtectedRoute from "../src/guards/protectedRoute";
 
 const RegistrationPage = lazy(() =>
-  import("./pages/registration/RegistrationPage")
+  import("./pages/Registration/RegistrationPage")
 );
-const LoginPage = lazy(() => import("./pages/login/LoginPage"));
-const DashboardPage = lazy(() => import("./pages/dashboard/DashboardPage"));
-const NotFoundPage = lazy(() => import("./pages/not-found/NotFoundPage"));
+const LoginPage = lazy(() => import("./pages/Login/LoginPage"));
+const DashboardPage = lazy(() => import("./pages/Dashboard/DashboardPage"));
+const NotFoundPage = lazy(() => import("./pages/NotFound/NotFoundPage"));
 
 function App() {
   const dispatch = useDispatch();

@@ -1,5 +1,5 @@
-import css from "./registration-page.module.css";
-import RegistrationForm from "../../components/registration-form/registration-form";
+import css from "./RegistrationPage.module.css";
+import RegistrationForm from "../../components/RegistrationForm/RegistrationForm";
 
 const RegistrationPage = () => {
   return (

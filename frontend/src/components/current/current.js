@@ -1,4 +1,4 @@
-import css from "./current.module.css";
+import css from "./Current.module.css";
 import MediaQuery from "react-responsive";
 import { useEffect, useCallback} from "react";
 import { useDispatch, useSelector } from "react-redux";

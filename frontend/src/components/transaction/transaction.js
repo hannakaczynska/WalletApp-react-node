@@ -1,5 +1,5 @@
-import css from "./transaction.module.css";
-import calendarCss from "./calendar.module.css";
+import css from "./Transaction.module.css";
+import calendarCss from "./TransactionCalendar.module.css";
 import api from "../../api/api"; 
 import { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
@@ -8,7 +8,7 @@ import {
   editTransaction,
 } from "../../redux/transactions/transactionThunks";
 import ReactDOM from "react-dom";
-import List from "../list/list";
+import List from "../List/List";
 import Calendar from "react-calendar";
 import "react-calendar/dist/Calendar.css";
 import { ToastContainer, toast } from "react-toastify";

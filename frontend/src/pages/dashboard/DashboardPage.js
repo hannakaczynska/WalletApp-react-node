@@ -1,13 +1,13 @@
-import css from "./dashboard-page.module.css";
+import css from "./DashboardPage.module.css";
 import { useLocation } from "react-router-dom";
 import { useState } from "react";
 import MediaQuery from "react-responsive";
-import Navigation from "../../components/navigation/navigation";
-import Current from "../../components/current/current";
-import Balance from "../../components/balance/balance";
-import CashflowList from "../../components/cashflow/cashflow-list";
-import Diagram from "../../components/diagram/diagram";
-import TransactionForm from "../../components/transaction/transaction";
+import Navigation from "../../components/Navigation/Navigation";
+import Current from "../../components/Current/Current";
+import Balance from "../../components/Balance/Balance";
+import CashflowList from "../../components/CashflowList/CashflowList";
+import Diagram from "../../components/Diagram/Diagram";
+import TransactionForm from "../../components/Transaction/Transaction";
 
 const DashBoardPage = () => {
   const location = useLocation();

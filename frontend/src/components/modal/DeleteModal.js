@@ -1,4 +1,4 @@
-import css from "./modal.module.css";
+import css from "./Modal.module.css";
 import { forwardRef } from "react";
 import ReactDOM from "react-dom";
 

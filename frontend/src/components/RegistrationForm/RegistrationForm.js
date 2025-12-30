@@ -1,5 +1,4 @@
-//strengthBar - changing width on password strenght with external package/api
-import css from "./registration-form.module.css";
+import css from "./RegistrationForm.module.css";
 import { useState } from "react";
 import { registerUser } from "../../redux/user/userThunks";
 import { useDispatch, useSelector } from "react-redux";

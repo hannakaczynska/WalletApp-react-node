@@ -1,6 +1,6 @@
-import css from "./cashflow-list.module.css";
-import TransactionForm from "../transaction/transaction";
-import DeleteModal from "../modal/delete-modal";
+import css from "./CashflowList.module.css";
+import TransactionForm from "../Transaction/Transaction";
+import DeleteModal from "../Modal/DeleteModal";
 import { useState, useEffect, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import {
