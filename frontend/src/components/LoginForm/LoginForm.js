@@ -24,9 +24,7 @@ const LoginForm = () => {
     const result = await dispatch(loginUser(values));
     if (loginUser.fulfilled.match(result)) {
       navigate("/home");
-    } else {
-      console.error("Login failed:", result.error.message);
-    }
+    } 
     setSubmitting(false);
   };
 
@@ -43,9 +41,7 @@ const LoginForm = () => {
     );
     if (loginUser.fulfilled.match(result)) {
       navigate("/home");
-    } else {
-      console.error("Login failed:", result.error.message);
-    }
+    } 
   };
 
   return (

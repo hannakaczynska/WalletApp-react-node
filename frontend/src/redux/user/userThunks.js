@@ -23,9 +23,10 @@ export const registerUser = createAsyncThunk(
         dispatch(setError("Email already in use"));
         dispatch(setIsAuth(false));
         dispatch(setLoading(false));
-        return rejectWithValue;
+        return rejectWithValue("Email already in use");
       }
-      const { token, refreshToken, email, name, id, balance } = response.data.data;
+      const { token, refreshToken, email, name, id, balance } =
+        response.data.data;
       dispatch(setIsAuth(true));
       dispatch(setError(null));
       dispatch(setUser({ email, name, id }));
@@ -56,7 +57,8 @@ export const loginUser = createAsyncThunk(
         dispatch(setLoading(false));
         return rejectWithValue("Invalid email or password");
       }
-      const { token, refreshToken, email, name, id, balance } = response.data.data;
+      const { token, refreshToken, email, name, id, balance } =
+        response.data.data;
       dispatch(setIsAuth(true));
       dispatch(setError(null));
       dispatch(setUser({ email, name, id }));
@@ -64,7 +66,6 @@ export const loginUser = createAsyncThunk(
       dispatch(setRefreshToken(refreshToken));
       dispatch(setBalance(balance));
       dispatch(setLoading(false));
-      console.log("User logged in successfully:", response.data.data);
       return response.data.data;
     } catch (error) {
       dispatch(setIsAuth(false));
@@ -80,20 +81,21 @@ export const logoutUser = createAsyncThunk(
   "user/logout",
   async (_, { dispatch, getState }) => {
     const { user } = getState().session;
-const {token, refreshToken} = getState().session;
+    const { token, refreshToken } = getState().session;
     try {
       await api.post("/logout", {
         id: user.id,
         token: token,
-        refreshToken: refreshToken
+        refreshToken: refreshToken,
       });
-      dispatch(resetUserState());
-      dispatch(resetState());
-      dispatch(resetCurrency());
       return true;
     } catch (error) {
       console.error("Error logging out user:", error);
       return false;
+    } finally {
+      dispatch(resetUserState());
+      dispatch(resetState());
+      dispatch(resetCurrency());
     }
   }
 );
