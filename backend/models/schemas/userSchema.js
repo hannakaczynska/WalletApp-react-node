@@ -20,7 +20,7 @@ const addUser = async (body) => {
 
   const token = jwt.sign({ id: newUser._id }, JWT_SECRET, { expiresIn: "1h" });
 
-  const refreshToken = jwt.sign({ id: user._id }, REFRESH_TOKEN_SECRET, {
+  const refreshToken = jwt.sign({ id: newUser._id }, REFRESH_TOKEN_SECRET, {
     expiresIn: "7d",
   });
 
