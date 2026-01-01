@@ -4,7 +4,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { loginUser } from "../../redux/user/userThunks";
 import { Formik, Form, Field, ErrorMessage } from "formik";
-import * as Yup from "yup";
+import { validationSchema } from "./LoginForm.schema";
 
 const LoginForm = () => {
   const dispatch = useDispatch();
@@ -13,13 +13,6 @@ const LoginForm = () => {
   const error = useSelector((state) => state.session.error);
   const isLoading = useSelector((state) => state.session.loading);
   const [formSubmitted, setFormSubmitted] = useState(false);
-
-  const validationSchema = Yup.object({
-    email: Yup.string()
-      .email("Invalid email address")
-      .required("Email is required"),
-    password: Yup.string().required("Password is required"),
-  });
 
   const initialValues = {
     email: "",

@@ -14,8 +14,8 @@ import "react-calendar/dist/Calendar.css";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { Formik, Form, Field, ErrorMessage } from "formik";
+import { getValidationSchema } from "./Transaction.schema";
 import ClipLoader from "react-spinners/ClipLoader";
-import * as Yup from "yup";
 import { categoryOptions } from "../../constants/constants";
 
 const TransactionForm = ({ onItemClick, isEditing, type, transactionId }) => {
@@ -130,18 +130,6 @@ const TransactionForm = ({ onItemClick, isEditing, type, transactionId }) => {
     }
   };
 
-  const getValidationSchema = (isIncome) =>
-    Yup.object({
-      category: isIncome
-        ? Yup.string().notRequired()
-        : Yup.string().required("Category is required for expenses"),
-      amount: Yup.number()
-        .min(0.01, "Amount must be greater than 0")
-        .required("Amount is required"),
-      date: Yup.date().required("Date is required").typeError("Invalid date"),
-      comment: Yup.string().max(200, "Comment must be 200 characters or less"),
-    });
-
   useEffect(() => {
     if (isEditing) {
       fetchTransactionById();
@@ -221,7 +209,6 @@ const TransactionForm = ({ onItemClick, isEditing, type, transactionId }) => {
             >
               {({ setFieldValue, values }) => (
                 <Form className={css.form} autoComplete="off">
-                  {/* Category Input */}
                   {!isIncome && (
                     <div className={css.inputGroup}>
                       <Field
@@ -258,7 +245,6 @@ const TransactionForm = ({ onItemClick, isEditing, type, transactionId }) => {
                     </div>
                   )}
 
-                  {/* Amount Input */}
                   <div className={css.inputGroupRow}>
                     <div className={css.inputGroup}>
                       <Field
@@ -280,7 +266,6 @@ const TransactionForm = ({ onItemClick, isEditing, type, transactionId }) => {
                       />
                     </div>
 
-                    {/* Date Input */}
                     <div className={css.inputGroup}>
                       <Field
                         type="text"
@@ -298,7 +283,6 @@ const TransactionForm = ({ onItemClick, isEditing, type, transactionId }) => {
                     </div>
                   </div>
 
-                  {/* Comment Input */}
                   <div className={css.inputGroup}>
                     <Field
                       as="textarea"
@@ -313,7 +297,6 @@ const TransactionForm = ({ onItemClick, isEditing, type, transactionId }) => {
                     />
                   </div>
 
-                  {/* Buttons */}
                   <div className={css.buttonGroup}>
                     <button type="submit" className={css.addButton}>
                       {isEditing ? "Save" : "Add"}

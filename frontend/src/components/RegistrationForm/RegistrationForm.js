@@ -4,7 +4,7 @@ import { registerUser } from "../../redux/user/userThunks";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
 import { Formik, Form, Field, ErrorMessage } from "formik";
-import * as Yup from "yup";
+import { validationSchema } from "./RegistrationForm.schema";
 import zxcvbn from "zxcvbn";
 
 const RegistrationForm = () => {
@@ -15,23 +15,6 @@ const RegistrationForm = () => {
   const isLoading = useSelector((state) => state.session.loading);
   const [formSubmitted, setFormSubmitted] = useState(false);
   const [passwordStrength, setPasswordStrength] = useState(0);
-
-  const validationSchema = Yup.object({
-    email: Yup.string()
-      .email("Invalid email address")
-      .required("Email is required"),
-    password: Yup.string()
-      .min(6, "Password must be at least 6 characters")
-      .max(12, "Password must be at most 12 characters")
-      .required("Password is required"),
-    confirmPassword: Yup.string()
-      .oneOf([Yup.ref("password"), null], "Passwords must match")
-      .required("Confirm password is required"),
-    name: Yup.string()
-      .min(1, "Name must be at least 1 character")
-      .max(12, "Name must be at most 12 characters")
-      .required("Name is required"),
-  });
 
   const initialValues = {
     email: "",
@@ -80,7 +63,6 @@ const RegistrationForm = () => {
       >
         {({ isSubmitting, values, handleChange }) => (
           <Form className={css.form} autoComplete="off">
-            {/* Email Input */}
             <div className={css.inputGroup}>
               <img src="/email.svg" alt="Email icon" className={css.icon} />
               <Field
@@ -97,7 +79,6 @@ const RegistrationForm = () => {
               />
             </div>
 
-            {/* Password Input */}
             <div className={css.inputGroup}>
               <img src="/lock.svg" alt="Lock icon" className={css.icon} />
               <Field
@@ -114,7 +95,6 @@ const RegistrationForm = () => {
               />
             </div>
 
-            {/* Confirm Password Input */}
             <div className={css.inputGroup}>
               <img src="/lock.svg" alt="Lock icon" className={css.icon} />
               <Field
@@ -134,7 +114,6 @@ const RegistrationForm = () => {
               />
             </div>
 
-            {/* Name Input */}
             <div className={css.inputGroup}>
               <img src="/account.svg" alt="Account icon" className={css.icon} />
               <Field
@@ -157,7 +136,6 @@ const RegistrationForm = () => {
                 error && <div className={css.error}>{error}</div>}
             </div>
 
-            {/* Buttons */}
             <div className={css.buttonGroup}>
               <button
                 type="submit"
