@@ -1,5 +1,7 @@
 .statistics {
   margin-bottom: 50px;
+  width: 280px;
+  margin-inline: auto;
 }
 .title {
   font-family: var(--font-primary);
@@ -38,7 +40,7 @@
   width: 100%;
   height: 50px;
   position: relative;
-   padding-block: 12px 14px;
+  padding-block: 12px 14px;
   padding-inline: 20px 21px;
   border: 1px solid #000000;
   border-radius: 30px;
@@ -158,6 +160,7 @@
 
 @media screen and (min-width: 768px) {
   .statistics {
+    width: 704px;
     display: flex;
     flex-direction: row;
     gap: 32px;
@@ -208,31 +211,36 @@
 }
 
 @media screen and (min-width: 1280px) {
-.title {
-  margin-top: 32px;
-}
+  .statistics {
+    width: 1248px;
+  justify-content: flex-end;
+  }
+
+  .title {
+    margin-top: 32px;
+  }
 
   .diagram {
     width: 288px;
     height: 288px;
   }
 
-    .buttons {
+  .buttons {
     gap: 32px;
     margin-block: 97px 20px;
   }
 
-    .button {
+  .button {
     width: 182px;
     padding-block: 12px 14px;
     padding-inline: 20px 21px;
   }
 
-    .list {
+  .list {
     width: 395px;
   }
 
-    .listItem {
+  .listItem {
     padding-inline: 28px 29px;
   }
 
@@ -240,7 +248,7 @@
     padding-inline: 28px 29px;
   }
 
-    .value {
+  .value {
     width: 80px;
   }
 

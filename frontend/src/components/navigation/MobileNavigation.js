@@ -1,8 +1,10 @@
 import { NavLink } from "react-router-dom";
 import css from "./MobileNavigation.module.css";
+import MediaQuery from "react-responsive";
 
 const MobileNavigation = () => {
   return (
+    <MediaQuery maxWidth={767.5}>
     <nav className={css.navigation}>
       <NavLink
         to="/home"
@@ -65,6 +67,7 @@ const MobileNavigation = () => {
           </div>
         </NavLink>
     </nav>
+    </MediaQuery>
   );
 };
 

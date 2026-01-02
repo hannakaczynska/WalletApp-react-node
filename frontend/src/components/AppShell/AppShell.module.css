@@ -34,6 +34,7 @@
   .shellPanel {
     flex-direction: column;
     padding-top: 40px;
+    right: calc(50% + 210px);
     position: fixed;
   }
 

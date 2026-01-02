@@ -1,9 +1,7 @@
 import css from "./DashboardPage.module.css";
 import { useLocation } from "react-router-dom";
 import { useState } from "react";
-import MediaQuery from "react-responsive";
 import MobileNavigation from "../../components/Navigation/MobileNavigation";
-import DesktopNavigation from "../../components/Navigation/DesktopNavigation";
 import AppShell from "../../components/AppShell/AppShell";
 import Current from "../../components/Current/Current";
 import Balance from "../../components/Balance/Balance";
@@ -80,13 +78,9 @@ const DashBoardPage = () => {
   return (
     <div className={css.dashboardPage}>
       <div className={css.dashboardContainer}>
-        <MediaQuery maxWidth={767.5}>
           <MobileNavigation />
-        </MediaQuery>
         <div className={css.dashboard}>
-          <MediaQuery minWidth={768}>
             <AppShell />
-          </MediaQuery>
           <div className={css.contentContainer}>
             <div className={css.content}>{renderContent()}</div>
           </div>

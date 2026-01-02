@@ -16,6 +16,8 @@ const RegistrationPage = lazy(() =>
 );
 const LoginPage = lazy(() => import("./pages/Login/LoginPage"));
 const DashboardPage = lazy(() => import("./pages/Dashboard/DashboardPage"));
+const HomePage = lazy(() => import("./pages/Home/HomePage"));
+const DiagramPage = lazy(() => import("./pages/Diagram/DiagramPage"));
 const NotFoundPage = lazy(() => import("./pages/NotFound/NotFoundPage"));
 
 function App() {
@@ -65,7 +67,7 @@ function App() {
             path="/home"
             element={
               <ProtectedRoute>
-                <DashboardPage />
+                <HomePage />
               </ProtectedRoute>
             }
           />
@@ -73,7 +75,7 @@ function App() {
             path="/diagram"
             element={
               <ProtectedRoute>
-                <DashboardPage />
+                <DiagramPage />
               </ProtectedRoute>
             }
           />
