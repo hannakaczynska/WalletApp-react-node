@@ -1,12 +1,8 @@
 @import "../../styles/global.css";
 
-.registrationPage {
+.loginPage {
   background-color: var(--white);
   min-height: 100vh;
-}
-
-.registrationDesktopPage {
-  display: none;
 }
 
 .container {
@@ -38,14 +34,8 @@
 }
 
 @media screen and (min-width: 768px) {
-  .registrationPage {
+  .loginPage {
     background-color: var(--grey-background);
-  }
-
-  .registrationForm {
-    width: 533px;
-    height: 616px;
-    background-color: var(--white);
   }
 
   .title {
@@ -101,18 +91,14 @@
 }
 
 @media screen and (min-width: 1280px) {
-  .registrationPage {
-    display: none;
-  }
-
-  .registrationDesktopPage {
+  .loginPage {
     background-color: var(--grey-background);
     min-height: 100vh;
     display: flex;
     flex-direction: row;
   }
 
-  .registrationForm {
+  .loginForm {
     display: none;
   }
 
