@@ -1,11 +1,13 @@
 .tableContainer {
   position: relative;
   width: 280px;
+  margin-inline: auto;
   border-radius: 30px;
   background: linear-gradient(to bottom, var(--light-blue) 50px, var(--blue) 0);
   color: var(--white);
   font-family: var(--font-secondary);
   line-height: 100%;
+   margin-top: 16px;
 }
 
 .table {

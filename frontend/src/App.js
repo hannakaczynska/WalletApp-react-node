@@ -15,9 +15,9 @@ const RegistrationPage = lazy(() =>
   import("./pages/Registration/RegistrationPage")
 );
 const LoginPage = lazy(() => import("./pages/Login/LoginPage"));
-const DashboardPage = lazy(() => import("./pages/Dashboard/DashboardPage"));
 const HomePage = lazy(() => import("./pages/Home/HomePage"));
 const DiagramPage = lazy(() => import("./pages/Diagram/DiagramPage"));
+const CurrentPage = lazy(() => import("./pages/Current/CurrentPage"));
 const NotFoundPage = lazy(() => import("./pages/NotFound/NotFoundPage"));
 
 function App() {
@@ -32,7 +32,7 @@ function App() {
     const initAuth = async () => {
       dispatch(setLoading(true));
       try {
-        const refreshToken = localStorage.getItem("refreshToken"); // lub z redux
+        const refreshToken = localStorage.getItem("refreshToken"); 
         if (refreshToken) {
           const newToken = await refreshAccessToken(refreshToken);
           if (newToken) {
@@ -83,7 +83,7 @@ function App() {
             path="/current"
             element={
               <ProtectedRoute>
-                <DashboardPage />
+                <CurrentPage />
               </ProtectedRoute>
             }
           />
