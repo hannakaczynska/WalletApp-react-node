@@ -1,8 +1,7 @@
 import { NavLink } from "react-router-dom";
-import MediaQuery from "react-responsive";
-import css from "./Navigation.module.css";
+import css from "./DesktopNavigation.module.css";
 
-const Navigation = () => {
+const DesktopNavigation = () => {
 
   return (
     <nav className={css.navigation}>
@@ -23,9 +22,7 @@ const Navigation = () => {
               <path d="M6 0C2.68629 0 0 2.68629 0 6V32C0 35.3137 2.68629 38 6 38H32C35.3137 38 38 35.3137 38 32V6C38 2.68629 35.3137 0 32 0H6ZM15.9333 21.3594V29.5555H9.1V18.6274H5L18.6667 6.33325L32.3333 18.6274H28.2333V29.5555H21.4V21.3594H15.9333Z" />
             </svg>
           </div>
-          <MediaQuery minWidth={768}>
             <span className={css.navText}>Home</span>
-          </MediaQuery>
         </div>
       </NavLink>
 
@@ -50,32 +47,11 @@ const Navigation = () => {
               />
             </svg>
           </div>
-          <MediaQuery minWidth={768}>
             <span className={css.navText}>Statistics</span>
-          </MediaQuery>
         </div>
       </NavLink>
-      <MediaQuery maxWidth={767.5}>
-        <NavLink
-          to="/current"
-          className={({ isActive }) =>
-            isActive ? `${css.navItem} ${css.active}` : css.navItem
-          }
-        >
-          <div className={css.iconContainer}>
-            <svg
-              className={css.navIcon}
-              viewBox="0 0 38 38"
-              fill="none"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <path d="M6 0C2.68629 0 0 2.68629 0 6V32C0 35.3137 2.68629 38 6 38H32C35.3137 38 38 35.3137 38 32V6C38 2.68629 35.3137 0 32 0H6ZM15.7523 15.5989C15.7523 16.7809 16.6607 17.5399 19.4852 18.2741C22.3096 19.0082 25.3332 20.2151 25.3332 23.7489C25.3332 26.2996 23.4046 27.7056 20.9783 28.166V30.8412H17.2455V28.1411C14.8565 27.631 12.8159 26.1005 12.6666 23.3756H15.4039C15.5408 24.8438 16.5487 25.9885 19.1119 25.9885C21.8617 25.9885 22.4714 24.6198 22.4714 23.7613C22.4714 22.6041 21.8493 21.5092 18.7386 20.7626C15.2671 19.9289 12.8905 18.498 12.8905 15.6238C12.8905 13.2223 14.8316 11.6546 17.2455 11.132V8.44434H20.9783V11.1693C23.5788 11.8039 24.8853 13.7698 24.9724 15.91H22.2225C22.1479 14.3546 21.3267 13.297 19.1119 13.297C17.0091 13.297 15.7523 14.2426 15.7523 15.5989Z" />
-            </svg>
-          </div>
-        </NavLink>
-      </MediaQuery>
     </nav>
   );
 };
 
-export default Navigation;
+export default DesktopNavigation;
