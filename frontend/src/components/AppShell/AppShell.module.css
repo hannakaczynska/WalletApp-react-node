@@ -1,0 +1,52 @@
+.shellPanel {
+  display: flex;
+  flex-direction: row;
+  gap: 32px;
+  margin-inline: auto;
+  max-width: 704px;
+  padding-top: 32px;
+}
+
+.container {
+  display: flex;
+  flex-direction: column;
+  gap: 28px;
+  margin-top: auto;
+}
+
+.ellipseTwo {
+  position: fixed;
+  right: 0;
+  top: 80px;
+  filter: blur(50px);
+  z-index: -10;
+}
+
+.ellipseOne {
+  position: fixed;
+  left: 0;
+  bottom: 0;
+  filter: blur(50px);
+  z-index: -10;
+}
+
+@media screen and (min-width: 1280px) {
+  .shellPanel {
+    flex-direction: column;
+    padding-top: 40px;
+    position: fixed;
+  }
+
+  .current {
+    margin-top: 4px;
+  }
+  .separator {
+    display: block;
+    height: 100vh;
+    position: fixed;
+    right: calc(50% + 160px);
+    border: 1px solid #e7e5f2;
+    box-shadow: 1px 0px 0px 0px #ffffff99;
+    box-shadow: -1px 0px 0px 0px #0000000d;
+  }
+}
