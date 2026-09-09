@@ -1,0 +1,34 @@
+.navigation {
+  display: flex;
+  flex-direction: row;
+  gap: 30px;
+  justify-content: center;
+  padding-block: 12px;
+}
+
+.navItem {
+  width: 38px;
+  height: 38px;
+}
+
+.navIcon {
+  width: 38px;
+  height: 38px;
+  fill: var(--light-blue);
+}
+
+.iconContainer {
+  width: 37.5px;
+  height: 37.5px;
+  border-radius: 6px;
+}
+
+.active .navIcon {
+  fill: var(--blue);
+}
+
+.active .iconContainer {
+  background-color: var(--white);
+  box-shadow: 0px 3px 10px 0px var(--blue-blur);
+}
+
