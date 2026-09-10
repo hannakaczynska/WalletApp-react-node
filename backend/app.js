@@ -3,10 +3,10 @@ require("dotenv").config();
 const express = require("express");
 const cors = require("cors");
 
-const transactionRoutes = require("../backend/routes/transactionRoutes.js");
-const statisticsRoutes = require("../backend/routes/statisticsRoutes.js");
-const checkBlacklist = require("../backend/middlewares/tokenBlacklist.js");
-const userRoutes = require("../backend/routes/userRoutes.js");
+const transactionRoutes = require("./routes/transactionRoutes.js");
+const statisticsRoutes = require("./routes/statisticsRoutes.js");
+const checkBlacklist = require("./middlewares/tokenBlacklist.js");
+const userRoutes = require("./routes/userRoutes.js");
 const swaggerUi = require("swagger-ui-express");
 const swaggerSpec = require("./swaggerConfig");
 const seedDemoData = require("./seedDemoData");
