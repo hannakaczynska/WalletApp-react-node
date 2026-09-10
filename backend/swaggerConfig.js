@@ -11,7 +11,7 @@ const swaggerOptions = {
     },
     servers: [
       {
-        url: process.env.SWAGGER_SERVER_URL || "http://localhost:3001",
+        url: process.env.SWAGGER_SERVER_URL || "http://localhost:8080",
       },
     ],
     components: {

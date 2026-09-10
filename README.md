@@ -94,7 +94,7 @@ WalletApp-react-node/
    JWT_SECRET=your_jwt_secret
    REFRESH_TOKEN_SECRET=your_refresh_token_secret
    CRON_SECRET=your_cron_secret
-   PORT=3001
+   PORT=8080
    ```
 
 3. **Frontend Setup**
@@ -105,7 +105,7 @@ WalletApp-react-node/
    
    Create `.env` file:
    ```env
-   REACT_APP_API_URL=http://localhost:3001
+   REACT_APP_API_URL=http://localhost:8080
    REACT_APP_OPEN_EXCHANGE_API_KEY=your_openexchangerates_api_key
    ```
 
@@ -121,7 +121,7 @@ WalletApp-react-node/
    cd backend
    npm run dev
    ```
-   Server runs on http://localhost:3001
+   Server runs on http://localhost:8080
 
 2. **Start Frontend Development Server**
    ```bash
@@ -133,7 +133,7 @@ WalletApp-react-node/
 
 ## 📚 API Documentation
 
-Visit http://localhost:3001/api-docs for Swagger API documentation when the backend is running.
+Visit http://localhost:8080/api-docs for Swagger API documentation when the backend is running.
 
 ## 🔐 Authentication
 
