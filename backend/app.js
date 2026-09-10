@@ -16,7 +16,8 @@ const app = express();
 const allowedOrigins = [
   "http://localhost:3000",
   "https://wallet-app-project.netlify.app",
-  "https://wallet-app-fullstack.netlify.app"
+  "https://wallet-app-fullstack.netlify.app",
+  "https://docker--wallet-app-fullstack.netlify.app"
 ];
 
 app.use(
